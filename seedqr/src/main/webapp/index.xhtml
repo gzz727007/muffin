@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>种子二维码</title>
+        <style type="text/css">
+            body {
+                font-family: Microsoft YaHei !important;
+            }
+            .ui-widget, .ui-widget .ui-widget {
+                font-family: Microsoft YaHei !important;
+                font-size: 90% !important;
+            }
+            .transparent tr, .transparent td {
+                background: none !important;
+                border: none !important;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <h:form prependId="false">
+            <p:panelGrid styleClass="transparent">
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="seedName" value="种子名称："/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="seedName" value="#{seedWarehouse.seedName}"/>
+                    </p:column>
+                    <p:column>
+                        <p:message id="seedNameError" for="seedName"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="manufacturer" value="生产厂商："/>
+                    </p:column>
+                    <p:column>
+                        <p:selectOneMenu id="manufacturer" converter="manufacturer"
+                                         value="#{seedWarehouse.manufacturer}"
+                                         filter="true" filterMatchMode="contains"
+                                         style="vertical-align: top; margin-right: 5px;">
+                            <f:selectItems value="#{seedWarehouse.manufacturers}"
+                                           var="manufacturer"
+                                           itemLabel="#{manufacturer.name}"
+                                           itemValue="#{manufacturer}"/>
+                        </p:selectOneMenu>
+                        <p:commandButton type="button" value="添加"
+                                         onclick="PF('addManufacturer').show();"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="packAmount" value="小包数量："/>
+                    </p:column>
+                    <p:column>
+                        <p:spinner id="packAmount" min="1" max="999999" size="5"
+                                   value="#{seedWarehouse.packAmount}"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column colspan="3">
+                        <p:commandButton value="生成并下载二维码" ajax="false"
+                                         validateClient="true"
+                                         action="#{seedWarehouse.generateQrCodes}"/>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+        </h:form>
+        <p:dialog widgetVar="addManufacturer" header="添加厂商"
+                  modal="true" showEffect="fade" hideEffect="explode">
+            <h:form>
+                厂商名称：
+                <p:inputText id="newManufacturerName"
+                             value="#{seedWarehouse.newManufacturerName}"
+                             style="margin-right: 5px;"/>
+                <p:commandButton value="确定" action="#{seedWarehouse.addManufacturer}"
+                                 process="@form" update="manufacturer"
+                                 oncomplete="PF('addManufacturer').hide();"/>
+            </h:form>
+        </p:dialog>
+    </h:body>
+</html>
