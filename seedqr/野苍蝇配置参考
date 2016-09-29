@@ -1,0 +1,22 @@
+数据源：
+<datasource jta="true" jndi-name="java:/ds/test" pool-name="test" enabled="true" use-ccm="true">
+    <connection-url>jdbc:derby://localhost:1527/test</connection-url>
+    <driver-class>org.apache.derby.jdbc.ClientDriver</driver-class>
+    <driver>derbyclient-10.12.1.1.jar</driver>
+    <security>
+        <user-name>zhyi</user-name>
+        <password>zhyi</password>
+    </security>
+</datasource>
+
+登录模块：
+<security-domain name="seedqr" cache-type="default">
+    <authentication>
+        <login-module code="Database" flag="required">
+            <module-option name="dsJndiName" value="java:/ds/test"/>
+            <module-option name="principalsQuery" value="select password from users where uname=?"/>
+            <module-option name="rolesQuery" value="select urole, 'Roles' from users where uname=?"/>
+        </login-module>
+    </authentication>
+</security-domain>
+注意表列必须是 varchar 类型。

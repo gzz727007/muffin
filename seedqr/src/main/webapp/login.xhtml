@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>种子二维码</title>
+        <style type="text/css">
+            body {
+                font-family: Microsoft YaHei !important;
+            }
+            .ui-widget, .ui-widget .ui-widget {
+                font-family: Microsoft YaHei !important;
+                font-size: 90% !important;
+            }
+            .transparent tr, .transparent td {
+                background: none !important;
+                border: none !important;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <h:form prependId="false">
+            <p:panelGrid columns="2" styleClass="transparent">
+                <p:outputLabel for="user" value="用户："/>
+                <p:inputText id="user" value="#{authenticator.user}"/>
+                <p:outputLabel for="password" value="密码："/>
+                <p:password id="password" value="#{authenticator.password}"/>
+                <f:facet name="footer">
+                    <p:commandButton value="登录" action="#{authenticator.login}"
+                                     process="@form" update="error"/>
+                </f:facet>
+            </p:panelGrid>
+            <p:messages id="error"/>
+        </h:form>
+    </h:body>
+</html>

@@ -6,7 +6,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-@FacesConverter(forClass = Manufacturer.class, value = "manufacturer")
+@FacesConverter(value = "manufacturer")
 public class ManufacturerConverter implements Converter {
     private DataService dataService;
 

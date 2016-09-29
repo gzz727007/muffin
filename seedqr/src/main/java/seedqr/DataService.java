@@ -4,9 +4,10 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.annotation.PostConstruct;
+import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.ApplicationScoped;
 
-@ApplicationScoped
+@ApplicationScoped @RolesAllowed("user")
 public class DataService {
     private Map<Integer, Manufacturer> manufacturers;
 

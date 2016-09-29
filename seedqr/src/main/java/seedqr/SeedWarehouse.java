@@ -11,6 +11,7 @@ import java.util.zip.Checksum;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import javax.annotation.PostConstruct;
+import javax.annotation.security.RolesAllowed;
 import javax.faces.FacesException;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -25,7 +26,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import net.glxn.qrgen.javase.QRCode;
 
-@Named @ViewScoped
+@Named @ViewScoped @RolesAllowed("user")
 public class SeedWarehouse implements Serializable {
     private static final Checksum CHECKSUM = new Adler32();
     private static final String TRACE_URL = "http://www.zgzzcx.com/s?id=";
