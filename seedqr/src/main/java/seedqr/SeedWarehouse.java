@@ -2,6 +2,8 @@ package seedqr;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
@@ -29,7 +31,18 @@ import net.glxn.qrgen.javase.QRCode;
 @Named @ViewScoped @RolesAllowed("user")
 public class SeedWarehouse implements Serializable {
     private static final Checksum CHECKSUM = new Adler32();
+    private static final String QR_DATUM
+            = "种子名称：%s\r\n生产厂家：%s\r\n唯一编码：%s\r\n追溯网址：%s";
     private static final String TRACE_URL = "http://www.zgzzcx.com/s?id=";
+    private static String DOWNLOAD_NAME;
+
+    static {
+        try {
+            DOWNLOAD_NAME = "attachment; filename*=UTF-8''"
+                    + URLEncoder.encode("种子二维码.zip", "UTF-8");
+        } catch (UnsupportedEncodingException ex) {
+        }
+    }
 
     @Inject
     private DataService dataService;
@@ -98,8 +111,7 @@ public class SeedWarehouse implements Serializable {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExternalContext externalContext = facesContext.getExternalContext();
         externalContext.setResponseContentType(MediaType.APPLICATION_OCTET_STREAM);
-        externalContext.setResponseHeader(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename=\"qrcodes.zip\"");
+        externalContext.setResponseHeader(HttpHeaders.CONTENT_DISPOSITION, DOWNLOAD_NAME);
 
         ZipOutputStream out = new ZipOutputStream(
                 externalContext.getResponseOutputStream());
@@ -111,12 +123,12 @@ public class SeedWarehouse implements Serializable {
                 CHECKSUM.update(serial.getBytes(), 0, serial.length());
                 serial += String.format("%03d", CHECKSUM.getValue() % 1000);
 
-                String qrDatum = seedName + "\n" + manufacturer.getName()
-                        + "\n" + serial + "\n" + TRACE_URL + serial;
-                qrData.append("\n\n").append(qrDatum);
+                String qrDatum = String.format(QR_DATUM, seedName,
+                        manufacturer.getName(), serial, TRACE_URL + serial);
+                qrData.append("\r\n\r\n").append(qrDatum);
 
                 out.putNextEntry(new ZipEntry(index[0] + ".png"));
-                QRCode.from(qrDatum).writeTo(out);
+                QRCode.from(qrDatum).withCharset("UTF-8").writeTo(out);
                 index[0]++;
             } catch (IOException ex) {
                 throw new FacesException(ex);
@@ -126,7 +138,7 @@ public class SeedWarehouse implements Serializable {
         });
 
         out.putNextEntry(new ZipEntry("二维码数据.txt"));
-        out.write(qrData.substring(2).getBytes());
+        out.write(qrData.substring(4).getBytes());
 
         out.finish();
         facesContext.responseComplete();
