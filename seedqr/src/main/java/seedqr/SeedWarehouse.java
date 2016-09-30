@@ -32,7 +32,7 @@ import net.glxn.qrgen.javase.QRCode;
 public class SeedWarehouse implements Serializable {
     private static final Checksum CHECKSUM = new Adler32();
     private static final String QR_DATUM
-            = "种子名称：%s\r\n生产厂家：%s\r\n唯一编码：%s\r\n追溯网址：%s";
+            = "品种名称：%s\r\n生产经营者名称：%s\r\n单元识别代码：%s\r\n追溯网址：%s";
     private static final String TRACE_URL = "http://www.zgzzcx.com/s?id=";
     private static String DOWNLOAD_NAME;
 
