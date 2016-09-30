@@ -119,6 +119,7 @@ CREATE TABLE `user` (
   `user_name` varchar(20) NOT NULL,
   `name` varchar(20) NOT NULL,
   `password` varchar(32) NOT NULL,
+  `urole` varchar(50) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `handphone` varchar(20) NOT NULL,
   `create_time` datetime DEFAULT NULL,
