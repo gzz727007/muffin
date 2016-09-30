@@ -128,7 +128,7 @@ public class SeedWarehouse implements Serializable {
                 qrData.append("\r\n\r\n").append(qrDatum);
 
                 out.putNextEntry(new ZipEntry(index[0] + ".png"));
-                QRCode.from(qrDatum).withCharset("UTF-8").writeTo(out);
+                QRCode.from(qrDatum).withCharset("utf-8").writeTo(out);
                 index[0]++;
             } catch (IOException ex) {
                 throw new FacesException(ex);
