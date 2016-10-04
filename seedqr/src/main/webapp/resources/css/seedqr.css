@@ -1,0 +1,13 @@
+body {
+    font-family: Microsoft YaHei !important;
+}
+
+.ui-widget, .ui-widget .ui-widget {
+    font-family: Microsoft YaHei !important;
+    font-size: 90% !important;
+}
+
+.transparent tr, .transparent td {
+    background: none !important;
+    border: none !important;
+}

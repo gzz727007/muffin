@@ -15,7 +15,6 @@ import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.transaction.managed.ManagedTransactionFactory;
-import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 
 public class MybatisUtil {
 
@@ -40,5 +39,9 @@ public class MybatisUtil {
 
     public static SqlSessionFactory getInstance() {
         return sessionFactory;
+    }
+
+    public static <M> M getMapper(Class<M> mapperType) {
+        return sessionFactory.openSession().getMapper(mapperType);
     }
 }
