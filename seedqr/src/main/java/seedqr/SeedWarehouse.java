@@ -7,6 +7,7 @@ import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.zip.Adler32;
 import java.util.zip.Checksum;
@@ -27,6 +28,10 @@ import javax.validation.constraints.Size;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import net.glxn.qrgen.javase.QRCode;
+import org.apache.ibatis.session.SqlSession;
+import seedqr.mapper.UserMapper;
+import seedqr.model.User;
+import seedqr.util.MybatisUtil;
 
 @Named @ViewScoped @RolesAllowed("user")
 public class SeedWarehouse implements Serializable {
@@ -104,6 +109,9 @@ public class SeedWarehouse implements Serializable {
     }
 
     public void generateQrCodes() throws IOException {
+        SqlSession  session = MybatisUtil.getInstance().openSession(false);
+        UserMapper  userMapper =  session.getMapper(UserMapper.class);
+        
         String prefix = String.format("%04d", manufacturer.getId())
                 + LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd"));
         StringBuilder qrData = new StringBuilder();
@@ -112,6 +120,40 @@ public class SeedWarehouse implements Serializable {
         ExternalContext externalContext = facesContext.getExternalContext();
         externalContext.setResponseContentType(MediaType.APPLICATION_OCTET_STREAM);
         externalContext.setResponseHeader(HttpHeaders.CONTENT_DISPOSITION, DOWNLOAD_NAME);
+        
+        String userName = externalContext.getUserPrincipal().getName();
+        
+        User user = userMapper.getUserByUserName(userName);
+        System.out.println("@@@@@@@@@@:"+user.toString());
+        
+        
+        User user1 = new User();
+        user1.setCompanyName("dddssd 得到是");
+        user1.setEmail("aaaaaaaa");
+        user1.setHandphone("99999999");
+        user1.setName("掌声");
+        user1.setParentId(0);
+        user1.setPassword("bbbb");
+        user1.setUrole("user");
+        user1.setUserName("test1");
+        
+        userMapper.addProductUser(user1);
+        
+        User user2 = new User();
+        user2.setCompanyName("dddssd 得到是");
+        user2.setEmail("aaaaaaaa");
+        user2.setHandphone("99999999");
+        user2.setName("掌声");
+        user2.setParentId(0);
+        user2.setPassword("bbbb");
+        user2.setUrole("user");
+        user2.setUserName("test2");
+        user2.setParentId(user.getId());
+        
+        user2.setRegionId(3);
+        
+        userMapper.addResaleUser(user2);
+        session.commit();
 
         ZipOutputStream out = new ZipOutputStream(
                 externalContext.getResponseOutputStream());

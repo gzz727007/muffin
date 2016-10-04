@@ -34,6 +34,7 @@ public class Authenticator {
             ((HttpServletRequest) externalContext.getRequest()).login(user, password);
             externalContext.redirect(externalContext.getRequestContextPath());
         } catch (Exception ex) {
+            ex.printStackTrace();
             facesContext.addMessage(null, new FacesMessage(
                     FacesMessage.SEVERITY_ERROR, "登录失败。", null));
         }
