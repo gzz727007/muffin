@@ -24,10 +24,10 @@
             <p:panelGrid styleClass="transparent">
                 <p:row>
                     <p:column>
-                        <p:outputLabel for="seedName" value="种子名称："/>
+                        <p:outputLabel for="seedName" value="品种名称："/>
                     </p:column>
                     <p:column>
-                        <p:inputText id="seedName" value="#{seedWarehouse.seedName}"/>
+                        <p:inputText id="seedName" value="#{qrGenerator.seedName}"/>
                     </p:column>
                     <p:column>
                         <p:message id="seedNameError" for="seedName"/>
@@ -35,51 +35,32 @@
                 </p:row>
                 <p:row>
                     <p:column>
-                        <p:outputLabel for="manufacturer" value="生产厂商："/>
+                        <p:outputLabel for="manufacturer" value="生产经营者名称："/>
                     </p:column>
                     <p:column>
-                        <p:selectOneMenu id="manufacturer" converter="manufacturer"
-                                         value="#{seedWarehouse.manufacturer}"
-                                         filter="true" filterMatchMode="contains"
-                                         style="vertical-align: top; margin-right: 5px;">
-                            <f:selectItems value="#{seedWarehouse.manufacturers}"
-                                           var="manufacturer"
-                                           itemLabel="#{manufacturer.name}"
-                                           itemValue="#{manufacturer}"/>
-                        </p:selectOneMenu>
-                        <p:commandButton type="button" value="添加"
-                                         onclick="PF('addManufacturer').show();"/>
+                        <p:inputText id="manufacturer" value="#{qrGenerator.manufacturer}"/>
+                    </p:column>
+                    <p:column>
+                        <p:message id="manufacturerError" for="manufacturer"/>
                     </p:column>
                 </p:row>
                 <p:row>
                     <p:column>
-                        <p:outputLabel for="packAmount" value="小包数量："/>
+                        <p:outputLabel for="amount" value="包装数量（袋）："/>
                     </p:column>
                     <p:column>
-                        <p:spinner id="packAmount" min="1" max="999999" size="5"
-                                   value="#{seedWarehouse.packAmount}"/>
+                        <p:spinner id="amount" min="1" max="99999999" size="8"
+                                   value="#{qrGenerator.amount}"/>
                     </p:column>
                 </p:row>
                 <p:row>
                     <p:column colspan="3">
-                        <p:commandButton value="生成并下载二维码" ajax="false"
+                        <p:commandButton value="生成并下载二维码压缩包" ajax="false"
                                          validateClient="true"
-                                         action="#{seedWarehouse.generateQrCodes}"/>
+                                         action="#{qrGenerator.generateQrCodes}"/>
                     </p:column>
                 </p:row>
             </p:panelGrid>
         </h:form>
-        <p:dialog widgetVar="addManufacturer" header="添加厂商"
-                  modal="true" showEffect="fade" hideEffect="explode">
-            <h:form>
-                <p:outputLabel for="newManufacturerName" value="厂商名称："/>
-                <p:inputText id="newManufacturerName"
-                             value="#{seedWarehouse.newManufacturerName}"
-                             style="margin-right: 5px;"/>
-                <p:commandButton value="确定" action="#{seedWarehouse.addManufacturer}"
-                                 process="@form" update="manufacturer"
-                                 oncomplete="PF('addManufacturer').hide();"/>
-            </h:form>
-        </p:dialog>
     </h:body>
 </html>

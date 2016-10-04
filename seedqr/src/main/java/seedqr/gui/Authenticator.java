@@ -1,13 +1,17 @@
-package seedqr;
+package seedqr.gui;
 
 import javax.enterprise.inject.Model;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import seedqr.dao.UserDao;
 
 @Model
 public class Authenticator {
+    @Inject
+    private SessionData sessionData;
     private String user;
     private String password;
 
@@ -32,11 +36,11 @@ public class Authenticator {
         ExternalContext externalContext = facesContext.getExternalContext();
         try {
             ((HttpServletRequest) externalContext.getRequest()).login(user, password);
+            sessionData.setUser(new UserDao().getUserByUserName(user));
             externalContext.redirect(externalContext.getRequestContextPath());
         } catch (Exception ex) {
-            ex.printStackTrace();
             facesContext.addMessage(null, new FacesMessage(
-                    FacesMessage.SEVERITY_ERROR, "登录失败。", null));
+                    FacesMessage.SEVERITY_ERROR, "登录失败。", ex.getMessage()));
         }
     }
 
@@ -47,7 +51,7 @@ public class Authenticator {
             ((HttpServletRequest) externalContext.getRequest()).logout();
         } catch (Exception ex) {
             facesContext.addMessage(null, new FacesMessage(
-                    FacesMessage.SEVERITY_ERROR, "退出失败。", null));
+                    FacesMessage.SEVERITY_ERROR, "退出失败。", ex.getMessage()));
         } finally {
             externalContext.invalidateSession();
         }

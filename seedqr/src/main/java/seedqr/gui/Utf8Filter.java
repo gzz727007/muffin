@@ -1,4 +1,4 @@
-package seedqr;
+package seedqr.gui;
 
 import java.io.IOException;
 import javax.servlet.Filter;

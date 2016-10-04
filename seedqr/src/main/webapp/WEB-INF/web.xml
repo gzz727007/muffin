@@ -8,7 +8,7 @@
     </context-param>
     <filter>
         <filter-name>UTF-8 Filter</filter-name>
-        <filter-class>seedqr.Utf8Filter</filter-class>
+        <filter-class>seedqr.gui.Utf8Filter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>UTF-8 Filter</filter-name>
