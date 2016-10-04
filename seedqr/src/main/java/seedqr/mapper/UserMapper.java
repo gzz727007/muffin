@@ -36,7 +36,7 @@ public interface UserMapper {
 ") " +
 "VALUES" +
 "  (" +
-"    #{userName}, #{name}, #{password}, 'user', #{email}, #{handphone}, NOW(), nextval('company_code'), #{companyName}, NULL, 1,0, '1', 0" +
+"    #{userName}, #{name}, #{password}, #{urole}, #{email}, #{handphone}, NOW(), nextval('company_code'), #{companyName}, NULL, 1,0, '1', 0" +
 "  )")
     int addProductUser(User user);
     
@@ -45,7 +45,7 @@ public interface UserMapper {
 ") " +
 "VALUES" +
 "  (" +
-"    #{userName}, #{name}, #{password}, 'user', #{email}, #{handphone}, NOW(), '', #{companyName}, NULL, 2,#{parentId}, '1', #{regionId}" +
+"    #{userName}, #{name}, #{password}, #{urole}, #{email}, #{handphone}, NOW(), '', #{companyName}, NULL, 2,#{parentId}, '1', #{regionId}" +
 "  )")
     int addResaleUser(User user);
 }
