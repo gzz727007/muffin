@@ -27,7 +27,7 @@ public class MybatisUtil {
             JndiDataSourceFactory dsFactory = new JndiDataSourceFactory();
             dsFactory.setProperties(properties);
             DataSource dataSource = dsFactory.getDataSource();
-            TransactionFactory transactionFactory = new JdbcTransactionFactory();
+            TransactionFactory transactionFactory = new ManagedTransactionFactory();
             Environment environment = new Environment("development", transactionFactory, dataSource);
             Configuration configuration = new Configuration(environment);
             configuration.addMappers("seedqr.mapper");

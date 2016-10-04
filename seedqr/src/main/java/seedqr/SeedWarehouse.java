@@ -6,6 +6,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -21,6 +22,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.transaction.Transactional;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -29,7 +31,10 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import net.glxn.qrgen.javase.QRCode;
 import org.apache.ibatis.session.SqlSession;
+import seedqr.mapper.QrCodeMapper;
+import seedqr.mapper.SeqMapper;
 import seedqr.mapper.UserMapper;
+import seedqr.model.QrCode;
 import seedqr.model.User;
 import seedqr.util.MybatisUtil;
 
@@ -108,8 +113,10 @@ public class SeedWarehouse implements Serializable {
         manufacturer = dataService.addManufacturer(newManufacturerName);
     }
 
+    
+    @Transactional
     public void generateQrCodes() throws IOException {
-        SqlSession  session = MybatisUtil.getInstance().openSession(false);
+        SqlSession  session = MybatisUtil.getInstance().openSession();
         UserMapper  userMapper =  session.getMapper(UserMapper.class);
         
         String prefix = String.format("%04d", manufacturer.getId())
@@ -127,33 +134,21 @@ public class SeedWarehouse implements Serializable {
         System.out.println("@@@@@@@@@@:"+user.toString());
         
         
-        User user1 = new User();
-        user1.setCompanyName("dddssd 得到是");
-        user1.setEmail("aaaaaaaa");
-        user1.setHandphone("99999999");
-        user1.setName("掌声");
-        user1.setParentId(0);
-        user1.setPassword("bbbb");
-        user1.setUrole("user");
-        user1.setUserName("test1");
+        //System.out.println("@@@@@@@@@@:"+session.getMapper(SeqMapper.class).nextVal("10001", 50));
         
-        userMapper.addProductUser(user1);
         
-        User user2 = new User();
-        user2.setCompanyName("dddssd 得到是");
-        user2.setEmail("aaaaaaaa");
-        user2.setHandphone("99999999");
-        user2.setName("掌声");
-        user2.setParentId(0);
-        user2.setPassword("bbbb");
-        user2.setUrole("user");
-        user2.setUserName("test2");
-        user2.setParentId(user.getId());
-        
-        user2.setRegionId(3);
-        
-        userMapper.addResaleUser(user2);
-        session.commit();
+        QrCodeMapper mapper = session.getMapper(QrCodeMapper.class);
+        QrCode code = new QrCode();
+        code.setCompanyCode("1000");
+        code.setCompanyName("星楚物流");
+        code.setSeedId(1);
+        code.setSeedName("种子1号");
+        code.setUnitCode(1000675645362345676L);
+        code.setTrackingUrl("http://www.zgzzcx.com/s/?id=");
+        List<QrCode> list = new ArrayList<>();
+        list.add(code);
+        mapper.insertQrCode(list);
+        //session.commit();
 
         ZipOutputStream out = new ZipOutputStream(
                 externalContext.getResponseOutputStream());
