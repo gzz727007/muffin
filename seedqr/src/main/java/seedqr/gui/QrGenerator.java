@@ -93,7 +93,7 @@ public class QrGenerator implements Serializable {
             qrCode.setSeedId(0);
             qrCode.setSeedName(seedName);
 
-            String unitCode = user.getCompanyCode() + String.format("%08d", sequence - 1)
+            String unitCode = user.getCompanyCode() + String.format("%08d", sequence - i)
                     + "0" + String.format("%04d", random.nextInt(9999));
             Checksum checksum = new Adler32();
             checksum.update(unitCode.getBytes(), 0, unitCode.length());
@@ -109,11 +109,11 @@ public class QrGenerator implements Serializable {
 
         ZipOutputStream out = new ZipOutputStream(
                 externalContext.getResponseOutputStream());
+
         for (QrCode qrCode : qrCodes) {
             out.putNextEntry(new ZipEntry(qrCode.getUnitCode() + ".png"));
             QRCode.from(formatQrCode(qrCode)).withCharset("UTF-8").writeTo(out);
         }
-
         out.putNextEntry(new ZipEntry("二维码数据.txt"));
         out.write(qrCodes.stream().map(this::formatQrCode)
                 .collect(Collectors.joining("\r\n\r\n")).getBytes());
