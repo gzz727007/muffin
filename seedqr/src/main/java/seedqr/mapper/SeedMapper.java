@@ -22,4 +22,8 @@ public interface SeedMapper {
     
     @Insert("INSERT INTO user_seed (user_id , seed_name) VALUES (#{userId}, #{seedName})")
     int addSeeds(Seed seed);
+    
+    
+    
+    
 }
