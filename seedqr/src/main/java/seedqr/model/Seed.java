@@ -13,7 +13,9 @@ public class Seed {
     private int id;
     private int userId;
     private String seedName;
-
+    private String seedUiDisplay;
+    
+    
     public int getId() {
         return id;
     }
@@ -38,9 +40,17 @@ public class Seed {
         this.seedName = seedName;
     }
 
+    public String getSeedUiDisplay() {
+        return seedUiDisplay;
+    }
+
+    public void setSeedUiDisplay(String seedUiDisplay) {
+        this.seedUiDisplay = seedUiDisplay;
+    }
+
     @Override
     public String toString() {
-        return "Seed{" + "id=" + id + ", userId=" + userId + ", seedName=" + seedName + '}';
+        return "Seed{" + "id=" + id + ", userId=" + userId + ", seedName=" + seedName + ", seedUiDisplay=" + seedUiDisplay + '}';
     }
     
 }
