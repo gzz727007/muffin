@@ -15,6 +15,7 @@ public class SeedConfig {
     private String paraName;
     private String paraValue;
     private int type;
+    private int orderIndex;
 
     public int getId() {
         return id;
@@ -56,9 +57,17 @@ public class SeedConfig {
         this.type = type;
     }
 
+    public int getOrderIndex() {
+        return orderIndex;
+    }
+
+    public void setOrderIndex(int orderIndex) {
+        this.orderIndex = orderIndex;
+    }
+
     @Override
     public String toString() {
-        return "SeedConfig{" + "id=" + id + ", seedId=" + seedId + ", paraName=" + paraName + ", paraValue=" + paraValue + ", type=" + type + '}';
+        return "SeedConfig{" + "id=" + id + ", seedId=" + seedId + ", paraName=" + paraName + ", paraValue=" + paraValue + ", type=" + type + ", orderIndex=" + orderIndex + '}';
     }
     
 }
