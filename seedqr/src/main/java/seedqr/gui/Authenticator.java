@@ -6,7 +6,8 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-import seedqr.dao.UserDao;
+import seedqr.mapper.UserMapper;
+import seedqr.util.MybatisUtil;
 
 @Model
 public class Authenticator {
@@ -36,8 +37,7 @@ public class Authenticator {
         ExternalContext externalContext = facesContext.getExternalContext();
         try {
             ((HttpServletRequest) externalContext.getRequest()).login(user, password);
-            sessionData.setUser(new UserDao().getUserByUserName(user));
-            externalContext.redirect(externalContext.getRequestContextPath());
+            sessionData.setUser(MybatisUtil.getMapper(UserMapper.class).getUserByUserName(user));
         } catch (Exception ex) {
             facesContext.addMessage(null, new FacesMessage(
                     FacesMessage.SEVERITY_ERROR, "登录失败。", ex.getMessage()));

@@ -8,42 +8,74 @@
         <h:outputStylesheet library="css" name="seedqr.css"/>
     </h:head>
     <h:body>
-        <h:form prependId="false">
-            <p:panelGrid columns="3" styleClass="transparent">
-                <p:column>
-                    <p:outputLabel for="seedName" value="品种名称："/>
-                </p:column>
-                <p:column>
-                    <p:inputText id="seedName" value="#{qrGenerator.seedName}"/>
-                </p:column>
-                <p:column>
-                    <p:message id="seedNameError" for="seedName"/>
-                </p:column>
-                <p:column>
-                    <p:outputLabel for="manufacturer" value="生产经营者名称："/>
-                </p:column>
-                <p:column>
-                    <p:inputText id="manufacturer" value="#{qrGenerator.manufacturer}"/>
-                </p:column>
-                <p:column>
-                    <p:message id="manufacturerError" for="manufacturer"/>
-                </p:column>
-                <p:column>
-                    <p:outputLabel for="amount" value="包装数量（袋）："/>
-                </p:column>
-                <p:column>
-                    <p:spinner id="amount" min="1" max="10000" size="5"
-                               value="#{qrGenerator.amount}"/>
-                </p:column>
-                <p:column>
-                    <p:message id="amountError" for="amount"/>
-                </p:column>
-                <f:facet name="footer">
-                    <p:commandButton value="生成并下载二维码压缩包" ajax="false"
-                                     validateClient="true"
-                                     action="#{qrGenerator.generateQrCodes}"/>
-                </f:facet>
-            </p:panelGrid>
-        </h:form>
+        <h:panelGroup layout="block" style="margin: auto; width: 800px; height: 100%;">
+            <h:panelGroup layout="block" style="position: absolute; top: 0; width: 800px; height: 100px;">
+                <h1 style="text-align: center;">星楚物流</h1>
+            </h:panelGroup>
+            <h:panelGroup id="content" layout="block"
+                          style="position: absolute; top: 100px; bottom: 50px; width: 800px;">
+                <p:tabView id="tabView" rendered="#{request.isUserInRole('user')}" style="z-index: 1;">
+                    <p:tab title="种子入库登记">
+                        <h:form>
+                            <p:panelGrid columns="3" styleClass="transparent">
+                                <p:column>
+                                    <p:outputLabel for="seedName" value="品种名称："/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText id="seedName" value="#{qrGenerator.seedName}"/>
+                                </p:column>
+                                <p:column>
+                                    <p:message id="seedNameError" for="seedName"/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel for="manufacturer" value="生产经营者名称："/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText id="manufacturer" value="#{qrGenerator.manufacturer}"/>
+                                </p:column>
+                                <p:column>
+                                    <p:message id="manufacturerError" for="manufacturer"/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel for="amount" value="包装数量（袋）："/>
+                                </p:column>
+                                <p:column>
+                                    <p:spinner id="amount" min="1" max="10000" size="5"
+                                               value="#{qrGenerator.amount}"/>
+                                </p:column>
+                                <p:column>
+                                    <p:message id="amountError" for="amount"/>
+                                </p:column>
+                                <f:facet name="footer">
+                                    <p:commandButton value="生成并下载二维码压缩包" ajax="false"
+                                                     validateClient="true"
+                                                     action="#{qrGenerator.generateQrCodes}"/>
+                                </f:facet>
+                            </p:panelGrid>
+                        </h:form>
+                    </p:tab>
+                    <p:tab title="种子打包出库"/>
+                </p:tabView>
+            </h:panelGroup>
+            <h:panelGroup id="login" layout="block"
+                          style="position: absolute; top: 100px; bottom: 50px; width: 800px;">
+                <h:form rendered="#{!request.isUserInRole('user')}">
+                    <p:panelGrid columns="2" styleClass="transparent">
+                        <p:outputLabel for="user" value="用户："/>
+                        <p:inputText id="user" value="#{authenticator.user}"/>
+                        <p:outputLabel for="password" value="密码："/>
+                        <p:password id="password" value="#{authenticator.password}"/>
+                        <f:facet name="footer">
+                            <p:commandButton value="登录" action="#{authenticator.login}"
+                                             process="@form" update=":content :login"/>
+                        </f:facet>
+                    </p:panelGrid>
+                    <p:messages id="error"/>
+                </h:form>           
+            </h:panelGroup>
+            <h:panelGroup layout="block" style="text-align: right; position: absolute; bottom: 0; width: 800px; height: 50px;">
+                版权所有 © 2016 成都星楚物流有限公司
+            </h:panelGroup>
+        </h:panelGroup>
     </h:body>
 </html>
