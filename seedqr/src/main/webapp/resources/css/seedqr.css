@@ -1,6 +1,5 @@
 html, body {
     font-family: Microsoft YaHei !important;
-    font-size: 90% !important;
     height: 100%;
     margin: 0;
 }
@@ -9,6 +8,19 @@ html, body {
     background: none !important;
     border: none !important;
 }
+
+::-webkit-input-placeholder {
+    font-style: italic;
+}
+
+::-moz-placeholder {
+    font-style: italic;
+}
+
+:-ms-input-placeholder {
+    font-style: italic;
+}
+
 .input-lg
 {
   height: 46px;
