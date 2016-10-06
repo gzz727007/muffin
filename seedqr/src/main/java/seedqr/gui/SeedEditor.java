@@ -1,10 +1,12 @@
 package seedqr.gui;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
 import javax.faces.view.ViewScoped;
@@ -51,7 +53,9 @@ public class SeedEditor implements Serializable {
     private void init() {
         userId = sessionData.getUser().getId();
         seedMapper = MybatisUtil.getMapper(SeedMapper.class);
-        reset();
+        seeds = seedMapper.getAllSeeds(userId);
+        resetNewSeed();
+        resetNewSeedConfig();
     }
 
     public Seed getNewSeed() {
@@ -68,7 +72,7 @@ public class SeedEditor implements Serializable {
 
     public void setSelectedSeed(Seed selectedSeed) {
         this.selectedSeed = selectedSeed;
-        seedConfigs = seedMapper.getAllSeedConfigBySeedId(selectedSeed.getId());
+        seedConfigs = new ArrayList<>(seedMapper.getAllSeedConfigBySeedId(selectedSeed.getId()));
     }
 
     public SeedConfig getNewSeedConfig() {
@@ -90,13 +94,14 @@ public class SeedEditor implements Serializable {
 
     public void addSeed() {
         seedMapper.addSeeds(newSeed);
-        reset();
+        resetNewSeed();
     }
 
-    public void addSeedConfigs() {
+    public void addSeedConfig() {
         newSeedConfig.setSeedId(selectedSeed.getId());
         newSeedConfig.setOrderIndex(seedConfigs.size() + 1);
         seedConfigs.add(newSeedConfig);
+        resetNewSeedConfig();
     }
 
     public void saveSeedConfigs() {
@@ -104,10 +109,12 @@ public class SeedEditor implements Serializable {
         seedMapper.insertSeedConfig(seedConfigs);
     }
 
-    private void reset() {
+    private void resetNewSeed() {
         newSeed = new Seed();
         newSeed.setUserId(userId);
-        seeds = seedMapper.getAllSeeds(userId);
+    }
+
+    private void resetNewSeedConfig() {
         newSeedConfig = new SeedConfig();
         newSeedConfig.setType(1);
         newSeedConfig.setParaName("进口商");
