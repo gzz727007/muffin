@@ -5,6 +5,8 @@
  */
 package seedqr.model;
 
+import javax.validation.constraints.Size;
+
 /**
  *
  * @author muffin
@@ -12,7 +14,9 @@ package seedqr.model;
 public class Seed {
     private int id;
     private int userId;
+    @Size(min = 1, max = 50, message = "种子名称不能为空且不超过 50 个字符。")
     private String seedName;
+    @Size(min = 1, max = 50, message = "显示名称不能为空且不超过 50 个字符。")
     private String seedUiDisplay;
     
     
