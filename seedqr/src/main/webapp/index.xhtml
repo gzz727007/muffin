@@ -5,14 +5,14 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
-        <title>种子二维码</title>
+        <title>中国种子二维码追溯系统</title>
         <h:outputStylesheet library="css" name="seedqr.css"/>
     </h:head>
     <h:body>
         <p:growl autoUpdate="true"/>
         <h:panelGroup layout="block" style="margin: auto; width: 800px; height: 100%;">
             <h:panelGroup layout="block" style="position: absolute; top: 0; width: 800px; height: 100px;">
-                <h1 style="text-align: center;">星楚物流</h1>
+                <h1 style="text-align: center;">中国种子二维码追溯系统</h1>
             </h:panelGroup>
             <h:panelGroup id="content" layout="block"
                           style="position: absolute; top: 100px; bottom: 50px; width: 800px;">
@@ -31,15 +31,18 @@
                     </p:panelGrid>
                 </h:form>
                 <p:tabView prependId="false" rendered="#{request.isUserInRole('user')}">
-                    <p:tab title="种子入库">
+                    <p:tab title="二维码生成">
                         <ui:include src="WEB-INF/gui/seed/warehouse.xhtml"/>
                     </p:tab>
                     <p:tab title="种子信息">
                         <ui:include src="WEB-INF/gui/seed/info.xhtml"/>
                     </p:tab>
+                    <p:tab title="批发商管理">
+                        <ui:include src="WEB-INF/gui/seed/wholesalers.xhtml"/>
+                    </p:tab>
                 </p:tabView>
             </h:panelGroup>
-            <h:panelGroup layout="block" style="text-align: right; position: absolute; bottom: 0; width: 800px; height: 50px;">
+            <h:panelGroup layout="block" style="text-align: center; position: absolute; bottom: 0; width: 800px; height: 50px;">
                 版权所有 © 2016 成都星楚物流有限公司
             </h:panelGroup>
         </h:panelGroup>
