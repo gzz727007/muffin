@@ -9,6 +9,8 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
 import org.apache.ibatis.annotations.InsertProvider;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import seedqr.model.QrCode;
 
 /**
@@ -21,6 +23,10 @@ public interface QrCodeMapper {
     @InsertProvider(type = QrCodeMapperProvider.class, method = "inserAll")
     int insertQrCode(List<QrCode> list);
     
+    @Select("SELECT `id`, `unit_code` unitCode, `company_code` companyCode, `ext_unit_code` extUnitCode, `seed_name` seedName, `company_name` companyName, "
+            + " `tracking_url` trackingUrl, `seed_id` seedId, `status`, `create_time` createTime, `bind_time` bindTime  "
+            + "FROM `qr_code`  WHERE unit_code = #{unitId} AND `status` = 1")
+    List<QrCode> getQrCodeByUnitId(@Param("unitId")String unitId);
     
     
     public static class QrCodeMapperProvider {
