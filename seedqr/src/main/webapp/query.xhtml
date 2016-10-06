@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>中国种子二维码追溯查询</title>
+        <h:outputStylesheet library="css" name="seedqr.css"/>
+    </h:head>
+    <h:body>
+        <h:panelGroup layout="block" style="margin: auto; width: 800px; height: 100%;background-color: gray">
+            <h:panelGroup layout="block" style="position: absolute; top: 0; width: 800px; height: 100px;">
+                <h1 style="text-align: left;">中国种子二维码追溯查询</h1>
+            </h:panelGroup>
+
+            <h:panelGroup layout="block" style="position: absolute; top: 100px; width: 800px; height: 100px;">
+                <h:form>
+                    <p:inputText id="code_id"  class="input-lg" value="#{queryQrCode.id}"/>
+                    <p:commandButton id = "query" value="查询" ajax="true" 
+                                     styleClass="btn btn-lg btn-success"
+                                     validateClient="false" action="#{queryQrCode.query}" process="@form" update="content"/>
+
+                </h:form>
+            </h:panelGroup>
+
+            <h:panelGroup id="content" layout="block"
+                          style="position: absolute; top: 200px; bottom: 50px; width: 800px;">
+                <h:panelGroup layout="block" rendered="#{!queryQrCode.isExisting()}" style="position: absolute; top: 0; width: 800px; height: 100px;">
+                    <h6 style="text-align: left;">你所查询的单元识别码信息不存在！</h6>
+                </h:panelGroup>
+
+                <p:tabView id="tabView" rendered="#{queryQrCode.isExisting()}" style="z-index: 1;">
+                    <p:tab title="基本信息" >
+                        <p:dataTable var="code" value="#{queryQrCode.codeList}">
+                            <p:column headerText="品种名称">
+                                <h:outputText value="#{code.seedName}" />
+                            </p:column>
+
+                            <p:column headerText="生产经营者名称">
+                                <h:outputText value="#{code.companyName}" />
+                            </p:column>
+
+                            <p:column headerText="单元识别代码">
+                                <h:outputText value="#{code.unitCode}" />
+                            </p:column>
+
+                            <p:column headerText="追溯网址">
+                                <h:outputText value="#{code.trackingUrl}" />
+                            </p:column>
+                        </p:dataTable>
+                    </p:tab>
+                    <p:tab title="生产加工信息" rendered="#{queryQrCode.isUnit()}" >
+                        <p:dataTable var="config" value="#{queryQrCode.seedConfigs}">
+                            <p:column headerText="属性名">
+                                <h:outputText value="#{config.paraName}" />
+                            </p:column>
+
+                            <p:column headerText="属性值">
+                                <h:outputText value="#{config.paraValue}" />
+                            </p:column>
+
+                        </p:dataTable>
+                    </p:tab>
+                    <p:tab title="销售信息" rendered="#{queryQrCode.isUnit()}" >
+                        <p:dataTable var="config" value="#{queryQrCode.seedConfigs}">
+                            <p:column headerText="属性名">
+                                <h:outputText value="#{config.paraName}" />
+                            </p:column>
+
+                            <p:column headerText="属性值">
+                                <h:outputText value="#{config.paraValue}" />
+                            </p:column>
+
+                        </p:dataTable>
+                    </p:tab>
+                </p:tabView>
+            </h:panelGroup>
+
+            <h:panelGroup layout="block" style="text-align: center; position: absolute; bottom: 0; width: 800px; height: 50px;">
+                版权所有 © 2016 成都星楚物流有限公司
+            </h:panelGroup>
+        </h:panelGroup>
+    </h:body>
+</html>
