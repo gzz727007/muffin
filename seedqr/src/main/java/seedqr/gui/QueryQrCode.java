@@ -43,13 +43,27 @@ public class QueryQrCode implements Serializable {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExternalContext externalContext = facesContext.getExternalContext();
         id = externalContext.getRequestParameterMap().get("id");
-
+        if(id!=null && id.equalsIgnoreCase("null")) {
+            id= "";
+        }
+        try {
+            query();
+        } catch (Exception ex) {
+            
+        }
     }
 
     public void query() throws Exception {
         if (id != null && id.length() == 19) {
             if (id.startsWith("1000")) {
-                
+                String targets = MybatisUtil.getMapper(QrCodeMapper.class).getTargetsBySrc(id);
+                if (targets!=null && !targets.equals("")) {
+                    codeList = MybatisUtil.getMapper(QrCodeMapper.class).getQrCodeByUnitIds(targets);
+                    if (codeList!= null && codeList.size() > 0) {
+                        isExisting = true;
+                        isUnit = false;
+                    }
+                }
             } else {
                 codeList = MybatisUtil.getMapper(QrCodeMapper.class).getQrCodeByUnitId(id);
                 if (codeList!= null && codeList.size() > 0) {
