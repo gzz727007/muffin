@@ -62,13 +62,13 @@
                         </p:dataTable>
                     </p:tab>
                     <p:tab title="销售信息" rendered="#{queryQrCode.isUnit()}" >
-                        <p:dataTable var="config" value="#{queryQrCode.seedConfigs}">
-                            <p:column headerText="属性名">
-                                <h:outputText value="#{config.paraName}" />
+                        <p:dataTable var="sale" value="#{queryQrCode.saleInfoList}">
+                            <p:column headerText="销售时间">
+                                <h:outputText value="#{sale.saleTime}" />
                             </p:column>
 
-                            <p:column headerText="属性值">
-                                <h:outputText value="#{config.paraValue}" />
+                            <p:column headerText="销售信息">
+                                <h:outputText value="#{sale.message}" />
                             </p:column>
 
                         </p:dataTable>

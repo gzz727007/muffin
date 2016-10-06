@@ -14,8 +14,10 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.validation.constraints.Size;
 import seedqr.mapper.QrCodeMapper;
+import seedqr.mapper.SaleMapper;
 import seedqr.mapper.SeedMapper;
 import seedqr.model.QrCode;
+import seedqr.model.SaleInfo;
 import seedqr.model.SeedConfig;
 import seedqr.util.MybatisUtil;
 
@@ -34,6 +36,7 @@ public class QueryQrCode implements Serializable {
     private boolean isUnit = false;
     private List<QrCode> codeList;
     private List<SeedConfig> seedConfigs;
+    private List<SaleInfo> saleInfoList;
 
     @PostConstruct
     private void init() {
@@ -53,6 +56,7 @@ public class QueryQrCode implements Serializable {
                     isExisting = true;
                     isUnit = true;
                     seedConfigs = MybatisUtil.getMapper(SeedMapper.class).getAllSeedConfigBySeedId(codeList.get(0).getSeedId());
+                    saleInfoList = MybatisUtil.getMapper(SaleMapper.class).getSaleInfoByType(codeList.get(0).getId(), 1);
                 }
             }
         }
@@ -93,4 +97,13 @@ public class QueryQrCode implements Serializable {
     public void setSeedConfigs(List<SeedConfig> seedConfigs) {
         this.seedConfigs = seedConfigs;
     }
+
+    public List<SaleInfo> getSaleInfoList() {
+        return saleInfoList;
+    }
+
+    public void setSaleInfoList(List<SaleInfo> saleInfoList) {
+        this.saleInfoList = saleInfoList;
+    }
+    
 }
