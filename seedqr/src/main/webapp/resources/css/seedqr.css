@@ -9,6 +9,15 @@ html, body {
     border: none !important;
 }
 
+.ui-datalist, .ui-datalist-content {
+    height: 100%;
+}
+
+.fullRight {
+    width: 100%;
+    text-align: right;
+}
+
 ::-webkit-input-placeholder {
     font-style: italic;
 }

@@ -6,7 +6,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
 import javax.faces.view.ViewScoped;
@@ -19,7 +18,7 @@ import seedqr.model.SeedConfig;
 import seedqr.util.MybatisUtil;
 
 @Named @ViewScoped @RolesAllowed("user")
-public class SeedEditor implements Serializable {
+public class SeedRegister implements Serializable {
     private static final Map<String, String> BASIC_SEED_CONFIG_PARA_NAMES = new LinkedHashMap<>();
     static {
         BASIC_SEED_CONFIG_PARA_NAMES.put("进口商", "在此输入地址、负责人、联系电话等。");
@@ -84,8 +83,7 @@ public class SeedEditor implements Serializable {
     }
 
     public String getSeedConfigHint() {
-        String hint = BASIC_SEED_CONFIG_PARA_NAMES.get(newSeedConfig.getParaName());
-        return hint == null ? "" : hint;
+        return BASIC_SEED_CONFIG_PARA_NAMES.get(newSeedConfig.getParaName());
     }
 
     public List<SeedConfig> getSeedConfigs() {

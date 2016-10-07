@@ -16,29 +16,32 @@
             </h:panelGroup>
             <h:panelGroup id="content" layout="block"
                           style="position: absolute; top: 100px; bottom: 50px; width: 800px;">
-                <h:form rendered="#{!request.isUserInRole('user')}">
+                <h:form rendered="#{!request.isUserInRole('user')}" style="height: 95%;">
                     <p:panelGrid columns="2" styleClass="transparent" style="margin: auto;">
                         <p:outputLabel for="user" value="用户："/>
                         <p:inputText id="user" value="#{authenticator.user}"/>
                         <p:outputLabel for="password" value="密码："/>
                         <p:password id="password" value="#{authenticator.password}"/>
                         <f:facet name="footer">
-                            <h:panelGroup layout="block" style="width: 100%; text-align: right;">
+                            <h:panelGroup layout="block" styleClass="fullRight">
                                 <p:commandButton value="登录" process="@form" update="content"
                                                  action="#{authenticator.login}"/>
                             </h:panelGroup>
                         </f:facet>
                     </p:panelGrid>
                 </h:form>
-                <p:tabView prependId="false" rendered="#{request.isUserInRole('user')}">
+                <p:tabView prependId="false" style="height: 95%;"
+                           activeIndex="#{sessionData.tab}"
+                           rendered="#{request.isUserInRole('user')}">
+                    <p:ajax event="tabChange" listener="#{sessionData.tabChanged}"/>
+                    <p:tab title="种子登记">
+                        <ui:include src="WEB-INF/gui/seed/seedRegister.xhtml"/>
+                    </p:tab>
                     <p:tab title="二维码生成">
-                        <ui:include src="WEB-INF/gui/seed/warehouse.xhtml"/>
+                        <ui:include src="WEB-INF/gui/seed/qrGenerator.xhtml"/>
                     </p:tab>
-                    <p:tab title="种子信息">
-                        <ui:include src="WEB-INF/gui/seed/info.xhtml"/>
-                    </p:tab>
-                    <p:tab title="批发商管理">
-                        <ui:include src="WEB-INF/gui/seed/wholesalers.xhtml"/>
+                    <p:tab title="批发管理">
+                        <ui:include src="WEB-INF/gui/seed/wholesale.xhtml"/>
                     </p:tab>
                 </p:tabView>
             </h:panelGroup>
