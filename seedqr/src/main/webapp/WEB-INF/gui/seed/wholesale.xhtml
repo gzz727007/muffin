@@ -10,7 +10,7 @@
                         <p:outputLabel for="bulkPackCode" value="大包条码："/>
                     </p:column>
                     <p:column>
-                        <p:inputText id="bulkPackCode" value="#{wholesaler.bulkPackCode}"/>
+                        <p:inputText id="bulkPackCode" value="#{wholesale.bulkPackCode}"/>
                     </p:column>
                 </p:row>
                 <p:row>
@@ -18,10 +18,10 @@
                         <p:outputLabel for="smallPackCode" value="小包条码："/>
                     </p:column>
                     <p:column>
-                        <p:inputText id="smallPackCode" value="#{wholesaler.smallPackCode}"/>
+                        <p:inputText id="smallPackCode" value="#{wholesale.smallPackCode}"/>
                     </p:column>
                     <p:column>
-                        <p:commandButton value="添加" action="#{wholesaler.addSmallPackCode}"
+                        <p:commandButton value="添加" action="#{wholesale.addSmallPackCode}"
                                          process="smallPackCode @this" update="smallPackCodes"/>
                     </p:column>
                 </p:row>
@@ -30,7 +30,7 @@
                     <p:column colspan="2">
                         <p:scrollPanel mode="native" style="height: 200px;">
                             <p:dataList id="smallPackCodes" type="ordered"
-                                        value="#{wholesaler.smallPackCodes}"
+                                        value="#{wholesale.smallPackCodes}"
                                         var="smallPackCode">
                                 #{smallPackCode}
                             </p:dataList>
@@ -40,7 +40,7 @@
                 <p:row>
                     <p:column colspan="3">
                         <h:panelGroup layout="block" styleClass="fullRight">
-                            <p:commandButton value="绑定" action="#{wholesaler.bindCodes}"/>
+                            <p:commandButton value="绑定" action="#{wholesale.bindCodes}"/>
                         </h:panelGroup>
                     </p:column>
                 </p:row>
