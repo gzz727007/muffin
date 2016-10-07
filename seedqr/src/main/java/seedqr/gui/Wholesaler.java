@@ -9,7 +9,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 @Named @ViewScoped @RolesAllowed("user")
-public class SeedScanner implements Serializable {
+public class Wholesaler implements Serializable {
     private String bulkPackCode;
     private String smallPackCode;
     private List<String> smallPackCodes;

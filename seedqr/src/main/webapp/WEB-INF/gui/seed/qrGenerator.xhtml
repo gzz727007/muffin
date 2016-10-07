@@ -7,16 +7,16 @@
         <h:form target="download">
             <p:panelGrid columns="2" styleClass="transparent" style="margin: auto;">
                 <p:outputLabel for="seedName" value="品种名称："/>
-                <p:inputText id="seedName" value="#{seedWarehouse.seedName}"/>
+                <p:inputText id="seedName" value="#{qrGenerator.seedName}"/>
                 <p:outputLabel for="manufacturer" value="生产经营者名称："/>
-                <p:inputText id="manufacturer" value="#{seedWarehouse.manufacturer}"/>
+                <p:inputText id="manufacturer" value="#{qrGenerator.manufacturer}"/>
                 <p:outputLabel for="amount" value="包装数量（袋）："/>
                 <p:spinner id="amount" min="1" max="10000" size="5"
-                           value="#{seedWarehouse.amount}"/>
+                           value="#{qrGenerator.amount}"/>
                 <f:facet name="footer">
                     <h:panelGroup layout="block" styleClass="fullRight">
                         <p:commandButton value="生成并下载二维码压缩包"
-                                         action="#{seedWarehouse.generateQrCodes}"/>
+                                         action="#{qrGenerator.generateQrCodes}"/>
                     </h:panelGroup>
                 </f:facet>
             </p:panelGrid>

@@ -18,7 +18,7 @@ import seedqr.model.SeedConfig;
 import seedqr.util.MybatisUtil;
 
 @Named @ViewScoped @RolesAllowed("user")
-public class SeedEditor implements Serializable {
+public class SeedRegister implements Serializable {
     private static final Map<String, String> BASIC_SEED_CONFIG_PARA_NAMES = new LinkedHashMap<>();
     static {
         BASIC_SEED_CONFIG_PARA_NAMES.put("进口商", "在此输入地址、负责人、联系电话等。");

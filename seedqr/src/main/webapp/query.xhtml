@@ -31,6 +31,10 @@
 
                 <p:tabView id="tabView" rendered="#{queryQrCode.isExisting()}" style="z-index: 1;">
                     <p:tab title="基本信息" >
+                        <h5 style="text-align: left;">
+                            <p:outputLabel rendered="#{!queryQrCode.isUnit()}" value="外袋码：#{queryQrCode.id}"/>
+                        </h5>
+                        
                         <p:dataTable var="code" value="#{queryQrCode.codeList}">
                             <p:column headerText="品种名称">
                                 <h:outputText value="#{code.seedName}" />

@@ -10,7 +10,7 @@
                         <p:outputLabel for="bulkPackCode" value="大包条码："/>
                     </p:column>
                     <p:column>
-                        <p:inputText id="bulkPackCode" value="#{seedScanner.bulkPackCode}"/>
+                        <p:inputText id="bulkPackCode" value="#{wholesaler.bulkPackCode}"/>
                     </p:column>
                 </p:row>
                 <p:row>
@@ -18,10 +18,10 @@
                         <p:outputLabel for="smallPackCode" value="小包条码："/>
                     </p:column>
                     <p:column>
-                        <p:inputText id="smallPackCode" value="#{seedScanner.smallPackCode}"/>
+                        <p:inputText id="smallPackCode" value="#{wholesaler.smallPackCode}"/>
                     </p:column>
                     <p:column>
-                        <p:commandButton value="添加" action="#{seedScanner.addSmallPackCode}"
+                        <p:commandButton value="添加" action="#{wholesaler.addSmallPackCode}"
                                          process="smallPackCode @this" update="smallPackCodes"/>
                     </p:column>
                 </p:row>
@@ -30,7 +30,7 @@
                     <p:column colspan="2">
                         <p:scrollPanel mode="native" style="height: 200px;">
                             <p:dataList id="smallPackCodes" type="ordered"
-                                        value="#{seedScanner.smallPackCodes}"
+                                        value="#{wholesaler.smallPackCodes}"
                                         var="smallPackCode">
                                 #{smallPackCode}
                             </p:dataList>
@@ -40,7 +40,7 @@
                 <p:row>
                     <p:column colspan="3">
                         <h:panelGroup layout="block" styleClass="fullRight">
-                            <p:commandButton value="绑定" action="#{seedScanner.bindCodes}"/>
+                            <p:commandButton value="绑定" action="#{wholesaler.bindCodes}"/>
                         </h:panelGroup>
                     </p:column>
                 </p:row>
