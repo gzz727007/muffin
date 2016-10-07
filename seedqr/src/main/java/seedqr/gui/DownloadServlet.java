@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -16,6 +17,7 @@ import javax.ws.rs.core.MediaType;
 import net.glxn.qrgen.javase.QRCode;
 import seedqr.model.QrCode;
 
+@RolesAllowed("user")
 public class DownloadServlet extends HttpServlet {
     @Inject
     private SessionData sessionData;

@@ -14,7 +14,7 @@
                 <p:spinner id="amount" min="1" max="10000" size="5"
                            value="#{seedWarehouse.amount}"/>
                 <f:facet name="footer">
-                    <h:panelGroup layout="block" style="width: 100%; text-align: right;">
+                    <h:panelGroup layout="block" styleClass="fullRight">
                         <p:commandButton value="生成并下载二维码压缩包"
                                          action="#{seedWarehouse.generateQrCodes}"/>
                     </h:panelGroup>

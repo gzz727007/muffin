@@ -102,7 +102,7 @@
                         <h:outputText value="#{seedConfig.paraValue}"/>
                     </p:column>
                 </p:dataTable>
-                <h:panelGroup layout="block" style="width: 100%; text-align: right;">
+                <h:panelGroup layout="block" styleClass="fullRight">
                     <p:commandButton value="保存" action="#{seedEditor.saveSeedConfigs}"
                                      oncomplete="PF('seedConfigDialog').hide();"/>
                 </h:panelGroup>
