@@ -4,6 +4,56 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <ui:composition>
-       
+
+        <p:commandButton value="添加销售商" type="button" onclick="PF('dlg1').show();" /> 
+
+        <p:dataTable var="user" value="#{wholesalerEditor.salers}">
+            <p:column headerText="用户名">
+                <h:outputText value="#{user.userName}" />
+            </p:column>
+            <p:column headerText="昵称">
+                <h:outputText value="#{user.name}" />
+            </p:column>
+
+            <p:column headerText="公司名">
+                <h:outputText value="#{user.companyName}" />
+            </p:column>
+
+            <p:column headerText="联系人名字">
+                <h:outputText value="#{user.contact}" />
+            </p:column>
+
+            <p:column headerText="联系人电话">
+                <h:outputText value="#{user.handphone}" />
+            </p:column>
+        </p:dataTable>
+
+        <p:dialog header="添加销售商" widgetVar="dlg1" modal="true" showEffect="explode" hideEffect="bounce" minHeight="600" width="800">
+            <h:form>
+            <p:panelGrid columns="2" styleClass="transparent" style="margin: auto;">
+                <p:outputLabel for="name" value="昵称："/>
+                <p:inputText id="name" value="#{wholesalerEditor.user.name}"/>
+                <p:outputLabel for="companyName" value="公司名："/>
+                <p:inputText id="companyName" value="#{wholesalerEditor.user.companyName}"/>
+                <p:outputLabel for="contact" value="联系人："/>
+                <p:inputText id="contact" value="#{wholesalerEditor.user.contact}"/>
+                <p:outputLabel for="handphone" value="联系电话："/>
+                <p:inputText id="handphone" value="#{wholesalerEditor.user.handphone}"/>
+                <p:outputLabel for="region" value="省："/>
+                <p:selectOneMenu id="region" valueChangeListener="#{wholesalerEditor.provinceChange}"
+                                 value="#{wholesalerEditor.user.regionId}"
+                                             style="font-size: 90%;">
+                    <f:selectItems value="#{wholesalerEditor.provinces}"
+                                   var="province" itemLabel="#{province.name}" itemValue="#{province.id}"/>
+                </p:selectOneMenu>
+                <f:facet name="footer">
+                    <h:panelGroup layout="block" style="width: 100%; text-align: center;">
+                        <p:commandButton value="保存" ajax="true"
+                                         action="#{wholesalerEditor.addWholesaler}"/>
+                    </h:panelGroup>
+                </f:facet>
+            </p:panelGrid>
+        </h:form>
+        </p:dialog>
     </ui:composition>
 </html>

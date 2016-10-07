@@ -7,6 +7,7 @@ package seedqr.mapper;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import seedqr.model.User;
 
@@ -48,4 +49,11 @@ public interface UserMapper {
 "    #{userName}, #{name}, #{password}, #{urole}, #{email}, #{handphone}, NOW(), '', #{companyName}, NULL, 2,#{parentId}, '1', #{regionId}" +
 "  )")
     int addResaleUser(User user);
+    
+    @Select("SELECT " +
+"  `id`, `user_name` userName, `name`, `password`, `urole`, `email`, `handphone`, `create_time` createTime, `company_code` companyCode, `company_name` companyName, "
+            + "`last_login_time` lastLoginTime, `type`, `parent_id` parentId, `status`, `region_id` regionId " +
+"FROM " +
+"  `user` where parent_id = #{parentId}")
+    List<User> getUsersByParent(@Param("parentId")int parentId);
 }
