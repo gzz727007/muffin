@@ -7,6 +7,11 @@
     <h:head>
         <title>中国种子二维码追溯系统</title>
         <h:outputStylesheet library="css" name="seedqr.css"/>
+        <script type="text/javascript">
+            function tabShown(index) {
+                PrimeFaces.focus('packCode');
+            }
+        </script>
     </h:head>
     <h:body>
         <p:growl autoUpdate="true"/>
@@ -32,7 +37,8 @@
                 </h:form>
                 <p:tabView prependId="false" style="height: 95%;"
                            activeIndex="#{sessionData.tab}"
-                           rendered="#{request.isUserInRole('user')}">
+                           rendered="#{request.isUserInRole('user')}"
+                           onTabShow="tabShown(index);">
                     <p:ajax event="tabChange" listener="#{sessionData.tabChanged}"/>
                     <p:tab title="种子登记">
                         <ui:include src="WEB-INF/gui/seed/seedRegister.xhtml"/>
@@ -46,7 +52,6 @@
                     <p:tab title="扫码打包">
                         <ui:include src="WEB-INF/gui/seed/packScanner.xhtml"/>
                     </p:tab>
-                   
                 </p:tabView>
             </h:panelGroup>
             <h:panelGroup layout="block" style="text-align: center; position: absolute; bottom: 0; width: 800px; height: 50px;">

@@ -3,7 +3,7 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
     <ui:composition>
-        <h:form>
+        <h:form prependId="false">
             <p:panelGrid styleClass="transparent" style="margin: auto;">
                 <p:row>
                     <p:column>
@@ -21,11 +21,13 @@
                     <p:column>
                         <p:inputText id="packCode" maxlength="20"
                                      value="#{packScanner.packCode}"/>
+                        <p:focus for="packCode"/>
                     </p:column>
                     <p:column>
                         <p:commandButton value="添加" action="#{packScanner.addPackCode}"
                                          process="packCode @this"
-                                         update="packCode bulkPackCode smallPackCodes"/>
+                                         update="packCode bulkPackCode smallPackCodes"
+                                         oncomplete="PrimeFaces.focus('packCode');"/>
                     </p:column>
                 </p:row>
                 <p:row>
@@ -56,7 +58,8 @@
                         <h:panelGroup layout="block" styleClass="submit">
                             <p:commandButton value="绑定" action="#{packScanner.bindCodes}"
                                              process="amount bulkPackCode @this"
-                                             update="packCode bulkPackCode smallPackCodes"/>
+                                             update="packCode bulkPackCode smallPackCodes"
+                                             oncomplete="PrimeFaces.focus('packCode');"/>
                         </h:panelGroup>
                     </p:column>
                 </p:row>
