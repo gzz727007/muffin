@@ -18,7 +18,19 @@ public class SaleInfo {
     private String message;
     private int type;
     private Date saleTime;
+    
+    public SaleInfo(){
+        
+    }
 
+    public SaleInfo(int qrCodeId, int wholesalerId, String message, int type) {
+        this.qrCodeId = qrCodeId;
+        this.wholesalerId = wholesalerId;
+        this.message = message;
+        this.type = type;
+    }
+
+    
     public int getId() {
         return id;
     }

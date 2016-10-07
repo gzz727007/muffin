@@ -5,10 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import seedqr.mapper.RegionMapper;
 import seedqr.mapper.UserMapper;
+import seedqr.model.SaleInfo;
 import seedqr.model.User;
 import seedqr.util.MybatisUtil;
 
@@ -20,6 +24,7 @@ public class StockOut implements Serializable {
 
     private List<User> salers;
 
+    private int salerId;
     private String packCode;
     private List<String> packCodes;
 
@@ -60,17 +65,27 @@ public class StockOut implements Serializable {
     public void setPackCodes(List<String> packCodes) {
         this.packCodes = packCodes;
     }
+
+    public int getSalerId() {
+        return salerId;
+    }
+
+    public void setSalerId(int salerId) {
+        this.salerId = salerId;
+    }
     
     
-    
-    public void bindCodes() {
-//        FacesContext facesContext = FacesContext.getCurrentInstance();
-//        if (smallPackCodes.size() != amount) {
-//            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-//                    "设定的小包数量（" + amount + "）与实际扫描的数量（"
-//                    + smallPackCodes.size() + "）不一致。", null));
-//            return;
-//        }
+    public void doOut() {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        if (packCodes.isEmpty()) {
+            facesContext.addMessage(null, new FacesMessage(
+                FacesMessage.SEVERITY_ERROR, "请先输入打包条码。", null));
+            return;
+        }
+        
+        String region = MybatisUtil.getMapper(RegionMapper.class).getSalerRegion(salerId);
+        
+        
 //
 //        MybatisUtil.getMapper(QrCodeMapper.class).addQrCodeMapping(bulkPackCode,
 //                smallPackCodes.stream().collect(Collectors.joining(",")));

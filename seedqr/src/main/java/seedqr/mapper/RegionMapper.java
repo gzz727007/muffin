@@ -6,6 +6,7 @@
 package seedqr.mapper;
 
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import seedqr.model.Region;
 
@@ -17,4 +18,7 @@ public interface RegionMapper {
     
     @Select("SELECT  `id`, `name`, `level`, `parent_id` parentId FROM `region`  ORDER BY id")
     List<Region> getAllRegion();
+    
+    @Select("SELECT a.`name` FROM `region` a, `user` b WHERE a.`id` = b.`region_id` AND b.`id` = #{salerId}")
+    String getSalerRegion(@Param("salerId")int salerId);
 }

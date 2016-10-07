@@ -17,7 +17,8 @@
                     <p:column>
                         <p:commandButton value="添加" action="#{stockOut.addPackCode}"
                                          process="packCode @this"
-                                         update="packCode packCodes"/>
+                                         update="packCode packCodes"
+                                         oncomplete="PrimeFaces.focus('packCode');"/>
                     </p:column>
                 </p:row>
                 <p:row>
@@ -39,10 +40,10 @@
                         <h:outputText value="批发商："/>
                     </p:column>
                     <p:column colspan="2">
-                <p:selectOneMenu id="city"
+                        <p:selectOneMenu id="city" value="#{stockOut.salerId}"
                                              style="font-size: 90%;">
                     <f:selectItems value="#{stockOut.salers}"
-                                   var="saler" itemLabel="#{saler.name}" itemValue="#{city.id}" />
+                                   var="saler" itemLabel="#{saler.companyName}" itemValue="#{city.id}" />
                 </p:selectOneMenu>
                     </p:column>
                 </p:row>
@@ -50,9 +51,10 @@
                 <p:row>
                     <p:column colspan="3">
                         <h:panelGroup layout="block" styleClass="submit">
-                            <p:commandButton value="出库" action="#{saler.bindCodes}"
+                            <p:commandButton value="出库" action="#{saler.doOut}"
                                              process="@this"
-                                             update="packCode packCodes"/>
+                                             update="packCode packCodes"
+                                             oncomplete="PrimeFaces.focus('packCode');"/>
                         </h:panelGroup>
                     </p:column>
                 </p:row>
