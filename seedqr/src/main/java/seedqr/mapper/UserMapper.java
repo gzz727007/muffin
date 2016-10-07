@@ -26,32 +26,32 @@ public interface UserMapper {
     List<User> getAllUser();
     
     @Select("SELECT " +
-"  `id`, `user_name` userName, `name`, `password`, `urole`, `email`, `handphone`, `create_time` createTime, `company_code` companyCode, `company_name` companyName, "
+"  `id`, `user_name` userName, `name`, `password`, `urole`, `email`, `handphone`, `contact`, `create_time` createTime, `company_code` companyCode, `company_name` companyName, "
             + "`last_login_time` lastLoginTime, `type`, `parent_id` parentId, `status`, `region_id` regionId " +
 "FROM " +
 "  `user` where user_name = #{userName}")
     User getUserByUserName(String userName);
     
     @Insert("INSERT INTO `user` (" +
-"  `user_name`, `name`, `password`, `urole`, `email`, `handphone`, `create_time`, `company_code`, `company_name`, `last_login_time`, `type`, `parent_id`, `status`, `region_id`" +
+"  `user_name`, `name`, `password`, `urole`, `email`, `handphone`, `contact`,`create_time`, `company_code`, `company_name`, `last_login_time`, `type`, `parent_id`, `status`, `region_id`" +
 ") " +
 "VALUES" +
 "  (" +
-"    #{userName}, #{name}, #{password}, #{urole}, #{email}, #{handphone}, NOW(), nextval('company_code'), #{companyName}, NULL, 1,0, '1', 0" +
+"    #{userName}, #{name}, #{password}, #{urole}, #{email}, #{handphone},#{contact}, NOW(), nextval('company_code'), #{companyName}, NULL, 1,0, '1', 0" +
 "  )")
     int addProductUser(User user);
     
      @Insert("INSERT INTO `user` (" +
-"  `user_name`, `name`, `password`, `urole`, `email`, `handphone`, `create_time`, `company_code`, `company_name`, `last_login_time`, `type`, `parent_id`, `status`, `region_id`" +
+"  `user_name`, `name`, `password`, `urole`, `email`, `handphone`,`contact`, `create_time`, `company_code`, `company_name`, `last_login_time`, `type`, `parent_id`, `status`, `region_id`" +
 ") " +
 "VALUES" +
 "  (" +
-"    #{userName}, #{name}, #{password}, #{urole}, #{email}, #{handphone}, NOW(), '', #{companyName}, NULL, 2,#{parentId}, '1', #{regionId}" +
+"    #{userName}, #{name}, #{password}, #{urole}, #{email}, #{handphone},#{contact}, NOW(), '', #{companyName}, NULL, 2,#{parentId}, '1', #{regionId}" +
 "  )")
     int addResaleUser(User user);
     
     @Select("SELECT " +
-"  `id`, `user_name` userName, `name`, `password`, `urole`, `email`, `handphone`, `create_time` createTime, `company_code` companyCode, `company_name` companyName, "
+"  `id`, `user_name` userName, `name`, `password`, `urole`, `email`, `handphone`,`contact`, `create_time` createTime, `company_code` companyCode, `company_name` companyName, "
             + "`last_login_time` lastLoginTime, `type`, `parent_id` parentId, `status`, `region_id` regionId " +
 "FROM " +
 "  `user` where parent_id = #{parentId}")
