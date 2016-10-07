@@ -1,0 +1,53 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition>
+        <h:form prependId="true">
+            <p:panelGrid styleClass="transparent" style="margin: auto;">
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="bulkPackCode" value="条码输入："/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="bulkPackCode" value="#{wholesale.bulkPackCode}"/>
+                    </p:column>
+                    <p:column>
+                        <p:commandButton value="添加" action="#{wholesale.addSmallPackCode}"
+                                         process="smallPackCode @this" update="smallPackCodes"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="smallPackCode" value="大包条码："/>
+                    </p:column>
+                    <p:column colspan="2">
+                        <p:inputText id="smallPackCode" value="#{wholesale.smallPackCode}" disabled ="true" />
+                    </p:column>
+                    
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="smallPackCode" value="小包条码："/>
+                    </p:column>
+                    <p:column colspan="2">
+                        <p:scrollPanel mode="native" style="height: 200px;">
+                            <p:dataList id="smallPackCodes" type="ordered"
+                                        value="#{wholesale.smallPackCodes}"
+                                        var="smallPackCode">
+                                #{smallPackCode}
+                            </p:dataList>
+                        </p:scrollPanel>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column colspan="3">
+                        <h:panelGroup layout="block" styleClass="fullRight">
+                            <p:commandButton value="绑定" action="#{wholesale.bindCodes}"/>
+                        </h:panelGroup>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+        </h:form>
+    </ui:composition>
+</html>
