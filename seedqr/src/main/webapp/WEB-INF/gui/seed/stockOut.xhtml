@@ -5,6 +5,9 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <ui:composition>
         <h:form>
+            <p:dialog widgetVar="dlg2" modal="true" minHeight="100" width="200" closable="false">
+                <p:outputLabel for="packCode" value="数据更新中..."/>
+            </p:dialog>
             <p:panelGrid styleClass="transparent" style="margin: auto;">
                 <p:row>
                     <p:column>
@@ -40,10 +43,10 @@
                         <h:outputText value="批发商："/>
                     </p:column>
                     <p:column colspan="2">
-                        <p:selectOneMenu id="city" value="#{stockOut.salerId}"
+                        <p:selectOneMenu id="salerInfo" value="#{stockOut.salerId}"
                                              style="font-size: 90%;">
                     <f:selectItems value="#{stockOut.salers}"
-                                   var="saler" itemLabel="#{saler.companyName}" itemValue="#{city.id}" />
+                                   var="saler" itemLabel="#{saler.companyName}" itemValue="#{saler.id}" />
                 </p:selectOneMenu>
                     </p:column>
                 </p:row>
@@ -51,10 +54,11 @@
                 <p:row>
                     <p:column colspan="3">
                         <h:panelGroup layout="block" styleClass="submit">
-                            <p:commandButton value="出库" action="#{saler.doOut}"
+                            <p:commandButton value="出库" action="#{stockOut.doOut}"
                                              process="@this"
                                              update="packCode packCodes"
-                                             oncomplete="PrimeFaces.focus('packCode');"/>
+                                             onstart="PF('dlg2').show();"
+                                             oncomplete="PF('dlg2').hide();"/>
                         </h:panelGroup>
                     </p:column>
                 </p:row>
