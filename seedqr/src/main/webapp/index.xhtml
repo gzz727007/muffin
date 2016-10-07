@@ -9,9 +9,7 @@
         <h:outputStylesheet library="css" name="seedqr.css"/>
         <script type="text/javascript">
             function tabShown(index) {
-                if (index === 2) {
-                    PrimeFaces.focus('packCode');
-                }
+                PrimeFaces.focus('packCode');
             }
         </script>
     </h:head>
@@ -53,9 +51,6 @@
                     </p:tab>
                     <p:tab title="大包扫码">
                         <ui:include src="WEB-INF/gui/seed/packScanner.xhtml"/>
-                    </p:tab>
-                    <p:tab title="批发商管理">
-                        <ui:include src="WEB-INF/gui/seed/wholesalers.xhtml"/>
                     </p:tab>
                 </p:tabView>
             </h:panelGroup>
