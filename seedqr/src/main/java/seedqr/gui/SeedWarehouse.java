@@ -1,19 +1,14 @@
 package seedqr.gui;
 
 import java.io.Serializable;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.Collectors;
 import java.util.zip.Adler32;
 import java.util.zip.Checksum;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -21,9 +16,6 @@ import javax.inject.Named;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import net.glxn.qrgen.javase.QRCode;
 import seedqr.mapper.QrCodeMapper;
 import seedqr.mapper.SeqMapper;
 import seedqr.model.QrCode;
@@ -75,12 +67,6 @@ public class SeedWarehouse implements Serializable {
     }
 
     public void generateQrCodes() throws Exception {
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        ExternalContext externalContext = facesContext.getExternalContext();
-        externalContext.setResponseContentType(MediaType.APPLICATION_OCTET_STREAM);
-        externalContext.setResponseHeader(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename*=UTF-8''" + URLEncoder.encode("种子二维码.zip", "UTF-8"));
-
         List<QrCode> qrCodes = new ArrayList<>(amount);
         int sequence = MybatisUtil.getMapper(SeqMapper.class)
                 .nextVal(user.getCompanyCode(), amount);
@@ -106,24 +92,10 @@ public class SeedWarehouse implements Serializable {
         }
 
         MybatisUtil.getMapper(QrCodeMapper.class).insertQrCode(qrCodes);
+        sessionData.setQrCodes(qrCodes);
+        sessionData.setManufacturer(manufacturer);
 
-        ZipOutputStream out = new ZipOutputStream(
-                externalContext.getResponseOutputStream());
-
-        for (QrCode qrCode : qrCodes) {
-            out.putNextEntry(new ZipEntry(qrCode.getUnitCode() + ".png"));
-            QRCode.from(formatQrCode(qrCode)).withCharset("UTF-8").writeTo(out);
-        }
-        out.putNextEntry(new ZipEntry("二维码数据.txt"));
-        out.write(qrCodes.stream().map(this::formatQrCode)
-                .collect(Collectors.joining("\r\n\r\n")).getBytes());
-
-        out.finish();
-        facesContext.responseComplete();
-    }
-
-    private String formatQrCode(QrCode qrCode) {
-        return String.format("品种名称：%s\r\n生产经营者名称：%s\r\n单元识别代码：%s\r\n追溯网址：%s",
-                seedName, manufacturer, qrCode.getUnitCode(), qrCode.getTrackingUrl());
+        FacesContext.getCurrentInstance().getExternalContext().redirect(
+                "download?type=qrCodes&faces-redirect=true");
     }
 }

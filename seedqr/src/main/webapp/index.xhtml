@@ -31,11 +31,14 @@
                     </p:panelGrid>
                 </h:form>
                 <p:tabView prependId="false" rendered="#{request.isUserInRole('user')}">
+                    <p:tab title="种子信息">
+                        <ui:include src="WEB-INF/gui/seed/info.xhtml"/>
+                    </p:tab>
                     <p:tab title="种子入库">
                         <ui:include src="WEB-INF/gui/seed/warehouse.xhtml"/>
                     </p:tab>
-                    <p:tab title="种子信息">
-                        <ui:include src="WEB-INF/gui/seed/info.xhtml"/>
+                    <p:tab title="扫码登记">
+                        <ui:include src="WEB-INF/gui/seed/scan.xhtml"/>
                     </p:tab>
                 </p:tabView>
             </h:panelGroup>

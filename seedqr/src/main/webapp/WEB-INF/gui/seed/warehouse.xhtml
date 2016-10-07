@@ -15,12 +15,11 @@
                            value="#{seedWarehouse.amount}"/>
                 <f:facet name="footer">
                     <h:panelGroup layout="block" style="width: 100%; text-align: right;">
-                        <p:commandButton value="生成并下载二维码压缩包" ajax="false"
+                        <p:commandButton value="生成并下载二维码压缩包"
                                          action="#{seedWarehouse.generateQrCodes}"/>
                     </h:panelGroup>
                 </f:facet>
             </p:panelGrid>
         </h:form>
-        <iframe name="download" src="about:blank"/>
     </ui:composition>
 </html>
