@@ -6,7 +6,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.annotation.security.RolesAllowed;
 import javax.faces.view.ViewScoped;
@@ -84,8 +83,7 @@ public class SeedEditor implements Serializable {
     }
 
     public String getSeedConfigHint() {
-        String hint = BASIC_SEED_CONFIG_PARA_NAMES.get(newSeedConfig.getParaName());
-        return hint == null ? "" : hint;
+        return BASIC_SEED_CONFIG_PARA_NAMES.get(newSeedConfig.getParaName());
     }
 
     public List<SeedConfig> getSeedConfigs() {

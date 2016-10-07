@@ -31,7 +31,7 @@ import seedqr.model.User;
 import seedqr.util.MybatisUtil;
 
 @Named @ViewScoped @RolesAllowed("user")
-public class QrGenerator implements Serializable {
+public class SeedWarehouse implements Serializable {
     @Inject
     private SessionData sessionData;
     private User user;
