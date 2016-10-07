@@ -9,11 +9,11 @@ html, body {
     border: none !important;
 }
 
-.ui-datalist, .ui-datalist-content {
-    height: 100%;
+.ui-datalist-content {
+    border: none;
 }
 
-.fullRight {
+.submit {
     width: 100%;
     text-align: right;
 }

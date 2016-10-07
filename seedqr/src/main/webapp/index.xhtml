@@ -23,7 +23,7 @@
                         <p:outputLabel for="password" value="密码："/>
                         <p:password id="password" value="#{authenticator.password}"/>
                         <f:facet name="footer">
-                            <h:panelGroup layout="block" styleClass="fullRight">
+                            <h:panelGroup layout="block" styleClass="submit">
                                 <p:commandButton value="登录" process="@form" update="content"
                                                  action="#{authenticator.login}"/>
                             </h:panelGroup>
@@ -40,11 +40,11 @@
                     <p:tab title="二维码生成">
                         <ui:include src="WEB-INF/gui/seed/qrGenerator.xhtml"/>
                     </p:tab>
-                    <p:tab title="批发管理">
-                        <ui:include src="WEB-INF/gui/seed/wholesale.xhtml"/>
+                    <p:tab title="大包扫码">
+                        <ui:include src="WEB-INF/gui/seed/packScanner.xhtml"/>
                     </p:tab>
-                    <p:tab title="批发管理2">
-                        <ui:include src="WEB-INF/gui/seed/wholesale2.xhtml"/>
+                    <p:tab title="批发商管理">
+                        <ui:include src="WEB-INF/gui/seed/wholesalers.xhtml"/>
                     </p:tab>
                 </p:tabView>
             </h:panelGroup>
