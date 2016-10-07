@@ -57,8 +57,8 @@ public class DownloadServlet extends HttpServlet {
     }
 
     private String formatQrCode(QrCode qrCode) {
-        return String.format("品种名称：%s\r\n生产经营者名称：%s\r\n单元识别代码：%s\r\n追溯网址：%s",
-                qrCode.getSeedName(), sessionData.getManufacturer(),
-                qrCode.getUnitCode(), qrCode.getTrackingUrl());
+        return "品种名称：" + qrCode.getSeedName() + "\r\n生产经营者名称："
+                + sessionData.getManufacturer() + "\r\n单元识别代码："
+                + qrCode.getUnitCode() + "\r\n追溯网址：" + qrCode.getTrackingUrl();
     }
 }

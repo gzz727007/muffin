@@ -1,19 +1,21 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
     <ui:composition>
         <h:form>
             <p:panelGrid styleClass="transparent" style="margin-left: auto;">
                 <p:row>
                     <p:column>
                         <p:outputLabel for="newSeedName" value="种子名称："/>
-                        <p:inputText id="newSeedName" value="#{seedRegister.newSeed.seedName}"/>
+                        <p:inputText id="newSeedName" maxlength="50"
+                                     value="#{seedRegister.newSeed.seedName}"/>
                     </p:column>
                     <p:column>
                         <p:outputLabel for="newSeedUiDisplay" value="显示名称："/>
-                        <p:inputText id="newSeedUiDisplay" value="#{seedRegister.newSeed.seedUiDisplay}"/>
+                        <p:inputText id="newSeedUiDisplay" maxlength="50"
+                                     value="#{seedRegister.newSeed.seedUiDisplay}"/>
                     </p:column>
                     <p:column>
                         <p:commandButton value="添加" process="@form" update="seedTable"
@@ -90,7 +92,8 @@
             </h:form>
             <h:form prependId="false">
                 <p:dataTable id="seedConfigTable" value="#{seedRegister.seedConfigs}"
-                             var="seedConfig" style="margin-bottom: 10px;">
+                             var="seedConfig" style="margin-bottom: 10px;"
+                             emptyMessage="尚无任何属性。">
                     <p:column headerText="类型">
                         <h:outputText value="#{seedConfig.type}"
                                       converter="seedConfigTypeConverter"/>
@@ -102,7 +105,7 @@
                         <h:outputText value="#{seedConfig.paraValue}"/>
                     </p:column>
                 </p:dataTable>
-                <h:panelGroup layout="block" styleClass="fullRight">
+                <h:panelGroup layout="block" styleClass="submit">
                     <p:commandButton value="保存" action="#{seedRegister.saveSeedConfigs}"
                                      oncomplete="PF('seedConfigDialog').hide();"/>
                 </h:panelGroup>

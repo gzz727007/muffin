@@ -1,0 +1,66 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition>
+        <h:form>
+            <p:panelGrid styleClass="transparent" style="margin: auto;">
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="amount" value="小包数量："/>
+                    </p:column>
+                    <p:column>
+                        <p:spinner id="amount" value="#{packScanner.amount}"
+                                   size="3" min="20" max="200"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="packCode" value="条码输入："/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="packCode" maxlength="20"
+                                     value="#{packScanner.packCode}"/>
+                    </p:column>
+                    <p:column>
+                        <p:commandButton value="添加" action="#{packScanner.addPackCode}"
+                                         process="packCode @this"
+                                         update="packCode bulkPackCode smallPackCodes"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="bulkPackCode" value="大包条码："/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="bulkPackCode" disabled="true"
+                                     value="#{packScanner.bulkPackCode}"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <h:outputText value="小包条码："/>
+                    </p:column>
+                    <p:column colspan="2">
+                        <p:scrollPanel mode="native" style="height: 200px;">
+                            <p:dataList id="smallPackCodes" type="ordered"
+                                        value="#{packScanner.smallPackCodes}"
+                                        var="smallPackCode" emptyMessage="尚未添加小包条码。">
+                                <h:outputText value="#{smallPackCode}"/>
+                            </p:dataList>
+                        </p:scrollPanel>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column colspan="3">
+                        <h:panelGroup layout="block" styleClass="submit">
+                            <p:commandButton value="绑定" action="#{packScanner.bindCodes}"
+                                             process="amount bulkPackCode @this"
+                                             update="packCode bulkPackCode smallPackCodes"/>
+                        </h:panelGroup>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+        </h:form>
+    </ui:composition>
+</html>

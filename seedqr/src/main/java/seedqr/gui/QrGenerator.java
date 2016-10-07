@@ -27,9 +27,9 @@ public class QrGenerator implements Serializable {
     @Inject
     private SessionData sessionData;
     private User user;
-    @Size(min = 1, message = "品种名称不能为空。")
+    @Size(min = 1, max = 50, message = "品种名称不能为空且不超过 50 个字符。")
     private String seedName;
-    @Size(min = 1, message = "生产经营者名称不能为空。")
+    @Size(min = 1, max = 50, message = "生产经营者名称不能为空且不超过 50 个字符。")
     private String manufacturer;
     @Min(value = 1, message = "数量必须在 1 到 10,000 之间。")
     @Max(value = 10000, message = "数量必须在 1 到 10,000 之间。")
