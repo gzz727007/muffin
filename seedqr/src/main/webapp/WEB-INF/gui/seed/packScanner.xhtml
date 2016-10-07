@@ -16,35 +16,37 @@
                 </p:row>
                 <p:row>
                     <p:column>
-                        <p:outputLabel for="bulkPackCode" value="大包扫码："/>
+                        <p:outputLabel for="packCode" value="条码输入："/>
                     </p:column>
                     <p:column>
-                        <p:inputText id="bulkPackCode" maxlength="20"
+                        <p:inputText id="packCode" maxlength="20"
+                                     value="#{packScanner.packCode}"/>
+                    </p:column>
+                    <p:column>
+                        <p:commandButton value="添加" action="#{packScanner.addPackCode}"
+                                         process="packCode @this"
+                                         update="packCode bulkPackCode smallPackCodes"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="bulkPackCode" value="大包条码："/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="bulkPackCode" disabled="true"
                                      value="#{packScanner.bulkPackCode}"/>
                     </p:column>
                 </p:row>
                 <p:row>
                     <p:column>
-                        <p:outputLabel for="smallPackCode" value="小包扫码："/>
+                        <h:outputText value="小包条码："/>
                     </p:column>
-                    <p:column>
-                        <p:inputText id="smallPackCode" maxlength="20"
-                                     value="#{packScanner.smallPackCode}"/>
-                    </p:column>
-                    <p:column>
-                        <p:commandButton value="添加" action="#{packScanner.addSmallPackCode}"
-                                         process="smallPackCode @this"
-                                         update="smallPackCode smallPackCodes"/>
-                    </p:column>
-                </p:row>
-                <p:row>
-                    <p:column/>
                     <p:column colspan="2">
                         <p:scrollPanel mode="native" style="height: 200px;">
                             <p:dataList id="smallPackCodes" type="ordered"
                                         value="#{packScanner.smallPackCodes}"
-                                        var="smallPackCode" emptyMessage="尚未扫描小包。">
-                                #{smallPackCode}
+                                        var="smallPackCode" emptyMessage="尚未添加小包条码。">
+                                <h:outputText value="#{smallPackCode}"/>
                             </p:dataList>
                         </p:scrollPanel>
                     </p:column>
@@ -54,7 +56,7 @@
                         <h:panelGroup layout="block" styleClass="submit">
                             <p:commandButton value="绑定" action="#{packScanner.bindCodes}"
                                              process="amount bulkPackCode @this"
-                                             update="bulkPackCode smallPackCode smallPackCodes"/>
+                                             update="packCode bulkPackCode smallPackCodes"/>
                         </h:panelGroup>
                     </p:column>
                 </p:row>

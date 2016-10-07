@@ -21,10 +21,9 @@ public class PackScanner implements Serializable {
     @Min(value = 20, message = "小包数量必须在 20 到 100 之间。")
     @Max(value = 100, message = "小包数量必须在 20 到 100 之间。")
     private int amount;
-    @Size(min = 1, max = 20, message = "大包码不能为空且不超过 20 个字符。")
+    @Size(min = 1, max = 20, message = "条码不能为空且不超过 20 个字符。")
+    private String packCode;
     private String bulkPackCode;
-    @Size(min = 1, max = 20, message = "小包码不能为空且不超过 20 个字符。")
-    private String smallPackCode;
     private List<String> smallPackCodes;
 
     @PostConstruct
@@ -41,29 +40,29 @@ public class PackScanner implements Serializable {
         this.amount = amount;
     }
 
+    public String getPackCode() {
+        return packCode;
+    }
+
+    public void setPackCode(String packCode) {
+        this.packCode = packCode;
+    }
+
     public String getBulkPackCode() {
         return bulkPackCode;
-    }
-
-    public void setBulkPackCode(String bulkPackCode) {
-        this.bulkPackCode = bulkPackCode;
-    }
-
-    public String getSmallPackCode() {
-        return smallPackCode;
-    }
-
-    public void setSmallPackCode(String smallPackCode) {
-        this.smallPackCode = smallPackCode;
     }
 
     public List<String> getSmallPackCodes() {
         return smallPackCodes;
     }
 
-    public void addSmallPackCode() {
-        smallPackCodes.add(smallPackCode);
-        smallPackCode = null;
+    public void addPackCode() {
+        if (packCode.startsWith("1000")) {
+            bulkPackCode = packCode;
+        } else {
+            smallPackCodes.add(packCode);
+        }
+        packCode = null;
     }
 
     public void bindCodes() {
@@ -80,7 +79,7 @@ public class PackScanner implements Serializable {
         facesContext.addMessage(null, new FacesMessage(
                 FacesMessage.SEVERITY_INFO, "绑定成功。", null));
         bulkPackCode = null;
-        smallPackCode = null;
+        packCode = null;
         smallPackCodes.clear();
     }
 }
