@@ -7,7 +7,7 @@
 
         <p:commandButton value="添加销售商" type="button" onclick="PF('dlg1').show();" /> 
 
-        <p:dataTable  id="userList" var="user" value="#{wholesalerEditor.salers}">
+        <p:dataTable id="wholesalerList" var="user" value="#{wholesalerEditor.salers}">
             <p:column headerText="用户名">
                 <h:outputText value="#{user.userName}" />
             </p:column>
@@ -63,7 +63,7 @@
                 <f:facet name="footer">
                     <h:panelGroup layout="block" style="width: 100%; text-align: center;">
                         <p:commandButton value="保存" ajax="true"
-                                         action="#{wholesalerEditor.addWholesaler}" oncomplete="PF('dlg1').hide();" update="userList"/>
+                                         action="#{wholesalerEditor.addWholesaler}" oncomplete="PF('dlg1').hide();" update="wholesalerList"/>
                     </h:panelGroup>
                 </f:facet>
             </p:panelGrid>
