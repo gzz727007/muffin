@@ -7,7 +7,7 @@
 
         <p:commandButton value="添加销售商" type="button" onclick="PF('dlg1').show();" /> 
 
-        <p:dataTable var="user" value="#{wholesalerEditor.salers}">
+        <p:dataTable  id="userList" var="user" value="#{wholesalerEditor.salers}">
             <p:column headerText="用户名">
                 <h:outputText value="#{user.userName}" />
             </p:column>
@@ -39,17 +39,31 @@
                 <p:inputText id="contact" value="#{wholesalerEditor.user.contact}"/>
                 <p:outputLabel for="handphone" value="联系电话："/>
                 <p:inputText id="handphone" value="#{wholesalerEditor.user.handphone}"/>
-                <p:outputLabel for="region" value="省："/>
-                <p:selectOneMenu id="region" valueChangeListener="#{wholesalerEditor.provinceChange}"
-                                 value="#{wholesalerEditor.user.regionId}"
+                <p:outputLabel for="province" value="地区："/>
+                <p:selectOneMenu id="province" valueChangeListener="#{wholesalerEditor.provinceChange}" 
                                              style="font-size: 90%;">
                     <f:selectItems value="#{wholesalerEditor.provinces}"
                                    var="province" itemLabel="#{province.name}" itemValue="#{province.id}"/>
+                                   <p:ajax process="@this" update="city dist"/>
+                </p:selectOneMenu>
+                <p:outputLabel for="city" value=""/>
+                <p:selectOneMenu id="city" valueChangeListener="#{wholesalerEditor.cityChange}"
+                                             style="font-size: 90%;">
+                    <f:selectItems value="#{wholesalerEditor.citys}"
+                                   var="city" itemLabel="#{city.name}" itemValue="#{city.id}" />
+                    <p:ajax process="@this" update="dist"/>
+                </p:selectOneMenu>
+                <p:outputLabel for="dist" value=""/>
+                <p:selectOneMenu id="dist" valueChangeListener="#{wholesalerEditor.districtChange}"
+                                 value="#{wholesalerEditor.user.regionId}"
+                                             style="font-size: 90%;">
+                    <f:selectItems value="#{wholesalerEditor.district}"
+                                   var="dist" itemLabel="#{dist.name}" itemValue="#{dist.id}" />
                 </p:selectOneMenu>
                 <f:facet name="footer">
                     <h:panelGroup layout="block" style="width: 100%; text-align: center;">
                         <p:commandButton value="保存" ajax="true"
-                                         action="#{wholesalerEditor.addWholesaler}"/>
+                                         action="#{wholesalerEditor.addWholesaler}" oncomplete="PF('dlg1').hide();" update="userList"/>
                     </h:panelGroup>
                 </f:facet>
             </p:panelGrid>
