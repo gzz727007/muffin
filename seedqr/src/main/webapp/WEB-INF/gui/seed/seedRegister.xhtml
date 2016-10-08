@@ -66,7 +66,7 @@
                                 <f:selectItems value="#{seedRegister.standardSeedConfigParaNames}"
                                                var="name" itemLabel="#{name}" itemValue="#{name}"/>
                                 <p:ajax process="@this" update="placeHolder"
-                                        oncomplete="document.getElementById('newSeedConfigParaValue').placeholder = document.getElementById('placeHolder').innerHTML;"/>
+                                        oncomplete="$('newSeedConfigParaValue').placeholder = $('placeHolder').innerHTML;"/>
                             </p:selectOneMenu>
                         </p:column>
                     </p:row>
@@ -94,7 +94,7 @@
             <h:form prependId="false">
                 <p:dataTable id="seedConfigTable" value="#{seedRegister.seedConfigs}"
                              var="seedConfig" style="margin-bottom: 10px;"
-                             emptyMessage="尚无任何属性。">
+                             emptyMessage="尚未添加属性。">
                     <p:column headerText="类型">
                         <h:outputText value="#{seedConfig.type}"
                                       converter="seedConfigTypeConverter"/>

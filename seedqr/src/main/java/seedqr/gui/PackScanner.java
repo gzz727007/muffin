@@ -81,8 +81,8 @@ public class PackScanner implements Serializable {
             return;
         }
 
-        MybatisUtil.run(QrCodeMapper.class, qrCodeMapper
-                -> qrCodeMapper.addQrCodeMapping(bulkPackCode,
+        MybatisUtil.run(QrCodeMapper.class,
+                qrCodeMapper -> qrCodeMapper.addQrCodeMapping(bulkPackCode,
                         smallPackCodes.stream().collect(Collectors.joining(","))));
         facesContext.addMessage(null, new FacesMessage(
                 FacesMessage.SEVERITY_INFO, "绑定成功。", null));

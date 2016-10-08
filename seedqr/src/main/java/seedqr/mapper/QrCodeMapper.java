@@ -50,7 +50,7 @@ public interface QrCodeMapper {
     int addQrCodeRequest(QrCodeRequest request);
     
     @Select("SELECT  `id`, `user_id` userId, `seed_id` seedId, `seed_name` seedName, `company_name` companyName, `amount`, `create_time` createTime, `progress`, `file_name` fileName "
-            + "FROM `qrcode_request`  WHERE user_id = #{userId} ORDER BY create_time")
+            + "FROM `qrcode_request`  WHERE user_id = #{userId} ORDER BY create_time DESC")
     List<QrCodeRequest> getAllRequest(@Param("userId")int userId);
     
     @Update("UPDATE qrcode_request SET progress =#{progress} WHERE id = #{id}")
