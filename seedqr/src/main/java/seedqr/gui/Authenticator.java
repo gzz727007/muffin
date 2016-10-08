@@ -37,7 +37,8 @@ public class Authenticator {
         ExternalContext externalContext = facesContext.getExternalContext();
         try {
             ((HttpServletRequest) externalContext.getRequest()).login(user, password);
-            sessionData.setUser(MybatisUtil.getMapper(UserMapper.class).getUserByUserName(user));
+            sessionData.setUser(MybatisUtil.call(UserMapper.class,
+                    userMapper -> userMapper.getUserByUserName(user)));
         } catch (Exception ex) {
             facesContext.addMessage(null, new FacesMessage(
                     FacesMessage.SEVERITY_ERROR, "登录失败。", ex.getMessage()));

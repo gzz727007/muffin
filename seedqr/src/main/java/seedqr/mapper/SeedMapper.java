@@ -26,7 +26,7 @@ public interface SeedMapper {
     List<Seed> getAllSeeds(@Param("userId")int userId);
     
     @Insert("INSERT INTO user_seed (user_id , seed_name, seed_ui_display) VALUES (#{userId}, #{seedName}, #{seedUiDisplay})")
-    int addSeeds(Seed seed);
+    int addSeed(Seed seed);
     
     @Select("SELECT id, seed_id seedId, para_name paraName,para_value paraValue,`type`, order_index orderIndex FROM `seed_config` WHERE seed_id = #{seedId}  ORDER BY order_index")
     List<SeedConfig> getAllSeedConfigBySeedId(@Param("seedId")int seedId);

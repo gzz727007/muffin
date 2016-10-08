@@ -42,10 +42,6 @@ public class MybatisUtil {
         }
     }
 
-    public static SqlSessionFactory getInstance() {
-        return sessionFactory;
-    }
-
     public static <M> M getMapper(Class<M> mapperType) {
         return sessionFactory.openSession().getMapper(mapperType);
     }
