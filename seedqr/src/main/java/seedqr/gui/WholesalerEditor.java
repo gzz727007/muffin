@@ -104,7 +104,7 @@ public class WholesalerEditor implements Serializable {
     public void addWholesaler() {
         if (user!=null) {
             System.out.println("user!=null:");
-            user.setUserName(user.getHandphone());
+            user.setUserName(System.currentTimeMillis()+"");
             System.out.println("selectDistId:" + selectDistId);
             if (selectDistId > 0 ){
                 user.setParentId(userId);
