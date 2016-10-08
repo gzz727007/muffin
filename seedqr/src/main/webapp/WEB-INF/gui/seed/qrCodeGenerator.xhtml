@@ -59,7 +59,8 @@
                             <p:outputLabel for="amount" value="包装数量（袋）："/>
                         </p:column>
                         <p:column>
-                            <p:spinner id="amount" min="1" max="50000" size="5"
+                            <p:spinner id="amount" min="1" max="50000"
+                                       stepFactor="1000" size="5"
                                        value="#{qrCodeGenerator.amount}"/>
                         </p:column>
                     </p:row>

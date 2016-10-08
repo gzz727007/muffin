@@ -13,7 +13,6 @@ import java.util.zip.Adler32;
 import java.util.zip.Checksum;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-import javax.ejb.AsyncResult;
 import javax.ejb.Asynchronous;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionManagement;
