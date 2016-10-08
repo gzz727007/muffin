@@ -13,7 +13,9 @@ import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.annotations.Update;
 import seedqr.model.QrCode;
+import seedqr.model.QrCodeRequest;
 
 /**
  *
@@ -26,7 +28,7 @@ public interface QrCodeMapper {
     int insertQrCode(List<QrCode> list);
     
     @Select("SELECT `id`, `unit_code` unitCode, `company_code` companyCode, `ext_unit_code` extUnitCode, `seed_name` seedName, `company_name` companyName, "
-            + " `tracking_url` trackingUrl, `seed_id` seedId, `status`, `create_time` createTime, `bind_time` bindTime  "
+            + " `tracking_url` trackingUrl, `seed_id` seedId, `status`, `create_time` createTime, `bind_time` bindTime, request_id requestId  "
             + "FROM `qr_code`  WHERE unit_code = #{unitId} AND `status` = 1")
     List<QrCode> getQrCodeByUnitId(@Param("unitId")String unitId);
     
@@ -40,14 +42,29 @@ public interface QrCodeMapper {
     @Insert("INSERT INTO `code_mapping` (`source_code`,`target_codes`) VALUES (#{src}, #{target})")
     int addQrCodeMapping(@Param("src")String src, @Param("target")String target);
     
+    @Insert("INSERT INTO `qrcode_request` (" +
+"  `user_id`, `seed_id`, `seed_name`, `company_name`, `amount`, `create_time`, `progress`, `file_name` " +
+") VALUES (" + "#{userId}, #{seedId}, #{seedName}, #{companyName}, #{amount}, now(), #{progress}, #{fileName} )")
+    int addQrCodeRequest(QrCodeRequest request);
+    
+    @Select("SELECT  `id`, `user_id` userId, `seed_id` seedId, `seed_name` seedName, `company_name` companyName, `amount`, `create_time` createTime, `progress`, `file_name` fileName "
+            + "FROM `qrcode_request`  WHERE user_id = #{userId} ORDER BY create_time")
+    List<QrCodeRequest> getAllRequest(@Param("userId")int userId);
+    
+    @Update("UPDATE qrcode_request SET progress =#{progress} WHERE id = #{id}")
+    int updateRequestProgress(@Param("id")int id, @Param("progress")int progress);
+    
+    @Update("UPDATE qrcode_request SET file_name =#{fileName} WHERE id = #{id}")
+    int updateRequestFileName(@Param("id")int id, @Param("fileName")String fileName);
     
     public static class QrCodeMapperProvider {
 
 		public String inserAll(Map<String, List<QrCode>> map) {
 			List<QrCode> list = map.get("list");
 			StringBuilder stringBuilder = new StringBuilder();
-			stringBuilder.append("INSERT INTO `qr_code` (`unit_code`, `company_code`, `ext_unit_code`, `seed_name`, `company_name`, `tracking_url`, `seed_id`, `create_time` )  values ");
-			MessageFormat messageFormat = new MessageFormat("(#'{'list[{0}].unitCode},#'{'list[{0}].companyCode},#'{'list[{0}].extUnitCode},#'{'list[{0}].seedName},#'{'list[{0}].companyName},#'{'list[{0}].trackingUrl},#'{'list[{0}].seedId}, now())");
+			stringBuilder.append("INSERT INTO `qr_code` (`unit_code`, `company_code`, `ext_unit_code`, `seed_name`, `company_name`, `tracking_url`, `seed_id`, `create_time`,request_id )  values ");
+			MessageFormat messageFormat = new MessageFormat("(#'{'list[{0}].unitCode},#'{'list[{0}].companyCode},#'{'list[{0}].extUnitCode},#'{'list[{0}].seedName},"
+                                + "#'{'list[{0}].companyName},#'{'list[{0}].trackingUrl},#'{'list[{0}].seedId}, now(),#'{'list[{0}].requestId})");
 			for (int i = 0; i < list.size(); i++) {
 				stringBuilder.append(messageFormat.format(new Integer[]{i}));
 				stringBuilder.append(",");

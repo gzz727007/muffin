@@ -23,6 +23,7 @@ public class QrCode {
     private int status;
     private Date createTime;
     private Date bindTime;
+    private int requestId;
 
     public int getId() {
         return id;
@@ -112,8 +113,17 @@ public class QrCode {
         this.bindTime = bindTime;
     }
 
+    public int getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(int requestId) {
+        this.requestId = requestId;
+    }
+
     @Override
     public String toString() {
-        return "QrCode{" + "id=" + id + ", unitCode=" + unitCode + ", companyCode=" + companyCode + ", extUnitCode=" + extUnitCode + ", seedName=" + seedName + ", companyName=" + companyName + ", trackingUrl=" + trackingUrl + ", seedId=" + seedId + ", status=" + status + ", createTime=" + createTime + ", bindTime=" + bindTime + '}';
+        return "QrCode{" + "id=" + id + ", unitCode=" + unitCode + ", companyCode=" + companyCode + ", extUnitCode=" + extUnitCode + ", seedName=" + seedName + ", companyName=" + companyName + ", trackingUrl=" + trackingUrl + ", seedId=" + seedId + ", status=" + status + ", createTime=" + createTime + ", bindTime=" + bindTime + ", requestId=" + requestId + '}';
     }
+    
 }
