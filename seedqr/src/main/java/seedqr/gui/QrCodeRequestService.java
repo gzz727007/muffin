@@ -60,7 +60,7 @@ public class QrCodeRequestService {
 
             qrCodes.add(qrCode);
 
-            if (amount != 0 && amount % 1000 == 0) {
+            if (i != 0 && i % 1000 == 0) {
                 finishedSize += 1000;
                 updateProgress(qrCodeRequest.getId(),
                         finishedSize * 100 / taskSize);
@@ -84,7 +84,7 @@ public class QrCodeRequestService {
                     QRCode.from(formatQrCode(qrCode, manufacturer))
                             .withCharset("UTF-8").writeTo(out);
 
-                    if (amount != 0 && amount % 1000 == 0) {
+                    if (i != 0 && i % 1000 == 0) {
                         finishedSize += 1000;
                         updateProgress(qrCodeRequest.getId(),
                                 finishedSize * 100 / taskSize);
