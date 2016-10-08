@@ -50,36 +50,50 @@ public class MybatisUtil {
         return sessionFactory.openSession().getMapper(mapperType);
     }
 
-    public static <M> void execute(Class<M> mapperType, Consumer<M> task) {
-        execute(mapperType, mapper -> {
+    public static <M> void run(Class<M> mapperType, Consumer<M> task) {
+        call(mapperType, mapper -> {
             task.accept(mapper);
             return null;
         });
     }
 
-    public static <M1, M2> void execute(Class<M1> mapperType1, 
+    public static <M1, M2> void run(Class<M1> mapperType1, 
             Class<M2> mapperType2, BiConsumer<M1, M2> task) {
-        execute(mapperType1, mapperType2, (mapper1, mapper2) -> {
+        call(mapperType1, mapperType2, (mapper1, mapper2) -> {
             task.accept(mapper1, mapper2);
             return null;
         });
     }
 
-    public static <M, R> R execute(Class<M> mapperType, Function<M, R> task) {
-        try (SqlSession sqlSession = sessionFactory.openSession()) {
+    public static <M, R> R call(Class<M> mapperType, Function<M, R> task) {
+        SqlSession sqlSession = sessionFactory.openSession(false);
+        try {
             R result = task.apply(sqlSession.getMapper(mapperType));
             sqlSession.commit();
             return result;
+        } catch (Exception ex) {
+            sqlSession.rollback();
+            ex.printStackTrace();
+            return null;
+        } finally {
+            sqlSession.close();
         }
     }
 
-    public static <M1, M2, R> R execute(Class<M1> mapperType1, 
+    public static <M1, M2, R> R call(Class<M1> mapperType1, 
             Class<M2> mapperType2, BiFunction<M1, M2, R> task) {
-        try (SqlSession sqlSession = sessionFactory.openSession()) {
+        SqlSession sqlSession = sessionFactory.openSession(false);
+        try {
             R result = task.apply(sqlSession.getMapper(mapperType1),
                     sqlSession.getMapper(mapperType2));
             sqlSession.commit();
             return result;
+        } catch (Exception ex) {
+            sqlSession.rollback();
+            ex.printStackTrace();
+            return null;
+        } finally {
+            sqlSession.close();
         }
     }
 }

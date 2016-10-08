@@ -67,6 +67,13 @@ public class PackScanner implements Serializable {
 
     public void bindCodes() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
+
+        if (bulkPackCode == null || bulkPackCode.isEmpty() || bulkPackCode.length() > 20) {
+            facesContext.addMessage(null, new FacesMessage(
+                    FacesMessage.SEVERITY_ERROR, "没有扫描大包条码。", null));
+            return;
+        }
+
         if (smallPackCodes.size() != amount) {
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
                     "设定的小包数量（" + amount + "）与实际扫描的数量（"
@@ -74,8 +81,9 @@ public class PackScanner implements Serializable {
             return;
         }
 
-        MybatisUtil.getMapper(QrCodeMapper.class).addQrCodeMapping(bulkPackCode,
-                smallPackCodes.stream().collect(Collectors.joining(",")));
+        MybatisUtil.run(QrCodeMapper.class, qrCodeMapper
+                -> qrCodeMapper.addQrCodeMapping(bulkPackCode,
+                        smallPackCodes.stream().collect(Collectors.joining(","))));
         facesContext.addMessage(null, new FacesMessage(
                 FacesMessage.SEVERITY_INFO, "绑定成功。", null));
         bulkPackCode = null;
