@@ -32,7 +32,7 @@ public class QrCodeRequestService {
     public static final Path SEED_QR_DIR = Paths.get("/data/seedqr");
 
     @Asynchronous
-    public AsyncResult<Void> generateQrCodes(User user, Seed seed,
+    public void generateQrCodes(User user, Seed seed,
             String manufacturer, int amount, QrCodeRequest qrCodeRequest) {
         int taskSize = amount * 5 + 1;
         int finishedSize = 0;
@@ -100,7 +100,6 @@ public class QrCodeRequestService {
         }
 
         updateProgress(qrCodeRequest.getId(), 100);
-        return null;
     }
 
     private void updateProgress(int requestId, int progress) {

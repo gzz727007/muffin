@@ -17,10 +17,10 @@ public class DownloadServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        String fileName = req.getParameter("fileName");
+        String file = req.getParameter("file");
         resp.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         resp.setHeader(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename*=UTF-8''" + URLEncoder.encode(fileName, "UTF-8"));
-        Files.copy(QrCodeRequestService.SEED_QR_DIR.resolve(fileName), resp.getOutputStream());
+                "attachment; filename*=UTF-8''" + URLEncoder.encode(file, "UTF-8"));
+        Files.copy(QrCodeRequestService.SEED_QR_DIR.resolve(file), resp.getOutputStream());
     }
 }

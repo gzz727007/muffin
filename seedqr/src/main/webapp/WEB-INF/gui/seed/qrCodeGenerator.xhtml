@@ -4,13 +4,14 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
     <ui:composition>
-        <h:form>
+        <h:form id="gen">
             <p style="text-align: right;">
                 <p:commandButton type="button" value="输入种子信息以生成二维码"
                                  onclick="PF('generateDialog').show();"/>
             </p>
             <p:dataTable id="qrCodeRequestTable" value="#{qrCodeGenerator.qrCodeRequests}"
-                         var="qrCodeRequest" paginator="true" rows="30">
+                         var="qrCodeRequest" paginator="true" rows="30"
+                         emptyMessage="尚未添加生成二维码的任务。">
                 <p:column headerText="种子名称">#{qrCodeRequest.seedName}</p:column>
                 <p:column headerText="生产经营者名称">#{qrCodeRequest.companyName}</p:column>
                 <p:column headerText="数量">#{qrCodeRequest.amount}</p:column>
@@ -23,8 +24,8 @@
                 <p:column headerText="二维码压缩包">
                     <p:commandButton type="button" value="下载"
                                      onclick="window.location = 'download?file=#{qrCodeRequest.fileName}';"
-                                     rendered="#{qrCodeRequest.progress == 100}"/>
-                    <h:outputText value="正在生成" rendered="#{qrCodeRequest.progress < 100}"/>
+                                     rendered="#{qrCodeRequest.progress eq 100}"/>
+                    <h:outputText value="正在生成" rendered="#{qrCodeRequest.progress lt 100}"/>
                 </p:column>
             </p:dataTable>
             <p:dialog widgetVar="generateDialog" modal="true">
@@ -67,7 +68,7 @@
                             <p:commandButton value="生成二维码"
                                              action="#{qrCodeGenerator.generateQrCodes}"
                                              process="@widgetVar(generateDialog)"
-                                             update="@id(qrCodeRequestTable) @widgetVar(generateDialog)"
+                                             update="gen:qrCodeRequestTable @widgetVar(generateDialog)"
                                              oncomplete="PF('generateDialog').hide();"/>
                         </p:column>
                     </p:row>
@@ -88,7 +89,7 @@
                         </p:column>
                         <p:column>
                             <p:commandButton value="添加" process="@widgetVar(addSeedDialog)"
-                                             update="@id(seedId) @widgetVar(addSeedDialog)"
+                                             update="gen:seedId @widgetVar(addSeedDialog)"
                                              action="#{qrCodeGenerator.addSeed}"
                                              oncomplete="PF('addSeedDialog').hide();"/>
                         </p:column>

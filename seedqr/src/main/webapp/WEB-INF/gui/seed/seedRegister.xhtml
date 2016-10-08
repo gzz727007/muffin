@@ -66,7 +66,7 @@
                                 <f:selectItems value="#{seedRegister.standardSeedConfigParaNames}"
                                                var="name" itemLabel="#{name}" itemValue="#{name}"/>
                                 <p:ajax process="@this" update="placeHolder"
-                                        oncomplete="$('newSeedConfigParaValue').placeholder = $('placeHolder').innerHTML;"/>
+                                        oncomplete="document.getElementById('newSeedConfigParaValue').placeholder = document.getElementById('placeHolder').innerHTML;"/>
                             </p:selectOneMenu>
                         </p:column>
                     </p:row>
