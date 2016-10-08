@@ -12,6 +12,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.Update;
 import seedqr.model.QrCode;
@@ -45,6 +46,7 @@ public interface QrCodeMapper {
     @Insert("INSERT INTO `qrcode_request` (" +
 "  `user_id`, `seed_id`, `seed_name`, `company_name`, `amount`, `create_time`, `progress`, `file_name` " +
 ") VALUES (" + "#{userId}, #{seedId}, #{seedName}, #{companyName}, #{amount}, now(), #{progress}, #{fileName} )")
+    @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="id", before=false, resultType=int.class) 
     int addQrCodeRequest(QrCodeRequest request);
     
     @Select("SELECT  `id`, `user_id` userId, `seed_id` seedId, `seed_name` seedName, `company_name` companyName, `amount`, `create_time` createTime, `progress`, `file_name` fileName "
