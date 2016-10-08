@@ -10,19 +10,12 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import seedqr.mapper.RegionMapper;
-import seedqr.mapper.UserMapper;
-import seedqr.model.SaleInfo;
-import seedqr.model.User;
-import seedqr.util.MybatisUtil;
 
 @Named @ViewScoped @RolesAllowed("user")
 public class StockOut implements Serializable {
     @Inject
     private SessionData sessionData;
     private int userId;
-
-    private List<User> salers;
 
     private int salerId;
     private String packCode;
@@ -32,7 +25,6 @@ public class StockOut implements Serializable {
     private void init() {
         packCodes = new ArrayList<>();
         userId = sessionData.getUser().getId();
-        salers = MybatisUtil.getMapper(UserMapper.class).getUsersByParent(userId);
     }
 
 
@@ -48,14 +40,6 @@ public class StockOut implements Serializable {
     public void addPackCode() {
         packCodes.add(packCode);
         packCode = null;
-    }
-
-    public List<User> getSalers() {
-        return salers;
-    }
-
-    public void setSalers(List<User> salers) {
-        this.salers = salers;
     }
 
     public List<String> getPackCodes() {
@@ -83,7 +67,7 @@ public class StockOut implements Serializable {
             return;
         }
         
-        String region = MybatisUtil.getMapper(RegionMapper.class).getSalerRegion(salerId);
+       // String region = MybatisUtil.getMapper(RegionMapper.class).getSalerRegion(salerId);
         
         
 //

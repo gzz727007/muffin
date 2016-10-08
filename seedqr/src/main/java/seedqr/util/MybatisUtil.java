@@ -41,14 +41,14 @@ public class MybatisUtil {
             e.printStackTrace();
         }
     }
-
-    public static SqlSessionFactory getInstance() {
-        return sessionFactory;
-    }
-
-    public static <M> M getMapper(Class<M> mapperType) {
-        return sessionFactory.openSession().getMapper(mapperType);
-    }
+//
+//    public static SqlSessionFactory getInstance() {
+//        return sessionFactory;
+//    }
+//
+//    public static <M> M getMapper(Class<M> mapperType) {
+//        return sessionFactory.openSession().getMapper(mapperType);
+//    }
 
     public static <M> void run(Class<M> mapperType, Consumer<M> task) {
         call(mapperType, mapper -> {
@@ -73,8 +73,7 @@ public class MybatisUtil {
             return result;
         } catch (Exception ex) {
             sqlSession.rollback();
-            ex.printStackTrace();
-            return null;
+            throw ex;
         } finally {
             sqlSession.close();
         }
@@ -90,8 +89,7 @@ public class MybatisUtil {
             return result;
         } catch (Exception ex) {
             sqlSession.rollback();
-            ex.printStackTrace();
-            return null;
+            throw ex;
         } finally {
             sqlSession.close();
         }

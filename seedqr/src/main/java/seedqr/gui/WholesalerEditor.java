@@ -58,8 +58,10 @@ public class WholesalerEditor implements Serializable {
     @PostConstruct
     private void init() {
         userId = sessionData.getUser().getId();
-        salers = MybatisUtil.getMapper(UserMapper.class).getUsersByParent(userId);
-        allRegion = MybatisUtil.getMapper(RegionMapper.class).getAllRegion();
+        salers = MybatisUtil.call(UserMapper.class, userMapper -> userMapper.getUsersByParent(userId));
+        allRegion = MybatisUtil.call(RegionMapper.class, regionMapper -> regionMapper.getAllRegion());
+        //salers = MybatisUtil.getMapper(UserMapper.class).getUsersByParent(userId);
+        //allRegion = MybatisUtil.getMapper(RegionMapper.class).getAllRegion();
         for (Region region : allRegion) {
             if (region.getLevel() == 1) {
                 provinces.add(region);
@@ -109,10 +111,12 @@ public class WholesalerEditor implements Serializable {
                 user.setRegionId(selectDistId);
                 user.setUrole("saler");
                 user.setPassword("12345678");
-                MybatisUtil.getMapper(UserMapper.class).addResaleUser(user);
+                MybatisUtil.run(UserMapper.class, userMapper -> userMapper.addResaleUser(user));
+                //MybatisUtil.getMapper(UserMapper.class).addResaleUser(user);
             }
         }
-        salers = MybatisUtil.getMapper(UserMapper.class).getUsersByParent(userId);
+        salers = MybatisUtil.call(UserMapper.class, userMapper -> userMapper.getUsersByParent(userId));
+        //salers = MybatisUtil.getMapper(UserMapper.class).getUsersByParent(userId);
     }
 
     public User getUser() {

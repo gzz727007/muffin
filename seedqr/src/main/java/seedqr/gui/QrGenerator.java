@@ -68,8 +68,8 @@ public class QrGenerator implements Serializable {
 
     public void generateQrCodes() throws Exception {
         List<QrCode> qrCodes = new ArrayList<>(amount);
-        int sequence = MybatisUtil.getMapper(SeqMapper.class)
-                .nextVal(user.getCompanyCode(), amount);
+        //int sequence = MybatisUtil.getMapper(SeqMapper.class).nextVal(user.getCompanyCode(), amount);
+        int sequence = MybatisUtil.call(SeqMapper.class, seqMapper -> seqMapper.nextVal(user.getCompanyCode(), amount));
         Random random = ThreadLocalRandom.current();
 
         for (int i = 0; i < amount; i++) {
@@ -91,7 +91,8 @@ public class QrGenerator implements Serializable {
             qrCodes.add(qrCode);
         }
 
-        MybatisUtil.getMapper(QrCodeMapper.class).insertQrCode(qrCodes);
+        //MybatisUtil.getMapper(QrCodeMapper.class).insertQrCode(qrCodes);
+        MybatisUtil.run(QrCodeMapper.class, qrCodeMapper -> qrCodeMapper.insertQrCode(qrCodes));
         sessionData.setQrCodes(qrCodes);
         sessionData.setManufacturer(manufacturer);
 

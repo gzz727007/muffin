@@ -3,6 +3,7 @@ package seedqr.gui;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -39,7 +40,7 @@ public class SeedRegister implements Serializable {
     @Inject
     private SessionData sessionData;
     private int userId;
-    private SeedMapper seedMapper;
+    //private SeedMapper seedMapper;
     @Valid
     private Seed newSeed;
     private List<Seed> seeds;
@@ -51,8 +52,9 @@ public class SeedRegister implements Serializable {
     @PostConstruct
     private void init() {
         userId = sessionData.getUser().getId();
-        seedMapper = MybatisUtil.getMapper(SeedMapper.class);
-        seeds = seedMapper.getAllSeeds(userId);
+        //seedMapper = MybatisUtil.getMapper(SeedMapper.class);
+        //seeds = seedMapper.getAllSeeds(userId);
+        seeds = MybatisUtil.call(SeedMapper.class, seedMapper -> seedMapper.getAllSeeds(userId));
         resetNewSeed();
         resetNewSeedConfig();
     }
@@ -71,7 +73,8 @@ public class SeedRegister implements Serializable {
 
     public void setSelectedSeed(Seed selectedSeed) {
         this.selectedSeed = selectedSeed;
-        seedConfigs = new ArrayList<>(seedMapper.getAllSeedConfigBySeedId(selectedSeed.getId()));
+        //seedConfigs = new ArrayList<>(seedMapper.getAllSeedConfigBySeedId(selectedSeed.getId()));
+        seedConfigs = new ArrayList<>(MybatisUtil.call(SeedMapper.class, seedMapper -> seedMapper.getAllSeedConfigBySeedId(selectedSeed.getId())));
     }
 
     public SeedConfig getNewSeedConfig() {
@@ -91,7 +94,8 @@ public class SeedRegister implements Serializable {
     }
 
     public void addSeed() {
-        seedMapper.addSeeds(newSeed);
+        //seedMapper.addSeeds(newSeed);
+        MybatisUtil.run(SeedMapper.class, seedMapper -> seedMapper.addSeeds(newSeed));
         seeds.add(newSeed);
         resetNewSeed();
     }
@@ -104,8 +108,12 @@ public class SeedRegister implements Serializable {
     }
 
     public void saveSeedConfigs() {
-        seedMapper.deleteSeedConfigBySeedId(selectedSeed.getId());
-        seedMapper.insertSeedConfig(seedConfigs);
+        MybatisUtil.run(SeedMapper.class, seedMapper -> {
+           seedMapper.deleteSeedConfigBySeedId(selectedSeed.getId());
+           seedMapper.insertSeedConfig(seedConfigs);
+        });
+        //seedMapper.deleteSeedConfigBySeedId(selectedSeed.getId());
+        //seedMapper.insertSeedConfig(seedConfigs);
     }
 
     private void resetNewSeed() {
