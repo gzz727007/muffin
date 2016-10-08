@@ -92,6 +92,7 @@ public class SeedRegister implements Serializable {
 
     public void addSeed() {
         seedMapper.addSeeds(newSeed);
+        seeds.add(newSeed);
         resetNewSeed();
     }
 

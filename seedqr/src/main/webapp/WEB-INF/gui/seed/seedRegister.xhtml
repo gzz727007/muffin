@@ -18,7 +18,8 @@
                                      value="#{seedRegister.newSeed.seedUiDisplay}"/>
                     </p:column>
                     <p:column>
-                        <p:commandButton value="添加" process="@form" update="seedTable"
+                        <p:commandButton value="添加" process="@form"
+                                         update="newSeedName newSeedUiDisplay seedTable"
                                          action="#{seedRegister.addSeed}"/>
                     </p:column>
                 </p:row>
