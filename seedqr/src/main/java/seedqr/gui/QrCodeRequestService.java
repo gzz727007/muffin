@@ -75,8 +75,6 @@ public class QrCodeRequestService {
             Files.createDirectories(SEED_QR_DIR);
             try (ZipOutputStream out = new ZipOutputStream(Files.newOutputStream(
                     SEED_QR_DIR.resolve(qrCodeRequest.getFileName())))) {
-                out.setMethod(ZipOutputStream.STORED);
-
                 for (int i = 0; i < amount; i++) {
                     QrCode qrCode = qrCodes.get(i);
                     out.putNextEntry(new ZipEntry(qrCode.getUnitCode() + ".png"));
