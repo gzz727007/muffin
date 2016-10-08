@@ -22,7 +22,6 @@ import seedqr.util.MybatisUtil;
 public class SeedRegister implements Serializable {
     private static final Map<String, String> BASIC_SEED_CONFIG_PARA_NAMES = new LinkedHashMap<>();
     static {
-        BASIC_SEED_CONFIG_PARA_NAMES.put("进口商", "在此输入地址、负责人、联系电话等。");
         BASIC_SEED_CONFIG_PARA_NAMES.put("种子亲本", "在此输入父本名称、母本名称等。");
         BASIC_SEED_CONFIG_PARA_NAMES.put("产地", "在此输入生产基地名称、基地负责人、代生产公司名称等。");
         BASIC_SEED_CONFIG_PARA_NAMES.put("生产时间", "在此输入年份、父母本播种时间、收种时间等。");
@@ -35,6 +34,7 @@ public class SeedRegister implements Serializable {
         BASIC_SEED_CONFIG_PARA_NAMES.put("生产公司", "在此输入公司名称、生产许可证号等。");
         BASIC_SEED_CONFIG_PARA_NAMES.put("经营公司", "在此输入公司名称、生产、经营许可证号等。");
         BASIC_SEED_CONFIG_PARA_NAMES.put("品种名称", "在此输入审定名称、审定编号等。");
+        BASIC_SEED_CONFIG_PARA_NAMES.put("进口商", "在此输入地址、负责人、联系电话等。");
     }
 
     @Inject
