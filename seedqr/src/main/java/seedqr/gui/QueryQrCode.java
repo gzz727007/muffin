@@ -56,21 +56,26 @@ public class QueryQrCode implements Serializable {
     public void query() throws Exception {
         if (id != null && id.length() == 19) {
             if (id.startsWith("1000")) {
-                String targets = MybatisUtil.getMapper(QrCodeMapper.class).getTargetsBySrc(id);
+                //String targets = MybatisUtil.getMapper(QrCodeMapper.class).getTargetsBySrc(id);
+                String targets = MybatisUtil.call(QrCodeMapper.class, codeMapper -> codeMapper.getTargetsBySrc(id));
                 if (targets!=null && !targets.equals("")) {
-                    codeList = MybatisUtil.getMapper(QrCodeMapper.class).getQrCodeByUnitIds(targets);
+                    //codeList = MybatisUtil.getMapper(QrCodeMapper.class).getQrCodeByUnitIds(targets);
+                    codeList = MybatisUtil.call(QrCodeMapper.class, codeMapper -> codeMapper.getQrCodeByUnitIds(targets));
                     if (codeList!= null && codeList.size() > 0) {
                         isExisting = true;
                         isUnit = false;
                     }
                 }
             } else {
-                codeList = MybatisUtil.getMapper(QrCodeMapper.class).getQrCodeByUnitId(id);
+                //codeList = MybatisUtil.getMapper(QrCodeMapper.class).getQrCodeByUnitId(id);
+                MybatisUtil.call(QrCodeMapper.class, codeMapper -> codeMapper.getQrCodeByUnitId(id));
                 if (codeList!= null && codeList.size() > 0) {
                     isExisting = true;
                     isUnit = true;
-                    seedConfigs = MybatisUtil.getMapper(SeedMapper.class).getAllSeedConfigBySeedId(codeList.get(0).getSeedId());
-                    saleInfoList = MybatisUtil.getMapper(SaleMapper.class).getSaleInfoByType(codeList.get(0).getId(), 1);
+                    //seedConfigs = MybatisUtil.getMapper(SeedMapper.class).getAllSeedConfigBySeedId(codeList.get(0).getSeedId());
+                    //saleInfoList = MybatisUtil.getMapper(SaleMapper.class).getSaleInfoByType(codeList.get(0).getId(), 1);
+                    seedConfigs = MybatisUtil.call(SeedMapper.class, seedMapper -> seedMapper.getAllSeedConfigBySeedId(codeList.get(0).getSeedId()));
+                    saleInfoList = MybatisUtil.call(SaleMapper.class, saleMapper -> saleMapper.getSaleInfoByType(codeList.get(0).getId(), 1));
                 }
             }
         }

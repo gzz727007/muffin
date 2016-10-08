@@ -45,7 +45,7 @@
                     <p:column colspan="2">
                         <p:selectOneMenu id="salerInfo" value="#{stockOut.salerId}"
                                              style="font-size: 90%;">
-                    <f:selectItems value="#{stockOut.salers}"
+                            <f:selectItems value="#{wholesalerEditor.salers}"
                                    var="saler" itemLabel="#{saler.companyName}" itemValue="#{saler.id}" />
                 </p:selectOneMenu>
                     </p:column>
