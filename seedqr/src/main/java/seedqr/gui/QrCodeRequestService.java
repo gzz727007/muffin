@@ -37,6 +37,7 @@ public class QrCodeRequestService {
         int finishedSize = 0;
 
         List<QrCode> qrCodes = new ArrayList<>(amount);
+        List<QrCode> curr = new ArrayList<>(500);
         int sequence = MybatisUtil.call(SeqMapper.class,
                 seqMapper -> seqMapper.nextVal(user.getCompanyCode(), amount));
         Random random = ThreadLocalRandom.current();
@@ -58,16 +59,27 @@ public class QrCodeRequestService {
             qrCode.setTrackingUrl("http://www.zgzzcx.com/s?id=" + unitCode);
 
             qrCodes.add(qrCode);
-
+            curr.add(qrCode);
             if (i != 0 && i % 1000 == 0) {
                 finishedSize += 1000;
                 updateProgress(qrCodeRequest.getId(),
                         finishedSize * 100 / taskSize);
             }
+            if (i != 0 && i % 500 == 0) {
+                MybatisUtil.run(QrCodeMapper.class, qrCodeMapper -> {
+                    qrCodeMapper.insertQrCode(curr);
+                });
+                curr.clear();
+            }
+        }
+        
+        if (curr.size() > 0 ) {
+            MybatisUtil.run(QrCodeMapper.class, qrCodeMapper -> {
+                    qrCodeMapper.insertQrCode(curr);
+                });
         }
 
         MybatisUtil.run(QrCodeMapper.class, qrCodeMapper -> {
-            qrCodeMapper.insertQrCode(qrCodes);
             qrCodeMapper.updateRequestProgress(qrCodeRequest.getId(), 60);
         });
 
