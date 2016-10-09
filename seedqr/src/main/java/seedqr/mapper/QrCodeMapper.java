@@ -15,6 +15,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.UpdateProvider;
 import seedqr.model.QrCode;
 import seedqr.model.QrCodeRequest;
 
@@ -59,6 +60,9 @@ public interface QrCodeMapper {
     @Update("UPDATE qrcode_request SET file_name =#{fileName} WHERE id = #{id}")
     int updateRequestFileName(@Param("id")int id, @Param("fileName")String fileName);
     
+    @UpdateProvider(type = QrCodeMapperProvider.class, method = "updateQrCodeSeedId")
+    int updateQrCodeSeedId(@Param("qrcodes")String qrcodes, @Param("seedId")Integer seedId);
+    
     public static class QrCodeMapperProvider {
 
 		public String inserAll(Map<String, List<QrCode>> map) {
@@ -87,5 +91,18 @@ public interface QrCodeMapper {
                     return stringBuilder.toString();
                 }
 
+                
+                public String updateQrCodeSeedId(Map<String, Object> map) {
+                    String qrcodes = map.get("qrcodes").toString();
+                    Integer seedId = (Integer) map.get("seedId");
+                    
+                    StringBuilder stringBuilder = new StringBuilder();
+                    stringBuilder.append("UPDATE `qr_code` SET seed_id = ");
+                    stringBuilder.append(seedId);
+                    stringBuilder.append(" WHERE unit_code IN ( ");
+                    stringBuilder.append(qrcodes);
+                    stringBuilder.append(")");
+                    return stringBuilder.toString();
+                }
 	}
 }

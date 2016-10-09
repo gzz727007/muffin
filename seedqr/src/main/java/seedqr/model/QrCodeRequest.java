@@ -93,5 +93,10 @@ public class QrCodeRequest {
     public void setFileName(String fileName) {
         this.fileName = fileName;
     }
+
+    @Override
+    public String toString() {
+        return "QrCodeRequest{" + "id=" + id + ", userId=" + userId + ", seedId=" + seedId + ", seedName=" + seedName + ", companyName=" + companyName + ", amount=" + amount + ", createTime=" + createTime + ", progress=" + progress + ", fileName=" + fileName + '}';
+    }
     
 }

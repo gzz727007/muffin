@@ -119,6 +119,6 @@ public class SeedRegister implements Serializable {
     private void resetNewSeedConfig() {
         newSeedConfig = new SeedConfig();
         newSeedConfig.setType(1);
-        newSeedConfig.setParaName("进口商");
+        newSeedConfig.setParaName("种子亲本");
     }
 }

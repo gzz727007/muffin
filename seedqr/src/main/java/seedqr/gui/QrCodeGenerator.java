@@ -109,7 +109,7 @@ public class QrCodeGenerator implements Serializable {
         Date date = new Date();
         qrCodeRequest.setCreateTime(date);
         qrCodeRequest.setProgress(0);
-        qrCodeRequest.setFileName("种子二维码"
+        qrCodeRequest.setFileName(seed.getSeedName() + "-"
                 + new SimpleDateFormat("yyyyMMddHHmmssSSS").format(date) + ".zip");
 
         MybatisUtil.run(QrCodeMapper.class,

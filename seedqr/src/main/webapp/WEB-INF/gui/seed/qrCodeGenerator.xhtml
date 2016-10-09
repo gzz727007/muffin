@@ -10,14 +10,14 @@
                                  onclick="PF('generateDialog').show();"/>
             </p>
             <p:dataTable id="qrCodeRequestTable" value="#{qrCodeGenerator.qrCodeRequests}"
-                         var="qrCodeRequest" paginator="true" rows="5"
+                         var="qrCodeRequest" paginator="true" rows="10"
                          emptyMessage="尚未添加生成二维码的任务。">
                 <p:column headerText="种子名称">#{qrCodeRequest.seedName}</p:column>
                 <p:column headerText="生产经营者名称">#{qrCodeRequest.companyName}</p:column>
                 <p:column headerText="数量">#{qrCodeRequest.amount}</p:column>
                 <p:column headerText="创建时间">
                     <h:outputText value="#{qrCodeRequest.createTime}">
-                        <f:convertDateTime type="both" pattern="yyyy-MM-dd HH:mm:ss"/>
+                        <f:convertDateTime type="both" pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8" locale="cn"/>
                     </h:outputText>
                 </p:column>
                 <p:column headerText="进度">#{qrCodeRequest.progress}%</p:column>

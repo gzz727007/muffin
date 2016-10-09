@@ -25,6 +25,7 @@ public class PackScanner implements Serializable {
     private String packCode;
     private String bulkPackCode;
     private List<String> smallPackCodes;
+    private int seedId;
 
     @PostConstruct
     private void init() {
@@ -56,11 +57,27 @@ public class PackScanner implements Serializable {
         return smallPackCodes;
     }
 
+    public int getSeedId() {
+        return seedId;
+    }
+
+    public void setSeedId(int seedId) {
+        this.seedId = seedId;
+    }
+
+    
+    
     public void addPackCode() {
         if (packCode.startsWith("1000")) {
             bulkPackCode = packCode;
         } else {
-            smallPackCodes.add(packCode);
+            if(amount == smallPackCodes.size()) {
+                FacesContext facesContext = FacesContext.getCurrentInstance();
+                facesContext.addMessage(null, new FacesMessage(
+                    FacesMessage.SEVERITY_ERROR, "小包已经扫满。", null));
+            } else {
+                smallPackCodes.add(packCode);
+            }
         }
         packCode = null;
     }
@@ -80,10 +97,17 @@ public class PackScanner implements Serializable {
                     + smallPackCodes.size() + "）不一致。", null));
             return;
         }
-
+        
+//        if (seedId ==0) {
+//            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+//                    "请选择种子批次！", null));
+//            return;
+//        }
+        
         MybatisUtil.run(QrCodeMapper.class,
-                qrCodeMapper -> qrCodeMapper.addQrCodeMapping(bulkPackCode,
-                        smallPackCodes.stream().collect(Collectors.joining(","))));
+                qrCodeMapper -> {qrCodeMapper.addQrCodeMapping(bulkPackCode,
+                        smallPackCodes.stream().collect(Collectors.joining(",")));
+                qrCodeMapper.updateQrCodeSeedId(smallPackCodes.stream().collect(Collectors.joining(",")), seedId);});
         facesContext.addMessage(null, new FacesMessage(
                 FacesMessage.SEVERITY_INFO, "绑定成功。", null));
         bulkPackCode = null;

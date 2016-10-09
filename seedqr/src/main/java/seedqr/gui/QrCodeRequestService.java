@@ -91,7 +91,7 @@ public class QrCodeRequestService {
                     QrCode qrCode = qrCodes.get(i);
                     out.putNextEntry(new ZipEntry(qrCode.getUnitCode() + ".png"));
                     QRCode.from(formatQrCode(qrCode, manufacturer))
-                            .withCharset("UTF-8").writeTo(out);
+                            .withCharset("utf-8").writeTo(out);
 
                     if (i != 0 && i % 1000 == 0) {
                         finishedSize += 1000;
