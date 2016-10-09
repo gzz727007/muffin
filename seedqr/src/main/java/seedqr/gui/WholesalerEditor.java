@@ -65,7 +65,6 @@ public class WholesalerEditor implements Serializable {
                 provinces.add(region);
             }
         }
-        System.out.println("init:" + provinces.size() );
         if (provinces.size() > 0) {
             resetCity(provinces.get(0).getId());
         }
@@ -77,10 +76,7 @@ public class WholesalerEditor implements Serializable {
     private void resetCity(int provinceId) {
         citys.clear();
         for (Region region : allRegion) {
-            System.out.println("Region:" + region.toString() );
-            System.out.println("provinceId:" + provinceId );
             if (region.getLevel() == 2 && region.getParentId() == provinceId) {
-                System.out.println("!!!!!!!!!!!provinceId:" + provinceId);
                 citys.add(region);
             }
         }
@@ -90,7 +86,6 @@ public class WholesalerEditor implements Serializable {
         district.clear();
         for (Region region : allRegion) {
             if (region.getLevel() == 3 && region.getParentId() == cityId) {
-                System.out.println("provinceId:" + cityId);
                 district.add(region);
             }
         }
@@ -158,9 +153,7 @@ public class WholesalerEditor implements Serializable {
     }
 
     public void provinceChange(ValueChangeEvent event) {
-        System.out.println("provinceChange:" + event.getNewValue());
         int provinceId = Integer.valueOf(event.getNewValue().toString());
-        System.out.println("provinceId:" + provinceId);
         resetCity(provinceId);
         if (citys.size() > 0) {
             resetDistrict(citys.get(0).getId());
@@ -169,12 +162,10 @@ public class WholesalerEditor implements Serializable {
 
     public void cityChange(ValueChangeEvent event) {
         int cityId = Integer.valueOf(event.getNewValue().toString());
-        System.out.println("cityId:" + cityId);
         resetDistrict(cityId);
     }
 
     public void districtChange(ValueChangeEvent event) {
         int districtId = Integer.valueOf(event.getNewValue().toString());
-        System.out.println("districtId:" + districtId);
     }
 }
