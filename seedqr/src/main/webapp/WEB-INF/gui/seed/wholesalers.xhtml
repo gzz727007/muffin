@@ -7,7 +7,7 @@
         <h:form>
         <p:commandButton value="添加销售商" type="button" onclick="PF('dlg1').show();" /> 
 
-        <p:dataTable id="wholesalerList" var="user" value="#{wholesalerEditor.salers}" paginator="true" rows="10">
+        <p:dataTable id="wholesalerList" var="user" value="#{wholesalerEditor.salers}" paginator="true" rows="10" emptyMessage="没有销售商记录。">
             <p:column headerText="用户名">
                 <h:outputText value="#{user.userName}" />
             </p:column>

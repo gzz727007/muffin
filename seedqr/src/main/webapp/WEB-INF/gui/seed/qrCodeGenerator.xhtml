@@ -10,7 +10,7 @@
                                  onclick="PF('generateDialog').show();"/>
             </p>
             <p:dataTable id="qrCodeRequestTable" value="#{qrCodeGenerator.qrCodeRequests}"
-                         var="qrCodeRequest" paginator="true" rows="5"
+                         var="qrCodeRequest" paginator="true" rows="10"
                          emptyMessage="尚未添加生成二维码的任务。">
                 <p:column headerText="种子名称">#{qrCodeRequest.seedName}</p:column>
                 <p:column headerText="生产经营者名称">#{qrCodeRequest.companyName}</p:column>

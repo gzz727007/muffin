@@ -55,7 +55,7 @@
                     <p:column colspan="3">
                         <h:panelGroup layout="block" styleClass="submit">
                             <p:commandButton value="出库" action="#{stockOut.doOut}"
-                                             process="@this"
+                                             process="salerInfo @this"
                                              update="packCode packCodes"
                                              onstart="PF('dlg2').show();"
                                              oncomplete="PF('dlg2').hide();"/>

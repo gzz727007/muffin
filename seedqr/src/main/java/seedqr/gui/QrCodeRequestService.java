@@ -57,7 +57,8 @@ public class QrCodeRequestService {
 
             qrCode.setUnitCode(Long.parseLong(unitCode));
             qrCode.setTrackingUrl("http://www.zgzzcx.com/s?id=" + unitCode);
-
+            qrCode.setRequestId(qrCodeRequest.getId());
+            
             qrCodes.add(qrCode);
             curr.add(qrCode);
             if (i != 0 && i % 1000 == 0) {
@@ -109,7 +110,7 @@ public class QrCodeRequestService {
                         .collect(Collectors.joining("\r\n")).getBytes());
 
                 out.putNextEntry(new ZipEntry("使用说明.txt"));
-                out.write(("二维码数据.csv\r\n种子二维码对应的数据，每行一条，可用 Excel 直接打开。"
+                out.write(("二维码数据.csv\r\n种子二维码对应的数据，每行一条，可用 Excel 直接打开,也可以用记事本打开。"
                         + "\r\n\r\n种子编码.txt\r\n种子的唯一编号，每行一个。").getBytes());
             }
         } catch (IOException ex) {

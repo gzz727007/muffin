@@ -91,7 +91,9 @@ public class StockOut implements Serializable {
             }
         }
         service.doOut(sessionData.getUser(),longCodes,salerId);
-        
+         facesContext.addMessage(null, new FacesMessage(
+                FacesMessage.SEVERITY_INFO, "出库成功！", null));
+        packCodes.clear();
 //        
 //        String region = MybatisUtil.call(RegionMapper.class, regionMapper -> regionMapper.getSalerRegion(salerId));
 //        List<QrCode> qrcodes = MybatisUtil.call(QrCodeMapper.class, codeMapper -> codeMapper.getQrCodeByUnitId(region));

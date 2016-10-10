@@ -74,7 +74,7 @@
                     <p:column colspan="3">
                         <h:panelGroup layout="block" styleClass="submit">
                             <p:commandButton value="绑定" action="#{packScanner.bindCodes}"
-                                             process="amount bulkPackCode @this"
+                                             process="amount selectSeedId bulkPackCode @this"
                                              update="packCode bulkPackCode smallPackCodes"
                                              oncomplete="PrimeFaces.focus('packCode');"/>
                         </h:panelGroup>

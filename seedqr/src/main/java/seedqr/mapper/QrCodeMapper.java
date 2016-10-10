@@ -99,7 +99,7 @@ public interface QrCodeMapper {
                     StringBuilder stringBuilder = new StringBuilder();
                     stringBuilder.append("UPDATE `qr_code` SET seed_id = ");
                     stringBuilder.append(seedId);
-                    stringBuilder.append(" WHERE unit_code IN ( ");
+                    stringBuilder.append(",bind_time =now() ,status = 1  WHERE unit_code IN ( ");
                     stringBuilder.append(qrcodes);
                     stringBuilder.append(")");
                     return stringBuilder.toString();

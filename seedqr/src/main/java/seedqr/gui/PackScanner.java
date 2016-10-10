@@ -98,12 +98,12 @@ public class PackScanner implements Serializable {
             return;
         }
         
-//        if (seedId ==0) {
-//            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-//                    "请选择种子批次！", null));
-//            return;
-//        }
-        
+        if (seedId ==0) {
+            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "请选择种子批次！", null));
+            return;
+        }
+        // 检查大小和小包是否已经被绑定
         MybatisUtil.run(QrCodeMapper.class,
                 qrCodeMapper -> {qrCodeMapper.addQrCodeMapping(bulkPackCode,
                         smallPackCodes.stream().collect(Collectors.joining(",")));

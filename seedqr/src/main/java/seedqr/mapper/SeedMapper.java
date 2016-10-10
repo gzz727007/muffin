@@ -13,6 +13,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectKey;
 import seedqr.model.Seed;
 import seedqr.model.SeedConfig;
 
@@ -26,6 +27,7 @@ public interface SeedMapper {
     List<Seed> getAllSeeds(@Param("userId")int userId);
     
     @Insert("INSERT INTO user_seed (user_id , seed_name, seed_ui_display) VALUES (#{userId}, #{seedName}, #{seedUiDisplay})")
+    @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="id", before=false, resultType=int.class) 
     int addSeed(Seed seed);
     
     @Select("SELECT id, seed_id seedId, para_name paraName,para_value paraValue,`type`, order_index orderIndex FROM `seed_config` WHERE seed_id = #{seedId}  ORDER BY order_index")
