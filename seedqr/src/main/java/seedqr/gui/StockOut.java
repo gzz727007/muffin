@@ -10,11 +10,18 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import seedqr.mapper.QrCodeMapper;
+import seedqr.mapper.RegionMapper;
+import seedqr.model.QrCode;
+import seedqr.model.SaleInfo;
+import seedqr.util.MybatisUtil;
 
 @Named @ViewScoped @RolesAllowed("user")
 public class StockOut implements Serializable {
     @Inject
     private SessionData sessionData;
+    @Inject
+    private StockOutService service;
     private int userId;
 
     private int salerId;
@@ -60,6 +67,7 @@ public class StockOut implements Serializable {
     
     
     public void doOut() {
+        List<Long> longCodes = new ArrayList<>();
         FacesContext facesContext = FacesContext.getCurrentInstance();
         if (packCodes.isEmpty()) {
             facesContext.addMessage(null, new FacesMessage(
@@ -67,16 +75,27 @@ public class StockOut implements Serializable {
             return;
         }
         
-       // String region = MybatisUtil.getMapper(RegionMapper.class).getSalerRegion(salerId);
+        for (String code : packCodes){
+            if(code==null || code.length()!=19 || !code.startsWith("1000")) {
+                facesContext.addMessage(null, new FacesMessage(
+                FacesMessage.SEVERITY_ERROR, "你输入的" + code + "不满足编码要求，外袋码必须为19位数字，且满足格式。", null));
+                return;
+            }
+            try {
+                longCodes.add(Long.valueOf(code));
+            }catch(Exception e)
+            {
+                facesContext.addMessage(null, new FacesMessage(
+                FacesMessage.SEVERITY_ERROR, "你输入的" + code + "不满足编码要求，外袋码必须为19位数字，且满足格式。", null));
+                return;
+            }
+        }
+        service.doOut(sessionData.getUser(),longCodes,salerId);
+        
+//        
+//        String region = MybatisUtil.call(RegionMapper.class, regionMapper -> regionMapper.getSalerRegion(salerId));
+//        List<QrCode> qrcodes = MybatisUtil.call(QrCodeMapper.class, codeMapper -> codeMapper.getQrCodeByUnitId(region));
         
         
-//
-//        MybatisUtil.getMapper(QrCodeMapper.class).addQrCodeMapping(bulkPackCode,
-//                smallPackCodes.stream().collect(Collectors.joining(",")));
-//        facesContext.addMessage(null, new FacesMessage(
-//                FacesMessage.SEVERITY_INFO, "绑定成功。", null));
-//        bulkPackCode = null;
-//        packCode = null;
-//        smallPackCodes.clear();
     }
 }

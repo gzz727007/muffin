@@ -13,7 +13,7 @@ import java.util.Date;
  */
 public class SaleInfo {
     private int id;
-    private int qrCodeId;
+    private long qrCodeId;
     private int wholesalerId;
     private String message;
     private int type;
@@ -23,7 +23,7 @@ public class SaleInfo {
         
     }
 
-    public SaleInfo(int qrCodeId, int wholesalerId, String message, int type) {
+    public SaleInfo(long qrCodeId, int wholesalerId, String message, int type) {
         this.qrCodeId = qrCodeId;
         this.wholesalerId = wholesalerId;
         this.message = message;
@@ -39,11 +39,11 @@ public class SaleInfo {
         this.id = id;
     }
 
-    public int getQrCodeId() {
+    public long getQrCodeId() {
         return qrCodeId;
     }
 
-    public void setQrCodeId(int qrCodeId) {
+    public void setQrCodeId(long qrCodeId) {
         this.qrCodeId = qrCodeId;
     }
 
