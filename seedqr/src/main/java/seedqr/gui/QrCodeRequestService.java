@@ -100,9 +100,17 @@ public class QrCodeRequestService {
                     }
                 }
 
-                out.putNextEntry(new ZipEntry("二维码数据.txt"));
+                out.putNextEntry(new ZipEntry("二维码数据.csv"));
                 out.write(qrCodes.stream().map(qrCode -> formatQrCode(qrCode, manufacturer))
-                        .collect(Collectors.joining("\r\n\r\n")).getBytes());
+                        .collect(Collectors.joining("\r\n")).getBytes());
+
+                out.putNextEntry(new ZipEntry("种子编码.txt"));
+                out.write(qrCodes.stream().map(QrCode::getUnitCode).map(String::valueOf)
+                        .collect(Collectors.joining("\r\n")).getBytes());
+
+                out.putNextEntry(new ZipEntry("使用说明.txt"));
+                out.write(("二维码数据.csv\r\n种子二维码对应的数据，每行一条，可用 Excel 直接打开。"
+                        + "\r\n\r\n种子编码.txt\r\n种子的唯一编号，每行一个。").getBytes());
             }
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -117,8 +125,8 @@ public class QrCodeRequestService {
     }
 
     private String formatQrCode(QrCode qrCode, String manufacturer) {
-        return "品种名称：" + qrCode.getSeedName() + "\r\n生产经营者名称："
-                + manufacturer + "\r\n单元识别代码：" + qrCode.getUnitCode()
-                + "\r\n追溯网址：" + qrCode.getTrackingUrl();
+        return "品种名称：" + qrCode.getSeedName() + ",生产经营者名称："
+                + manufacturer + ",单元识别代码：" + qrCode.getUnitCode()
+                + ",追溯网址：" + qrCode.getTrackingUrl();
     }
 }
