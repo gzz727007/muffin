@@ -102,7 +102,7 @@ public class QrCodeRequestService {
                 }
 
                 out.putNextEntry(new ZipEntry("二维码数据.csv"));
-                out.write(qrCodes.stream().map(qrCode -> formatQrCode(qrCode, manufacturer))
+                out.write(qrCodes.stream().map(qrCode -> formatQrCodeForCsv(qrCode, manufacturer))
                         .collect(Collectors.joining("\r\n")).getBytes());
 
                 out.putNextEntry(new ZipEntry("种子编码.txt"));
@@ -125,9 +125,15 @@ public class QrCodeRequestService {
                 qrCodeMapper -> qrCodeMapper.updateRequestProgress(requestId, progress));
     }
 
-    private String formatQrCode(QrCode qrCode, String manufacturer) {
+    private String formatQrCodeForCsv(QrCode qrCode, String manufacturer) {
         return "品种名称：" + qrCode.getSeedName() + ",生产经营者名称："
                 + manufacturer + ",单元识别代码：" + qrCode.getUnitCode()
                 + ",追溯网址：" + qrCode.getTrackingUrl();
+    }
+    
+    private String formatQrCode(QrCode qrCode, String manufacturer) {
+        return "品种名称：" + qrCode.getSeedName() + "\r\n生产经营者名称："
+                + manufacturer + "\r\n单元识别代码：" + qrCode.getUnitCode()
+                + "\r\n追溯网址：" + qrCode.getTrackingUrl();
     }
 }
