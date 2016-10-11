@@ -14,6 +14,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 import seedqr.mapper.QrCodeMapper;
+import seedqr.util.CodeUtil;
 import seedqr.util.MybatisUtil;
 
 @Named @ViewScoped @RolesAllowed("user")
@@ -26,6 +27,8 @@ public class PackScanner implements Serializable {
     private String bulkPackCode;
     private List<String> smallPackCodes;
     private int seedId;
+    
+    private boolean isOurSystem = true;
 
     @PostConstruct
     private void init() {
@@ -68,7 +71,7 @@ public class PackScanner implements Serializable {
     
     
     public void addPackCode() {
-        if (packCode.startsWith("1000")) {
+        if (packCode.startsWith("1000") && packCode.length() == 19) {
             bulkPackCode = packCode;
         } else {
             if(amount == smallPackCodes.size()) {
@@ -76,6 +79,10 @@ public class PackScanner implements Serializable {
                 facesContext.addMessage(null, new FacesMessage(
                     FacesMessage.SEVERITY_ERROR, "小包已经扫满。", null));
             } else {
+                if (!CodeUtil.isXingchuCode(packCode)) {
+                    isOurSystem = false;
+                }
+                packCode = CodeUtil.parseCode(packCode);
                 smallPackCodes.add(packCode);
             }
         }
@@ -107,7 +114,8 @@ public class PackScanner implements Serializable {
         MybatisUtil.run(QrCodeMapper.class,
                 qrCodeMapper -> {qrCodeMapper.addQrCodeMapping(bulkPackCode,
                         smallPackCodes.stream().collect(Collectors.joining(",")));
-                qrCodeMapper.updateQrCodeSeedId(smallPackCodes.stream().collect(Collectors.joining(",")), seedId);});
+                if (isOurSystem) 
+                    qrCodeMapper.updateQrCodeSeedId(smallPackCodes.stream().collect(Collectors.joining(",")), seedId);});
         facesContext.addMessage(null, new FacesMessage(
                 FacesMessage.SEVERITY_INFO, "绑定成功。", null));
         bulkPackCode = null;

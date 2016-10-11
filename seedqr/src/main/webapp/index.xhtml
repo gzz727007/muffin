@@ -9,31 +9,49 @@
         <h:outputStylesheet library="css" name="seedqr.css"/>
         <script type="text/javascript">
             function tabShown(index) {
-                PrimeFaces.focus('packCode');
+                PrimeFaces.focus('packCodeInputForPackage');
             }
+            function disableEnter() {
+                if(event.keyCode == 13) {
+                    return false;
+                }
+                return true;
+            }
+            
+            function codeInputKeyup() {
+                if (event.keyCode == 13) {
+                    var inputValue = document.getElementById("packCodeInputForPackage").value;
+                    if (inputValue.indexOf("id") > 0) {
+                        document.getElementById("packCodeInputForPackageAddButton").click();
+                    }
+                }
+                return true;
+            }
+            
         </script>
     </h:head>
     <h:body>
         <p:growl autoUpdate="true"/>
-        <h:panelGroup layout="block" style="margin: auto; width: 1000px; height: 100%;">
+        <h:panelGroup id="indexPanel" layout="block" style="margin: auto; width: 1000px; height: 100%;">
             <h:panelGroup layout="block" style="position: absolute; top: 0; width: 1000px; height: 100px;">
                 <h1 style="text-align: center;">中国种子二维码追溯系统</h1>
             </h:panelGroup>
             <h:panelGroup id="content" layout="block"
                           style="position: absolute; top: 100px; bottom: 50px; width: 1000px;">
                 <h:form rendered="#{!request.isUserInRole('user')}" style="height: 95%;">
-                    <p:panelGrid columns="2" styleClass="transparent" style="margin: auto;">
+                    <p:panelGrid id="loginPanel" columns="2" styleClass="transparent" style="margin: auto;">
                         <p:outputLabel for="user" value="用户："/>
                         <p:inputText id="user" value="#{authenticator.user}"/>
                         <p:outputLabel for="password" value="密码："/>
                         <p:password id="password" value="#{authenticator.password}"/>
                         <f:facet name="footer">
                             <h:panelGroup layout="block" styleClass="submit">
-                                <p:commandButton value="登录" process="@form" update="content"
+                                <p:commandButton id="loginButton" value="登录" process="@form" update="content"
                                                  action="#{authenticator.login}"/>
                             </h:panelGroup>
                         </f:facet>
                     </p:panelGrid>
+                    <p:blockUI block="indexPanel" trigger="loginButton" >登陆中...</p:blockUI>
                 </h:form>
                 <p:tabView prependId="false" style="height: 95%;"
                            activeIndex="#{sessionData.tab}"

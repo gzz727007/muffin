@@ -5,7 +5,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition>
         <h:form prependId="false">
-            <p:panelGrid styleClass="transparent" style="margin: auto;">
+            <p:panelGrid id="packagePanel" styleClass="transparent" style="margin: auto;">
                 <p:row>
                     <p:column>
                         <p:outputLabel for="amount" value="小包数量："/>
@@ -19,18 +19,18 @@
                 </p:row>
                 <p:row>
                     <p:column>
-                        <p:outputLabel for="packCode" value="条码输入："/>
+                        <p:outputLabel for="packCodeInputForPackage" value="条码输入："/>
                     </p:column>
                     <p:column>
-                        <p:inputText id="packCode" maxlength="20"
+                        <p:inputText id="packCodeInputForPackage"
                                      value="#{packScanner.packCode}"/>
-                        <p:focus for="packCode"/>
+                        <p:focus for="packCodeInputForPackage"/>
                     </p:column>
                     <p:column>
-                        <p:commandButton value="添加" action="#{packScanner.addPackCode}"
-                                         process="packCode @this"
-                                         update="packCode bulkPackCode smallPackCodes"
-                                         oncomplete="PrimeFaces.focus('packCode');"/>
+                        <p:commandButton id="packCodeInputForPackageAddButton" value="添加" action="#{packScanner.addPackCode}"
+                                         process="packCodeInputForPackage @this"
+                                         update="packCodeInputForPackage bulkPackCode smallPackCodes"
+                                         oncomplete="PrimeFaces.focus('packCodeInputForPackage');"/>
                     </p:column>
                 </p:row>
                 
@@ -73,14 +73,16 @@
                 <p:row>
                     <p:column colspan="3">
                         <h:panelGroup layout="block" styleClass="submit">
-                            <p:commandButton value="绑定" action="#{packScanner.bindCodes}"
+                            <p:commandButton id="bindPackageCodes" value="绑定" action="#{packScanner.bindCodes}"
                                              process="amount selectSeedId bulkPackCode @this"
-                                             update="packCode bulkPackCode smallPackCodes"
-                                             oncomplete="PrimeFaces.focus('packCode');"/>
+                                             update="packCodeInputForPackage bulkPackCode smallPackCodes"
+                                             oncomplete="PrimeFaces.focus('packCodeInputForPackage');"/>
                         </h:panelGroup>
                     </p:column>
                 </p:row>
             </p:panelGrid>
+            
+            <p:blockUI block="packagePanel" trigger="bindPackageCodes" > 数据保存中...</p:blockUI>
         </h:form>
     </ui:composition>
 </html>
