@@ -18,15 +18,17 @@ public class CodeUtil {
                 isXingchu = true;
             }catch(Exception e) {
             }
-        }
+        } 
         return isXingchu;
     }
     
     public static String parseCode(String code) {
         String retCode = code;
         if(code.length() > 21 && code.contains("id")) {
-            System.out.println(code);
-            retCode = code.substring(code.indexOf("id")+ 1, code.length());
+            retCode = code.substring(code.indexOf("id")+ 3, code.length());
+        }
+        if(code.length() < 19) {
+            retCode= "";
         }
         return retCode;
     }

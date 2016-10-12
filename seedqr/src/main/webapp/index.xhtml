@@ -21,9 +21,11 @@
             function codeInputKeyup() {
                 if (event.keyCode == 13) {
                     var inputValue = document.getElementById("packCodeInputForPackage").value;
+                    console.log(inputValue);
                     if (inputValue.indexOf("id") > 0) {
                         document.getElementById("packCodeInputForPackageAddButton").click();
                     }
+                    return false;
                 }
                 return true;
             }

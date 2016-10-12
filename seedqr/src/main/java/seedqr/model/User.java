@@ -6,6 +6,7 @@
 package seedqr.model;
 
 import java.sql.Date;
+import javax.validation.constraints.Size;
 
 /**
  *
@@ -14,19 +15,23 @@ import java.sql.Date;
 public class User {
     private int id;
     private String userName;
+    @Size(min = 1, max = 20, message = "用户昵称不能为空且不超过 20 个字符。")
     private String name;
     private String password;
     private String urole;
     private String email;
+    @Size(min = 1, max = 20, message = "用户手机不能为空且不超过 20 个字符。")
     private String handphone;
     private Date createTime;
     private String companyCode;
+    @Size(min = 1, max = 50, message = "用户昵称不能为空且不超过 50 个字符。")
     private String companyName;
     private Date lastLoginTime;
     private int type;
     private int parentId;
     private int status;
     private int regionId;
+    @Size(min = 1, max = 20, message = "联系人不能为空且不超过 20 个字符。")
     private String contact;
 
     public int getId() {

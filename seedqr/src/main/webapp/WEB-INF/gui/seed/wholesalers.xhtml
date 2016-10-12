@@ -32,13 +32,13 @@
             
             <p:panelGrid columns="2" styleClass="transparent" style="margin: auto;">
                 <p:outputLabel for="name" value="昵称："/>
-                <p:inputText id="name" value="#{wholesalerEditor.user.name}"/>
+                <p:inputText id="name" value="#{wholesalerEditor.user.name}" maxlength="20"/>
                 <p:outputLabel for="companyName" value="公司名："/>
-                <p:inputText id="companyName" value="#{wholesalerEditor.user.companyName}"/>
+                <p:inputText id="companyName" value="#{wholesalerEditor.user.companyName}" maxlength="50"/>
                 <p:outputLabel for="contact" value="联系人："/>
-                <p:inputText id="contact" value="#{wholesalerEditor.user.contact}"/>
+                <p:inputText id="contact" value="#{wholesalerEditor.user.contact}" maxlength="20"/>
                 <p:outputLabel for="handphone" value="联系电话："/>
-                <p:inputText id="handphone" value="#{wholesalerEditor.user.handphone}"/>
+                <p:inputText id="handphone" value="#{wholesalerEditor.user.handphone}" maxlength="20"/>
                 <p:outputLabel for="province" value="地区："/>
                 <p:selectOneMenu id="province" valueChangeListener="#{wholesalerEditor.provinceChange}" 
                                              style="font-size: 90%;">
@@ -62,7 +62,7 @@
                 </p:selectOneMenu>
                 <f:facet name="footer">
                     <h:panelGroup layout="block" style="width: 100%; text-align: center;">
-                        <p:commandButton value="保存" ajax="true"
+                        <p:commandButton value="保存" ajax="true" process="@form"
                                          action="#{wholesalerEditor.addWholesaler}" oncomplete="PF('dlg1').hide();" update="wholesalerList"/>
                     </h:panelGroup>
                 </f:facet>

@@ -22,7 +22,7 @@ public class PackScanner implements Serializable {
     @Min(value = 20, message = "小包数量必须在 20 到 100 之间。")
     @Max(value = 100, message = "小包数量必须在 20 到 100 之间。")
     private int amount;
-    @Size(min = 1, max = 20, message = "条码不能为空且不超过 20 个字符。")
+    @Size(min = 1, max = 200, message = "条码不能为空且不超过 200 个字符。")
     private String packCode;
     private String bulkPackCode;
     private List<String> smallPackCodes;
@@ -71,18 +71,22 @@ public class PackScanner implements Serializable {
     
     
     public void addPackCode() {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
         if (packCode.startsWith("1000") && packCode.length() == 19) {
             bulkPackCode = packCode;
         } else {
             if(amount == smallPackCodes.size()) {
-                FacesContext facesContext = FacesContext.getCurrentInstance();
                 facesContext.addMessage(null, new FacesMessage(
                     FacesMessage.SEVERITY_ERROR, "小包已经扫满。", null));
             } else {
                 if (!CodeUtil.isXingchuCode(packCode)) {
                     isOurSystem = false;
                 }
+                System.out.println(packCode);
                 packCode = CodeUtil.parseCode(packCode);
+                if (packCode.equals("")) {
+                    return;
+                }
                 smallPackCodes.add(packCode);
             }
         }
