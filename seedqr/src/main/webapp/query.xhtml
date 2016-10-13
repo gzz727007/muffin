@@ -8,12 +8,12 @@
         <h:outputStylesheet library="css" name="seedqr.css"/>
     </h:head>
     <h:body>
-        <h:panelGroup layout="block" style="margin: auto; width: 800px; height: 100%;">
-            <h:panelGroup layout="block" style="position: absolute; top: 0; width: 800px; height: 100px;">
+        <h:panelGroup layout="block" style="margin: auto; width: 1200px; height: 100%;">
+            <h:panelGroup layout="block" style="position: absolute; top: 0; width: 1200px; height: 100px;">
                 <h1 style="text-align: left;">中国种子二维码追溯查询</h1>
             </h:panelGroup>
 
-            <h:panelGroup layout="block" style="position: absolute; top: 100px; width: 800px; height: 100px;">
+            <h:panelGroup layout="block" style="position: absolute; top: 100px; width: 1200px; height: 100px;">
                 <h:form>
                     <p:inputText id="code_id"  class="input-lg" value="#{queryQrCode.id}"/>
                     <p:commandButton id = "query" value="查询" ajax="true" 
@@ -24,8 +24,8 @@
             </h:panelGroup>
 
             <h:panelGroup id="content" layout="block"
-                          style="position: absolute; top: 200px; bottom: 50px; width: 800px;">
-                <h:panelGroup layout="block" rendered="#{!queryQrCode.isExisting()}" style="position: absolute; top: 0; width: 800px; height: 100px;">
+                          style="position: absolute; top: 200px; bottom: 50px; width: 1200px;">
+                <h:panelGroup layout="block" rendered="#{!queryQrCode.isExisting()}" style="position: absolute; top: 0; width: 1200px; height: 100px;">
                     <h6 style="text-align: left;">你所查询的单元识别码信息不存在！</h6>
                 </h:panelGroup>
 
@@ -80,7 +80,7 @@
                 </p:tabView>
             </h:panelGroup>
 
-            <h:panelGroup layout="block" style="text-align: center; position: absolute; bottom: 0; width: 800px; height: 50px;">
+            <h:panelGroup layout="block" style="text-align: center; position: absolute; bottom: 0; width: 1200px; height: 50px;">
                 版权所有 © 2016 成都星楚物流有限公司
             </h:panelGroup>
         </h:panelGroup>

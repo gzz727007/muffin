@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>中国种子二维码追溯系统</title>
+        <h:outputStylesheet library="css" name="seedqr.css"/>
+        <script type="text/javascript">
+            function tabShown(index) {
+                PrimeFaces.focus('packCodeInputForPackage');
+            }
+            function disableEnter() {
+                if(event.keyCode == 13) {
+                    return false;
+                }
+                return true;
+            }
+            
+            function codeInputKeyup() {
+                if (event.keyCode == 13) {
+                    var inputValue = document.getElementById("packCodeInputForPackage").value;
+                    console.log(inputValue);
+                    if (inputValue.indexOf("id") > 0) {
+                        document.getElementById("packCodeInputForPackageAddButton").click();
+                    }
+                    return false;
+                }
+                return true;
+            }
+            
+        </script>
+    </h:head>
+    <h:body>
+        <p:growl autoUpdate="true"/>
+        <h:panelGroup id="indexPanel" layout="block" style="margin: auto; width: 1000px; height: 100%;">
+            <h:panelGroup layout="block" style="position: absolute; top: 0; width: 1000px; height: 100px;">
+                <h1 style="text-align: center;">中国种子二维码追溯系统管理界面</h1>
+            </h:panelGroup>
+            <h:panelGroup id="content" layout="block"
+                          style="position: absolute; top: 100px; bottom: 50px; width: 1000px;">
+                <h:form rendered="#{!request.isUserInRole('admin')}" style="height: 95%;">
+                    <p:panelGrid id="loginPanel" columns="2" styleClass="transparent" style="margin: auto;">
+                        <p:outputLabel for="user" value="用户："/>
+                        <p:inputText id="user" value="#{authenticator.user}"/>
+                        <p:outputLabel for="password" value="密码："/>
+                        <p:password id="password" value="#{authenticator.password}"/>
+                        <f:facet name="footer">
+                            <h:panelGroup layout="block" styleClass="submit">
+                                <p:commandButton id="loginButton" value="登录" process="@form" update="content"
+                                                 action="#{authenticator.login}"/>
+                            </h:panelGroup>
+                        </f:facet>
+                    </p:panelGrid>
+                    <p:blockUI block="indexPanel" trigger="loginButton" >登陆中...</p:blockUI>
+                </h:form>
+                <p:tabView prependId="false" style="height: 95%;"
+                           activeIndex="#{sessionData.tab}"
+                           rendered="#{request.isUserInRole('admin')}"
+                           onTabShow="tabShown(index);">
+                    <p:ajax event="tabChange" listener="#{sessionData.tabChanged}"/>
+            
+                    <p:tab title="用户管理">
+                        <ui:include src="WEB-INF/gui/seed/userMgmt.xhtml"/>
+                    </p:tab>
+                    <p:tab title="二维码生成">
+                        <ui:include src="WEB-INF/gui/seed/packCodeGenerator.xhtml"/>
+                    </p:tab>
+                    
+                </p:tabView>
+            </h:panelGroup>
+            <h:panelGroup layout="block" style="text-align: center; position: absolute; bottom: 0; width: 1000px; height: 50px;">
+                版权所有 © 2016 成都星楚物流有限公司
+            </h:panelGroup>
+        </h:panelGroup>
+    </h:body>
+</html>

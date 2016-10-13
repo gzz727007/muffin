@@ -1,0 +1,73 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition>
+        <h:form>
+        <p:commandButton value="添加厂家用户信息" type="button" onclick="PF('dlg1').show();" /> 
+
+        <p:dataTable id="wholesalerList" var="user" value="#{userMgmt.salers}" paginator="true" rows="10" emptyMessage="没有销售商记录。">
+            <p:column headerText="用户名">
+                <h:outputText value="#{user.userName}" />
+            </p:column>
+            <p:column headerText="昵称">
+                <h:outputText value="#{user.name}" />
+            </p:column>
+
+            <p:column headerText="公司名">
+                <h:outputText value="#{user.companyName}" />
+            </p:column>
+
+            <p:column headerText="联系人名字">
+                <h:outputText value="#{user.contact}" />
+            </p:column>
+
+            <p:column headerText="联系人电话">
+                <h:outputText value="#{user.handphone}" />
+            </p:column>
+        </p:dataTable>
+
+        <p:dialog header="添加销售商" widgetVar="dlg1" modal="true" showEffect="explode" hideEffect="bounce" minHeight="600" width="800">
+            
+            <p:panelGrid columns="2" styleClass="transparent" style="margin: auto;">
+                <p:outputLabel for="name" value="昵称："/>
+                <p:inputText id="name" value="#{userMgmt.user.name}" maxlength="20"/>
+                <p:outputLabel for="companyName" value="公司名："/>
+                <p:inputText id="companyName" value="#{userMgmt.user.companyName}" maxlength="50"/>
+                <p:outputLabel for="contact" value="联系人："/>
+                <p:inputText id="contact" value="#{userMgmt.user.contact}" maxlength="20"/>
+                <p:outputLabel for="handphone" value="联系电话："/>
+                <p:inputText id="handphone" value="#{userMgmt.user.handphone}" maxlength="20"/>
+                <p:outputLabel for="province" value="地区："/>
+                <p:selectOneMenu id="province" valueChangeListener="#{userMgmt.provinceChange}" 
+                                             style="font-size: 90%;">
+                    <f:selectItems value="#{userMgmt.provinces}"
+                                   var="province" itemLabel="#{province.name}" itemValue="#{province.id}"/>
+                                   <p:ajax process="@this" update="city dist"/>
+                </p:selectOneMenu>
+                <p:outputLabel for="city" value=""/>
+                <p:selectOneMenu id="city" valueChangeListener="#{userMgmt.cityChange}"
+                                             style="font-size: 90%;">
+                    <f:selectItems value="#{userMgmt.citys}"
+                                   var="city" itemLabel="#{city.name}" itemValue="#{city.id}" />
+                    <p:ajax process="@this" update="dist"/>
+                </p:selectOneMenu>
+                <p:outputLabel for="dist" value=""/>
+                <p:selectOneMenu id="dist" valueChangeListener="#{userMgmt.districtChange}"
+                                 value="#{userMgmt.user.regionId}"
+                                             style="font-size: 90%;">
+                    <f:selectItems value="#{userMgmt.district}"
+                                   var="dist" itemLabel="#{dist.name}" itemValue="#{dist.id}" />
+                </p:selectOneMenu>
+                <f:facet name="footer">
+                    <h:panelGroup layout="block" style="width: 100%; text-align: center;">
+                        <p:commandButton value="保存" ajax="true" process="@form"
+                                         action="#{userMgmt.addWholesaler}" oncomplete="PF('dlg1').hide();" update="wholesalerList"/>
+                    </h:panelGroup>
+                </f:facet>
+            </p:panelGrid>
+        </p:dialog>
+        </h:form>
+    </ui:composition>
+</html>
