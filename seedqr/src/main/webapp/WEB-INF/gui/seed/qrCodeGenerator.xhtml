@@ -28,7 +28,7 @@
                     <h:outputText value="正在生成" rendered="#{qrCodeRequest.progress lt 100}"/>
                 </p:column>
             </p:dataTable>
-            <p:dialog widgetVar="generateDialog" modal="true">
+            <p:dialog widgetVar="generateDialog" modal="true" header="种子信息">
                 <p:panelGrid styleClass="transparent" style="margin: auto;">
                     <p:row>
                         <p:column>
@@ -66,11 +66,20 @@
                     </p:row>
                     <p:row>
                         <p:column colspan="2" style="text-align: right;">
+                            <h:outputText id="validationFailed" style="display: none;"
+                                          value="#{facesContext.validationFailed}"/>
+                            <script type="text/javascript">
+                                function hideGenerateDialog() {
+                                    if ($('#gen\\:validationFailed').text() === 'false') {
+                                        PF('generateDialog').hide();
+                                    }
+                                }
+                            </script>
                             <p:commandButton value="生成二维码"
                                              action="#{qrCodeGenerator.generateQrCodes}"
                                              process="@widgetVar(generateDialog)"
-                                             update="gen:qrCodeRequestTable @widgetVar(generateDialog)"
-                                             oncomplete="PF('generateDialog').hide();"/>
+                                             update="gen:qrCodeRequestTable gen:validationFailed"
+                                             oncomplete="hideGenerateDialog();"/>
                         </p:column>
                     </p:row>
                 </p:panelGrid>

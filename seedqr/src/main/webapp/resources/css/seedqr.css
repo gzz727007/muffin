@@ -13,6 +13,10 @@ html, body {
     border: none;
 }
 
+.ui-growl {
+    z-index: 999999 !important;
+}
+
 .submit {
     width: 100%;
     text-align: right;
