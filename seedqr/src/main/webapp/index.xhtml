@@ -34,12 +34,11 @@
     </h:head>
     <h:body>
         <p:growl autoUpdate="true"/>
-        <h:panelGroup id="indexPanel" layout="block" style="margin: auto; width: 1000px; height: 100%;">
-            <h:panelGroup layout="block" style="position: absolute; top: 0; width: 1000px; height: 100px;">
+        <h:panelGroup id="indexPanel" layout="block" style="margin: auto; width: 1000px; height: 100%; display: flex; flex-flow: column;">
+            <h:panelGroup layout="block" style="width: 100%; height: 100px; flex: 0 1 auto;">
                 <h1 style="text-align: center;">中国种子二维码追溯系统</h1>
             </h:panelGroup>
-            <h:panelGroup id="content" layout="block"
-                          style="position: absolute; top: 100px; bottom: 50px; width: 1000px;">
+            <h:panelGroup id="content" layout="block" style="width: 100%; flex: 1 1 auto;">
                 <h:form rendered="#{!request.isUserInRole('user')}" style="height: 95%;">
                     <p:panelGrid id="loginPanel" columns="2" styleClass="transparent" style="margin: auto;">
                         <p:outputLabel for="user" value="用户："/>
@@ -86,7 +85,7 @@
                     </p:tab>
                 </p:tabView>
             </h:panelGroup>
-            <h:panelGroup layout="block" style="text-align: center; position: absolute; bottom: 0; width: 1000px; height: 50px;">
+            <h:panelGroup layout="block" style="width: 100%; height: 50px; flex: 0 1 auto; text-align: center;">
                 版权所有 © 2016 成都星楚物流有限公司
             </h:panelGroup>
         </h:panelGroup>
