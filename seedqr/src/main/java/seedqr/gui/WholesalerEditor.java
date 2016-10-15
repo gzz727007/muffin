@@ -51,6 +51,9 @@ public class WholesalerEditor implements Serializable {
     private int selectDistId;
     
     @Valid
+    private User selectedUser;
+    
+    @Valid
     private User user = new User();
 
     @PostConstruct
@@ -111,6 +114,20 @@ public class WholesalerEditor implements Serializable {
         salers = MybatisUtil.call(UserMapper.class, userMapper -> userMapper.getUsersByParent(userId));
         //salers = MybatisUtil.getMapper(UserMapper.class).getUsersByParent(userId);
     }
+    
+    public void modifyWholesaler() {
+        MybatisUtil.run(UserMapper.class, userMapper -> {
+            userMapper.updateUser(selectedUser);
+            salers = userMapper.getUsersByParent(userId);
+        });
+    }
+    
+    public void deleteWholesaler() {
+        MybatisUtil.run(UserMapper.class, userMapper -> {
+            userMapper.deleteUser(selectedUser);
+            salers = userMapper.getUsersByParent(userId);
+        });
+    }
 
     public User getUser() {
         return user;
@@ -150,6 +167,16 @@ public class WholesalerEditor implements Serializable {
 
     public void setDistrict(List<Region> district) {
         this.district = district;
+    }
+
+    public User getSelectedUser() {
+        System.out.println("getSelectedUser:" + selectedUser);
+        return selectedUser;
+    }
+
+    public void setSelectedUser(User selectedUser) {
+        System.out.println("setSelectedUser:" + selectedUser);
+        this.selectedUser = selectedUser;
     }
 
     public void provinceChange(ValueChangeEvent event) {

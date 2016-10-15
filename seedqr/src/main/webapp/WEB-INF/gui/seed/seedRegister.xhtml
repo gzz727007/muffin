@@ -105,6 +105,12 @@
                     <p:column headerText="值">
                         <h:outputText value="#{seedConfig.paraValue}"/>
                     </p:column>
+                    <p:column headerText="操作">
+                        <p:commandButton value="删除" update="seedConfigTable" action="#{seedRegister.removeSeedConfig}">
+                        <f:setPropertyActionListener value="#{seedConfig}"
+                                                     target="#{seedRegister.selectSeedConfig}"/>
+                        </p:commandButton>
+                    </p:column>
                 </p:dataTable>
                 <h:panelGroup layout="block" styleClass="submit">
                     <p:commandButton value="保存" action="#{seedRegister.saveSeedConfigs}"

@@ -6,9 +6,11 @@
 package seedqr.mapper;
 
 import java.util.List;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import seedqr.model.User;
 
 /**
@@ -49,6 +51,14 @@ public interface UserMapper {
 "    #{userName}, #{name}, #{password}, #{urole}, #{email}, #{handphone},#{contact}, NOW(), '', #{companyName}, NULL, 2,#{parentId}, '1', #{regionId}" +
 "  )")
     int addResaleUser(User user);
+    
+    
+    @Update("UPDATE `user` SET user_name = #{userName} , `name` = #{name} , contact = #{contact} , handphone=#{handphone} , company_name = #{companyName} WHERE id = #{id}")
+    int updateUser(User user);
+    
+    @Delete("DELETE from `user`  where id = #{id}")
+    int deleteUser(User user);
+    
     
     @Select("SELECT " +
 "  `id`, `user_name` userName, `name`, `password`, `urole`, `email`, `handphone`,`contact`, `create_time` createTime, `company_code` companyCode, `company_name` companyName, "

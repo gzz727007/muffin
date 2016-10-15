@@ -6,14 +6,12 @@
     <ui:composition>
         <h:form id="gen">
             <p style="text-align: right;">
-                <p:commandButton type="button" value="输入种子信息以生成二维码"
+                <p:commandButton type="button" value="生成外袋码"
                                  onclick="PF('generateDialog').show();"/>
             </p>
-            <p:dataTable id="qrCodeRequestTable" value="#{qrCodeGenerator.qrCodeRequests}"
+            <p:dataTable id="qrCodeRequestTable" value="#{packageCodeGenerator.qrCodeRequests}"
                          var="qrCodeRequest" paginator="true" rows="10"
-                         emptyMessage="尚未添加生成二维码的任务。">
-                <p:column headerText="种子名称">#{qrCodeRequest.seedName}</p:column>
-                <p:column headerText="生产经营者名称">#{qrCodeRequest.companyName}</p:column>
+                         emptyMessage="尚未添加生成外袋码的任务。">
                 <p:column headerText="数量">#{qrCodeRequest.amount}</p:column>
                 <p:column headerText="创建时间">
                     <h:outputText value="#{qrCodeRequest.createTime}">
@@ -28,40 +26,16 @@
                     <h:outputText value="正在生成" rendered="#{qrCodeRequest.progress lt 100}"/>
                 </p:column>
             </p:dataTable>
-            <p:dialog widgetVar="generateDialog" modal="true" header="种子信息">
+            <p:dialog widgetVar="generateDialog" modal="true" header="外袋码数量">
                 <p:panelGrid styleClass="transparent" style="margin: auto;">
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="seedId" value="种子名称："/>
-                        </p:column>
-                        <p:column>
-                            <p:selectOneMenu id="seedId" value="#{qrCodeGenerator.seedId}">
-                                <f:selectItems value="#{qrCodeGenerator.seeds}" var="seed"
-                                               itemLabel="#{seed.seedName}" itemValue="#{seed.id}"/>
-                            </p:selectOneMenu>
-                        </p:column>
-                        <p:column>
-                            <p:commandButton type="button" value="添加"
-                                             onclick="PF('addSeedDialog').show();"/>
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="manufacturer" value="生产经营者名称："/>
-                        </p:column>
-                        <p:column>
-                            <p:inputText id="manufacturer" maxlength="50"
-                                         value="#{qrCodeGenerator.manufacturer}"/>
-                        </p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="amount" value="包装数量（袋）："/>
+                            <p:outputLabel for="amount" value="数量："/>
                         </p:column>
                         <p:column>
                             <p:spinner id="amount" min="1" max="50000"
                                        stepFactor="1000" size="5"
-                                       value="#{qrCodeGenerator.amount}"/>
+                                       value="#{packageCodeGenerator.amount}"/>
                         </p:column>
                     </p:row>
                     <p:row>
@@ -75,33 +49,11 @@
                                     }
                                 }
                             </script>
-                            <p:commandButton value="生成二维码"
-                                             action="#{qrCodeGenerator.generateQrCodes}"
+                            <p:commandButton value="生成外袋码"
+                                             action="#{packageCodeGenerator.generateQrCodes}"
                                              process="@widgetVar(generateDialog)"
                                              update="gen:qrCodeRequestTable gen:validationFailed"
                                              oncomplete="hideGenerateDialog();"/>
-                        </p:column>
-                    </p:row>
-                </p:panelGrid>
-            </p:dialog>
-            <p:dialog widgetVar="addSeedDialog" header="添加种子" modal="true">
-                <p:panelGrid styleClass="transparent">
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="newSeedName" value="种子名称："/>
-                            <p:inputText id="newSeedName" maxlength="50"
-                                         value="#{qrCodeGenerator.newSeed.seedName}"/>
-                        </p:column>
-                        <p:column>
-                            <p:outputLabel for="newSeedUiDisplay" value="显示名称："/>
-                            <p:inputText id="newSeedUiDisplay" maxlength="50"
-                                         value="#{qrCodeGenerator.newSeed.seedUiDisplay}"/>
-                        </p:column>
-                        <p:column>
-                            <p:commandButton value="添加" process="@widgetVar(addSeedDialog)"
-                                             update="gen:seedId @widgetVar(addSeedDialog)"
-                                             action="#{qrCodeGenerator.addSeed}"
-                                             oncomplete="PF('addSeedDialog').hide();"/>
                         </p:column>
                     </p:row>
                 </p:panelGrid>

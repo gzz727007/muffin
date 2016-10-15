@@ -47,6 +47,8 @@ public class SeedRegister implements Serializable {
     @Valid
     private SeedConfig newSeedConfig;
     private List<SeedConfig> seedConfigs;
+    
+    private SeedConfig selectSeedConfig;
 
     @PostConstruct
     private void init() {
@@ -91,6 +93,15 @@ public class SeedRegister implements Serializable {
         return seedConfigs;
     }
 
+    public SeedConfig getSelectSeedConfig() {
+        return selectSeedConfig;
+    }
+
+    public void setSelectSeedConfig(SeedConfig selectSeedConfig) {
+        this.selectSeedConfig = selectSeedConfig;
+    }
+    
+
     public void addSeed() {
         MybatisUtil.run(SeedMapper.class, seedMapper -> seedMapper.addSeed(newSeed));
         seeds.add(0, newSeed);
@@ -104,6 +115,10 @@ public class SeedRegister implements Serializable {
         resetNewSeedConfig();
     }
 
+    public void removeSeedConfig() {
+        seedConfigs.remove(selectSeedConfig);
+    }
+    
     public void saveSeedConfigs() {
         MybatisUtil.run(SeedMapper.class, seedMapper -> {
             seedMapper.deleteSeedConfigBySeedId(selectedSeed.getId());

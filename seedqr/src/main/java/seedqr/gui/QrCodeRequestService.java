@@ -136,4 +136,87 @@ public class QrCodeRequestService {
                 + manufacturer + "\r\n单元识别代码：" + qrCode.getUnitCode()
                 + "\r\n追溯网址：" + qrCode.getTrackingUrl();
     }
+    
+    @Asynchronous
+    public void generatePackQrCodes(int amount, QrCodeRequest qrCodeRequest) {
+        int taskSize = amount * 5 + 1;
+        int finishedSize = 0;
+
+        List<QrCode> qrCodes = new ArrayList<>(amount);
+        List<QrCode> curr = new ArrayList<>(500);
+        int sequence = MybatisUtil.call(SeqMapper.class,
+                seqMapper -> seqMapper.nextVal("1000", amount));
+        Random random = ThreadLocalRandom.current();
+
+        for (int i = 0; i < amount; i++) {
+            QrCode qrCode = new QrCode();
+            qrCode.setCompanyCode("1000");
+            qrCode.setCompanyName("星楚物流");
+            qrCode.setSeedId(0);
+            qrCode.setSeedName("");
+
+            String unitCode = "1000" + String.format("%08d", sequence - i)
+                    + "0" + String.format("%04d", random.nextInt(9999));
+            Checksum checksum = new Adler32();
+            checksum.update(unitCode.getBytes(), 0, unitCode.length());
+            unitCode += String.format("%02d", checksum.getValue() % 100);
+
+            qrCode.setUnitCode(Long.parseLong(unitCode));
+            qrCode.setTrackingUrl("http://www.zgzzcx.com/s?id=" + unitCode);
+            qrCode.setRequestId(qrCodeRequest.getId());
+            
+            qrCodes.add(qrCode);
+            curr.add(qrCode);
+            if (i != 0 && i % 1000 == 0) {
+                finishedSize += 1000;
+                updateProgress(qrCodeRequest.getId(),
+                        finishedSize * 100 / taskSize);
+            }
+            if (i != 0 && i % 500 == 0) {
+                MybatisUtil.run(QrCodeMapper.class, qrCodeMapper -> {
+                    qrCodeMapper.insertQrCode(curr);
+                });
+                curr.clear();
+            }
+        }
+        
+        if (curr.size() > 0 ) {
+            MybatisUtil.run(QrCodeMapper.class, qrCodeMapper -> {
+                    qrCodeMapper.insertQrCode(curr);
+                });
+        }
+
+        MybatisUtil.run(QrCodeMapper.class, qrCodeMapper -> {
+            qrCodeMapper.updateRequestProgress(qrCodeRequest.getId(), 60);
+        });
+        try {
+            Files.createDirectories(SEED_QR_DIR);
+            try (ZipOutputStream out = new ZipOutputStream(Files.newOutputStream(
+                    SEED_QR_DIR.resolve(qrCodeRequest.getFileName())))) {
+                for (int i = 0; i < amount; i++) {
+                    QrCode qrCode = qrCodes.get(i);
+                    out.putNextEntry(new ZipEntry(qrCode.getUnitCode() + ".png"));
+                    QRCode.from(qrCode.getTrackingUrl())
+                            .withCharset("utf-8").writeTo(out);
+
+                    if (i != 0 && i % 1000 == 0) {
+                        finishedSize += 1000;
+                        updateProgress(qrCodeRequest.getId(),
+                                finishedSize * 100 / taskSize);
+                    }
+                }
+                out.putNextEntry(new ZipEntry("二维码数据.csv"));
+                out.write(qrCodes.stream().map(QrCode::getTrackingUrl).map(String::valueOf)
+                        .collect(Collectors.joining("\r\n")).getBytes());
+
+                out.putNextEntry(new ZipEntry("种子编码.txt"));
+                out.write(qrCodes.stream().map(QrCode::getUnitCode).map(String::valueOf)
+                        .collect(Collectors.joining("\r\n")).getBytes());
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+        updateProgress(qrCodeRequest.getId(), 100);
+    }
 }
