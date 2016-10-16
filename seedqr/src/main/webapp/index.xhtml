@@ -37,6 +37,12 @@
         <h:panelGroup id="indexPanel" layout="block"
                       style="margin: auto; min-width: 1024px; width: 100%; height: 100%; display: flex; flex-flow: column;">
             <h:panelGroup layout="block" style="width: 100%; flex: 0 1 auto;">
+                <h:panelGroup layout="block" style="width: 100%; text-align: right;">
+                    <h:form id="logout">
+                        <p:commandLink value="退出" action="#{authenticator.logout}"
+                                       rendered="#{request.remoteUser ne null}"/>
+                    </h:form>
+                </h:panelGroup>
                 <h1 style="text-align: center;">中国种子二维码追溯系统</h1>
             </h:panelGroup>
             <h:panelGroup id="content" layout="block" style="width: 100%; flex: 1 1 auto;">
@@ -49,7 +55,7 @@
                         <f:facet name="footer">
                             <h:panelGroup layout="block" styleClass="submit">
                                 <p:commandButton id="loginButton" value="登录"
-                                                 process="@form" update="content"
+                                                 process="@form" update="logout content"
                                                  action="#{authenticator.login}"/>
                             </h:panelGroup>
                         </f:facet>

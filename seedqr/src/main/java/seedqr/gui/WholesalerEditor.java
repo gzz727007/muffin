@@ -15,10 +15,10 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.validation.Valid;
+import seedqr.mapper.CompanyMapper;
 import seedqr.mapper.RegionMapper;
-import seedqr.mapper.UserMapper;
+import seedqr.model.Company;
 import seedqr.model.Region;
-import seedqr.model.User;
 import seedqr.util.MybatisUtil;
 
 /**
@@ -34,7 +34,7 @@ public class WholesalerEditor implements Serializable {
     private SessionData sessionData;
     private int userId;
 
-    private List<User> salers;
+    private List<Company> salers;
 
     private List<Region> allRegion;
 
@@ -51,16 +51,18 @@ public class WholesalerEditor implements Serializable {
     private int selectDistId;
     
     @Valid
-    private User selectedUser;
+    private Company selectedSaler;
     
     @Valid
-    private User user = new User();
+    private Company saler = new Company();
 
     @PostConstruct
     private void init() {
         userId = sessionData.getUser().getId();
-        salers = MybatisUtil.call(UserMapper.class, userMapper -> userMapper.getUsersByParent(userId));
-        allRegion = MybatisUtil.call(RegionMapper.class, regionMapper -> regionMapper.getAllRegion());
+        salers = MybatisUtil.call(CompanyMapper.class,
+                companyMapper -> companyMapper.getWholesalers());
+        allRegion = MybatisUtil.call(RegionMapper.class,
+                regionMapper -> regionMapper.getAllRegion());
         //salers = MybatisUtil.getMapper(UserMapper.class).getUsersByParent(userId);
         //allRegion = MybatisUtil.getMapper(RegionMapper.class).getAllRegion();
         for (Region region : allRegion) {
@@ -98,85 +100,71 @@ public class WholesalerEditor implements Serializable {
     }
 
     public void addWholesaler() {
-        if (user!=null) {
+        if (saler!=null) {
             System.out.println("user!=null:");
-            user.setUserName(System.currentTimeMillis()+"");
+//            saler.setUserName(System.currentTimeMillis()+"");
             System.out.println("selectDistId:" + selectDistId);
             if (selectDistId > 0 ){
-                user.setParentId(userId);
-                user.setRegionId(selectDistId);
-                user.setUrole("saler");
-                user.setPassword("12345678");
-                MybatisUtil.run(UserMapper.class, userMapper -> userMapper.addResaleUser(user));
+                saler.setParentId(userId);
+                saler.setRegionId(selectDistId);
+//                saler.setUrole("saler");
+//                saler.setPassword("12345678");
+                MybatisUtil.run(CompanyMapper.class,
+                        companyMapper -> companyMapper.addCompany(saler));
                 //MybatisUtil.getMapper(UserMapper.class).addResaleUser(user);
             }
         }
-        salers = MybatisUtil.call(UserMapper.class, userMapper -> userMapper.getUsersByParent(userId));
+        salers = MybatisUtil.call(CompanyMapper.class,
+                companyMapper -> companyMapper.getWholesalers());
         //salers = MybatisUtil.getMapper(UserMapper.class).getUsersByParent(userId);
     }
     
     public void modifyWholesaler() {
-        MybatisUtil.run(UserMapper.class, userMapper -> {
-            userMapper.updateUser(selectedUser);
-            salers = userMapper.getUsersByParent(userId);
-        });
+//        MybatisUtil.run(UserMapper.class, userMapper -> {
+//            userMapper.updateUser(selectedSaler);
+//            salers = userMapper.getUsersByParent(userId);
+//        });
     }
     
     public void deleteWholesaler() {
-        MybatisUtil.run(UserMapper.class, userMapper -> {
-            userMapper.deleteUser(selectedUser);
-            salers = userMapper.getUsersByParent(userId);
+        MybatisUtil.run(CompanyMapper.class, companyMapper -> {
+            companyMapper.deleteCompany(selectedSaler.getId());
+            salers = companyMapper.getWholesalers();
         });
     }
 
-    public User getUser() {
-        return user;
+    public Company getSaler() {
+        return saler;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setSaler(Company saler) {
+        this.saler = saler;
     }
 
-    public List<User> getSalers() {
+    public List<Company> getSalers() {
         return salers;
-    }
-
-    public void setSalers(List<User> salers) {
-        this.salers = salers;
     }
 
     public List<Region> getProvinces() {
         return provinces;
     }
 
-    public void setProvinces(List<Region> provinces) {
-        this.provinces = provinces;
-    }
-
     public List<Region> getCitys() {
         return citys;
-    }
-
-    public void setCitys(List<Region> citys) {
-        this.citys = citys;
     }
 
     public List<Region> getDistrict() {
         return district;
     }
 
-    public void setDistrict(List<Region> district) {
-        this.district = district;
+    public Company getSelectedSaler() {
+        System.out.println("getSelectedUser:" + selectedSaler);
+        return selectedSaler;
     }
 
-    public User getSelectedUser() {
-        System.out.println("getSelectedUser:" + selectedUser);
-        return selectedUser;
-    }
-
-    public void setSelectedUser(User selectedUser) {
-        System.out.println("setSelectedUser:" + selectedUser);
-        this.selectedUser = selectedUser;
+    public void setSelectedSaler(Company selectedSaler) {
+        System.out.println("setSelectedUser:" + selectedSaler);
+        this.selectedSaler = selectedSaler;
     }
 
     public void provinceChange(ValueChangeEvent event) {

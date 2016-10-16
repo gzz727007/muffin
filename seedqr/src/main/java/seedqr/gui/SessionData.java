@@ -6,11 +6,15 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import org.primefaces.component.tabview.TabView;
 import org.primefaces.event.TabChangeEvent;
+import seedqr.mapper.CompanyMapper;
+import seedqr.model.Company;
 import seedqr.model.User;
+import seedqr.util.MybatisUtil;
 
 @Named @SessionScoped @RolesAllowed("user")
 public class SessionData implements Serializable {
     private User user;
+    private Company company;
     private int tab;
 
     public int getTab() {
@@ -27,6 +31,12 @@ public class SessionData implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+        company = MybatisUtil.call(CompanyMapper.class,
+                companyMapper -> companyMapper.getCompany(user.getCompanyId()));
+    }
+
+    public Company getCompany() {
+        return company;
     }
 
     public void tabChanged(TabChangeEvent tabChangeEvent) {

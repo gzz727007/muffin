@@ -69,8 +69,8 @@ public class UserMgmt implements Serializable {
         }
         if (user != null) {
             System.out.println("user!=null:");
-            user.setParentId(userId);
-            user.setRegionId(selectDistId);
+//            user.setParentId(userId);
+//            user.setRegionId(selectDistId);
             user.setUrole("user");
             user.setPassword("12345678");
             MybatisUtil.run(UserMapper.class, userMapper -> userMapper.addProductUser(user));

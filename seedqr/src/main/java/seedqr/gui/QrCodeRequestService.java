@@ -20,10 +20,10 @@ import javax.ejb.TransactionManagementType;
 import net.glxn.qrgen.javase.QRCode;
 import seedqr.mapper.QrCodeMapper;
 import seedqr.mapper.SeqMapper;
+import seedqr.model.Company;
 import seedqr.model.QrCode;
 import seedqr.model.QrCodeRequest;
 import seedqr.model.Seed;
-import seedqr.model.User;
 import seedqr.util.MybatisUtil;
 
 @Stateless @TransactionManagement(TransactionManagementType.BEAN)
@@ -31,7 +31,7 @@ public class QrCodeRequestService {
     public static final Path SEED_QR_DIR = Paths.get("/data/seedqr");
 
     @Asynchronous
-    public void generateQrCodes(User user, Seed seed,
+    public void generateQrCodes(Company company, Seed seed,
             String manufacturer, int amount, QrCodeRequest qrCodeRequest) {
         int taskSize = amount * 5 + 1;
         int finishedSize = 0;
@@ -39,17 +39,17 @@ public class QrCodeRequestService {
         List<QrCode> qrCodes = new ArrayList<>(amount);
         List<QrCode> curr = new ArrayList<>(500);
         int sequence = MybatisUtil.call(SeqMapper.class,
-                seqMapper -> seqMapper.nextVal(user.getCompanyCode(), amount));
+                seqMapper -> seqMapper.nextVal(company.getCode(), amount));
         Random random = ThreadLocalRandom.current();
 
         for (int i = 0; i < amount; i++) {
             QrCode qrCode = new QrCode();
-            qrCode.setCompanyCode(user.getCompanyCode());
-            qrCode.setCompanyName(user.getCompanyName());
+            qrCode.setCompanyCode(company.getCode());
+            qrCode.setCompanyName(company.getName());
             qrCode.setSeedId(0);
             qrCode.setSeedName(seed.getSeedName());
 
-            String unitCode = user.getCompanyCode() + String.format("%08d", sequence - i)
+            String unitCode = company.getCode() + String.format("%08d", sequence - i)
                     + "0" + String.format("%04d", random.nextInt(9999));
             Checksum checksum = new Adler32();
             checksum.update(unitCode.getBytes(), 0, unitCode.length());

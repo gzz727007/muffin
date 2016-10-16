@@ -50,7 +50,7 @@ public class QrCodeGenerator implements Serializable {
             seedId = seeds.get(0).getId();
         }
         resetNewSeed();
-        manufacturer = user.getCompanyName();
+        manufacturer = sessionData.getCompany().getName();
         amount = 1000;
     }
 
@@ -116,8 +116,8 @@ public class QrCodeGenerator implements Serializable {
                 qrCodeMapper -> qrCodeMapper.addQrCodeRequest(qrCodeRequest));
         qrCodeRequests.add(0, qrCodeRequest);
 
-        qrCodeRequestService.generateQrCodes(
-                user, seed, manufacturer, amount, qrCodeRequest);
+        qrCodeRequestService.generateQrCodes(sessionData.getCompany(),
+                seed, manufacturer, amount, qrCodeRequest);
     }
 
     public void downloadQrCodeZip(String fil) {

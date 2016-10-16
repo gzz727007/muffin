@@ -49,12 +49,12 @@ public class Authenticator {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExternalContext externalContext = facesContext.getExternalContext();
         try {
+            externalContext.invalidateSession();
             ((HttpServletRequest) externalContext.getRequest()).logout();
+            externalContext.redirect("");
         } catch (Exception ex) {
             facesContext.addMessage(null, new FacesMessage(
                     FacesMessage.SEVERITY_ERROR, "退出失败。", ex.getMessage()));
-        } finally {
-            externalContext.invalidateSession();
         }
     }
 }

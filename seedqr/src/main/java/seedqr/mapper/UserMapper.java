@@ -22,14 +22,14 @@ public interface UserMapper {
     
     @Select("SELECT " +
 "  `id`, `user_name` userName, `name`, `password`, `urole`, `email`, `handphone`, `create_time` createTime, `company_code` companyCode, `company_name` companyName, "
-            + "`last_login_time` lastLoginTime, `type`, `parent_id` parentId, `status`, `region_id` regionId " +
+            + "`last_login_time` lastLoginTime, `type`, `parent_id` parentId, `status`, `region_id` regionId, `company_id` companyId " +
 "FROM " +
 "  `user` ")
     List<User> getAllUser();
     
     @Select("SELECT " +
 "  `id`, `user_name` userName, `name`, `password`, `urole`, `email`, `handphone`, `contact`, `create_time` createTime, `company_code` companyCode, `company_name` companyName, "
-            + "`last_login_time` lastLoginTime, `type`, `parent_id` parentId, `status`, `region_id` regionId " +
+            + "`last_login_time` lastLoginTime, `type`, `parent_id` parentId, `status`, `region_id` regionId, `company_id` companyId " +
 "FROM " +
 "  `user` where user_name = #{userName}")
     User getUserByUserName(String userName);
