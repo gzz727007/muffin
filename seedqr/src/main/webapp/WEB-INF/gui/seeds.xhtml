@@ -5,28 +5,28 @@
       xmlns:p="http://primefaces.org/ui">
     <ui:composition>
         <h:form>
-            <p:panelGrid styleClass="transparent" style="margin-left: auto;">
+            <p:panelGrid styleClass="transparent">
                 <p:row>
                     <p:column>
                         <p:outputLabel for="newSeedName" value="种子名称："/>
                         <p:inputText id="newSeedName" maxlength="50"
-                                     value="#{seedRegister.newSeed.seedName}"/>
+                                     value="#{seedManager.newSeed.seedName}"/>
                     </p:column>
                     <p:column>
                         <p:outputLabel for="newSeedUiDisplay" value="显示名称："/>
                         <p:inputText id="newSeedUiDisplay" maxlength="50"
-                                     value="#{seedRegister.newSeed.seedUiDisplay}"/>
+                                     value="#{seedManager.newSeed.seedUiDisplay}"/>
                     </p:column>
                     <p:column>
                         <p:commandButton value="添加" process="@form"
                                          update="newSeedName newSeedUiDisplay seedTable"
-                                         action="#{seedRegister.addSeed}"/>
+                                         action="#{seedManager.addSeed}"/>
                     </p:column>
                 </p:row>
             </p:panelGrid>
         </h:form>
         <h:form prependId="false">
-            <p:dataTable id="seedTable" value="#{seedRegister.seeds}"
+            <p:dataTable id="seedTable" value="#{seedManager.seeds}"
                          var="seed" paginator="true" rows="10" emptyMessage="没有种子信息记录。">
                 <p:column headerText="种子名称">
                     <h:outputText value="#{seed.seedName}"/>
@@ -38,7 +38,7 @@
                     <p:commandButton value="编辑属性" update="seedConfigTable"
                                      oncomplete="PF('seedConfigDialog').show();">
                         <f:setPropertyActionListener value="#{seed}"
-                                                     target="#{seedRegister.selectedSeed}"/>
+                                                     target="#{seedManager.selectedSeed}"/>
                     </p:commandButton>
                 </p:column>
             </p:dataTable>
@@ -52,7 +52,7 @@
                         </p:column>
                         <p:column>
                             <p:selectOneMenu id="newSeedConfigType"
-                                             value="#{seedRegister.newSeedConfig.type}">
+                                             value="#{seedManager.newSeedConfig.type}">
                                 <f:selectItem itemLabel="基本信息" itemValue="1"/>
                                 <f:selectItem itemLabel="种植信息" itemValue="2"/>
                             </p:selectOneMenu>
@@ -62,8 +62,8 @@
                         </p:column>
                         <p:column>
                             <p:selectOneMenu id="newSeedConfigParaName" editable="true"
-                                             value="#{seedRegister.newSeedConfig.paraName}">
-                                <f:selectItems value="#{seedRegister.standardSeedConfigParaNames}"
+                                             value="#{seedManager.newSeedConfig.paraName}">
+                                <f:selectItems value="#{seedManager.standardSeedConfigParaNames}"
                                                var="name" itemLabel="#{name}" itemValue="#{name}"/>
                                 <p:ajax process="@this" update="placeHolder"
                                         oncomplete="document.getElementById('newSeedConfigParaValue').placeholder = document.getElementById('placeHolder').innerHTML;"/>
@@ -75,24 +75,24 @@
                             <p:outputLabel for="newSeedConfigParaValue" value="值："/>
                         </p:column>
                         <p:column colspan="3">
-                            <h:outputText id="placeHolder" value="#{seedRegister.seedConfigHint}"
+                            <h:outputText id="placeHolder" value="#{seedManager.seedConfigHint}"
                                           style="display: none;"/>
                             <p:inputTextarea id="newSeedConfigParaValue" widgetVar="qqq"
                                              rows="5" maxlength="1000" style="width: 100%;"
-                                             placeholder="#{seedRegister.seedConfigHint}"
-                                             value="#{seedRegister.newSeedConfig.paraValue}"/>
+                                             placeholder="#{seedManager.seedConfigHint}"
+                                             value="#{seedManager.newSeedConfig.paraValue}"/>
                         </p:column>
                     </p:row>
                     <p:row>
                         <p:column colspan="4" style="text-align: right;">
-                            <p:commandButton value="添加属性" action="#{seedRegister.addSeedConfig}"
+                            <p:commandButton value="添加属性" action="#{seedManager.addSeedConfig}"
                                              process="@form" update="@form seedConfigTable"/>
                         </p:column>
                     </p:row>
                 </p:panelGrid>
             </h:form>
             <h:form prependId="false">
-                <p:dataTable id="seedConfigTable" value="#{seedRegister.seedConfigs}"
+                <p:dataTable id="seedConfigTable" value="#{seedManager.seedConfigs}"
                              var="seedConfig" style="margin-bottom: 10px;"
                              emptyMessage="尚未添加属性。">
                     <p:column headerText="类型">
@@ -106,14 +106,14 @@
                         <h:outputText value="#{seedConfig.paraValue}"/>
                     </p:column>
                     <p:column headerText="操作">
-                        <p:commandButton value="删除" update="seedConfigTable" action="#{seedRegister.removeSeedConfig}">
+                        <p:commandButton value="删除" update="seedConfigTable" action="#{seedManager.removeSeedConfig}">
                         <f:setPropertyActionListener value="#{seedConfig}"
-                                                     target="#{seedRegister.selectSeedConfig}"/>
+                                                     target="#{seedManager.selectSeedConfig}"/>
                         </p:commandButton>
                     </p:column>
                 </p:dataTable>
                 <h:panelGroup layout="block" styleClass="submit">
-                    <p:commandButton value="保存" action="#{seedRegister.saveSeedConfigs}"
+                    <p:commandButton value="保存" action="#{seedManager.saveSeedConfigs}"
                                      oncomplete="PF('seedConfigDialog').hide();"/>
                 </h:panelGroup>
             </h:form>

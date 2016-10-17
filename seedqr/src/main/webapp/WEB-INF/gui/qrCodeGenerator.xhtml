@@ -5,7 +5,7 @@
       xmlns:p="http://primefaces.org/ui">
     <ui:composition>
         <h:form id="gen">
-            <p style="text-align: right;">
+            <p>
                 <p:commandButton type="button" value="输入种子信息以生成二维码"
                                  onclick="PF('generateDialog').show();"/>
             </p>
@@ -66,20 +66,11 @@
                     </p:row>
                     <p:row>
                         <p:column colspan="2" style="text-align: right;">
-                            <h:outputText id="validationFailed" style="display: none;"
-                                          value="#{facesContext.validationFailed}"/>
-                            <script type="text/javascript">
-                                function hideGenerateDialog() {
-                                    if ($('#gen\\:validationFailed').text() === 'false') {
-                                        PF('generateDialog').hide();
-                                    }
-                                }
-                            </script>
                             <p:commandButton value="生成二维码"
                                              action="#{qrCodeGenerator.generateQrCodes}"
                                              process="@widgetVar(generateDialog)"
-                                             update="gen:qrCodeRequestTable gen:validationFailed"
-                                             oncomplete="hideGenerateDialog();"/>
+                                             update="gen:qrCodeRequestTable validationFailed"
+                                             oncomplete="hideDialog('generateDialog');"/>
                         </p:column>
                     </p:row>
                 </p:panelGrid>

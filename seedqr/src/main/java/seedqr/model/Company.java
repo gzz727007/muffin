@@ -1,12 +1,17 @@
 package seedqr.model;
 
+import javax.validation.constraints.Size;
+
 public class Company {
     private int id;
     private String code;
+    @Size(min = 1, max = 50, message = "公司名称不能为空且不超过 50 个字符。")
     private String name;
     private String abbr;
     private String email;
+    @Size(min = 1, max = 20, message = "联系人不能为空且不超过 50 个字符。")
     private String contact;
+    @Size(min = 1, max = 20, message = "联系电话不能为空且不超过 50 个字符。")
     private String handphone;
     private int type;
     private int status;

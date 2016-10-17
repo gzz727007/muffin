@@ -1,7 +1,8 @@
 package seedqr.gui;
 
 import java.io.Serializable;
-import javax.annotation.security.RolesAllowed;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import org.primefaces.component.tabview.TabView;
@@ -11,7 +12,7 @@ import seedqr.model.Company;
 import seedqr.model.User;
 import seedqr.util.MybatisUtil;
 
-@Named @SessionScoped @RolesAllowed("user")
+@Named @SessionScoped
 public class SessionData implements Serializable {
     private User user;
     private Company company;
@@ -41,6 +42,16 @@ public class SessionData implements Serializable {
 
     public void tabChanged(TabChangeEvent tabChangeEvent) {
         tab = ((TabView) tabChangeEvent.getComponent()).getChildren()
+                .stream().filter(tab -> tab.isRendered())
+                .collect(Collectors.toList())
                 .indexOf(tabChangeEvent.getTab());
+    }
+
+    public boolean isUserInRole(List<String> roles) {
+        return roles.contains(user.getUrole());
+    }
+
+    public int getUserId() {
+        return user.getId();
     }
 }

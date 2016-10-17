@@ -73,8 +73,10 @@
                 </p:selectOneMenu>
                 <f:facet name="footer">
                     <h:panelGroup layout="block" style="width: 100%; text-align: center;">
-                        <p:commandButton value="保存" ajax="true" process="@form"
-                                         action="#{wholesalerEditor.addWholesaler}" oncomplete="PF('dlg1').hide();" update="wholesalerList"/>
+                        <p:commandButton value="保存" process="@form"
+                                         update="wholesalerList validationFailed"
+                                         action="#{wholesalerEditor.addWholesaler}"
+                                         oncomplete="hideDialog('dlg1');"/>
                     </h:panelGroup>
                 </f:facet>
             </p:panelGrid>

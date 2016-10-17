@@ -9,7 +9,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.annotation.security.RolesAllowed;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -27,7 +26,6 @@ import seedqr.util.MybatisUtil;
  */
 @Named
 @ViewScoped
-@RolesAllowed("user")
 public class WholesalerEditor implements Serializable {
 
     @Inject
@@ -50,7 +48,6 @@ public class WholesalerEditor implements Serializable {
 
     private int selectDistId;
     
-    @Valid
     private Company selectedSaler;
     
     @Valid
@@ -106,7 +103,8 @@ public class WholesalerEditor implements Serializable {
             System.out.println("selectDistId:" + selectDistId);
             if (selectDistId > 0 ){
                 saler.setParentId(userId);
-                saler.setRegionId(selectDistId);
+//                saler.setRegionId(selectDistId);
+                saler.setType(2);
 //                saler.setUrole("saler");
 //                saler.setPassword("12345678");
                 MybatisUtil.run(CompanyMapper.class,

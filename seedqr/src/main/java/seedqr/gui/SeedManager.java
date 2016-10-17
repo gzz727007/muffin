@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.PostConstruct;
-import javax.annotation.security.RolesAllowed;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -18,8 +17,8 @@ import seedqr.model.Seed;
 import seedqr.model.SeedConfig;
 import seedqr.util.MybatisUtil;
 
-@Named @ViewScoped @RolesAllowed("user")
-public class SeedRegister implements Serializable {
+@Named @ViewScoped
+public class SeedManager implements Serializable {
     private static final Map<String, String> BASIC_SEED_CONFIG_PARA_NAMES = new LinkedHashMap<>();
     static {
         BASIC_SEED_CONFIG_PARA_NAMES.put("种子亲本", "在此输入父本名称、母本名称等。");

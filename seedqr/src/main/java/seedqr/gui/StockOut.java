@@ -4,19 +4,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.annotation.security.RolesAllowed;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import seedqr.mapper.QrCodeMapper;
-import seedqr.mapper.RegionMapper;
-import seedqr.model.QrCode;
-import seedqr.model.SaleInfo;
-import seedqr.util.MybatisUtil;
 
-@Named @ViewScoped @RolesAllowed("user")
+@Named @ViewScoped
 public class StockOut implements Serializable {
     @Inject
     private SessionData sessionData;

@@ -29,11 +29,18 @@
                 }
                 return true;
             }
-            
+
+            function hideDialog(widgetVar) {
+                if ($('#validationFailed').text() === 'false') {
+                    PF(widgetVar).hide();
+                }
+            }
         </script>
     </h:head>
     <h:body>
         <p:growl autoUpdate="true"/>
+        <h:outputText id="validationFailed" style="display: none;"
+                      value="#{facesContext.validationFailed}"/>
         <h:panelGroup id="indexPanel" layout="block"
                       style="margin: auto; min-width: 1024px; width: 100%; height: 100%; display: flex; flex-flow: column;">
             <h:panelGroup layout="block" style="width: 100%; flex: 0 1 auto;">
@@ -46,8 +53,9 @@
                 <h1 style="text-align: center;">中国种子二维码追溯系统</h1>
             </h:panelGroup>
             <h:panelGroup id="content" layout="block" style="width: 100%; flex: 1 1 auto;">
-                <h:form rendered="#{!request.isUserInRole('user')}">
-                    <p:panelGrid id="loginPanel" columns="2" styleClass="transparent" style="margin: auto;">
+                <h:form rendered="#{request.remoteUser eq null}">
+                    <p:panelGrid id="loginPanel" columns="2"
+                                 styleClass="transparent" style="margin: auto;">
                         <p:outputLabel for="user" value="用户："/>
                         <p:inputText id="user" value="#{authenticator.user}"/>
                         <p:outputLabel for="password" value="密码："/>
@@ -64,32 +72,38 @@
                 </h:form>
                 <p:tabView prependId="false" style="height: 98%;"
                            activeIndex="#{sessionData.tab}"
-                           rendered="#{request.isUserInRole('user')}"
+                           rendered="#{request.remoteUser ne null}"
                            onTabShow="tabShown(index);">
                     <p:ajax event="tabChange" listener="#{sessionData.tabChanged}"/>
-                    <p:tab title="种子信息管理">
-                        <ui:include src="WEB-INF/gui/seed/seedRegister.xhtml"/>
+                    <p:tab title="种子信息管理" rendered="#{sessionData.isUserInRole(['user', 'keeper'])}">
+                        <ui:include src="WEB-INF/gui/seeds.xhtml"/>
                     </p:tab>
-                    <p:tab title="经销商管理">
-                        <ui:include src="WEB-INF/gui/seed/wholesalers.xhtml"/>
+                    <p:tab title="经销商管理" rendered="#{sessionData.isUserInRole(['user', 'keeper'])}">
+                        <ui:include src="WEB-INF/gui/wholesalers.xhtml"/>
                     </p:tab>
-                    <p:tab title="二维码生成">
-                        <ui:include src="WEB-INF/gui/seed/qrCodeGenerator.xhtml"/>
+                    <p:tab title="二维码生成" rendered="#{sessionData.isUserInRole(['user'])}">
+                        <ui:include src="WEB-INF/gui/qrCodeGenerator.xhtml"/>
                     </p:tab>
-                    <p:tab title="扫码打包">
-                        <ui:include src="WEB-INF/gui/seed/packScanner.xhtml"/>
+                    <p:tab title="扫码打包" rendered="#{sessionData.isUserInRole(['user', 'keeper', 'packer'])}">
+                        <ui:include src="WEB-INF/gui/packScanner.xhtml"/>
                     </p:tab>
-                    <p:tab title="销售出库">
-                        <ui:include src="WEB-INF/gui/seed/stockOut.xhtml"/>
+                    <p:tab title="销售出库" rendered="#{sessionData.isUserInRole(['user', 'keeper'])}">
+                        <ui:include src="WEB-INF/gui/stockOut.xhtml"/>
                     </p:tab>
-                    <p:tab title="销售管理">
-                        <ui:include src="WEB-INF/gui/seed/more.xhtml"/>
+                    <p:tab title="销售管理" rendered="#{sessionData.isUserInRole(['user', 'keeper'])}">
+                        <ui:include src="WEB-INF/gui/more.xhtml"/>
                     </p:tab>
-                    <p:tab title="零售商管理">
-                        <ui:include src="WEB-INF/gui/seed/more.xhtml"/>
+                    <p:tab title="零售商管理" rendered="#{sessionData.isUserInRole(['user', 'keeper'])}">
+                        <ui:include src="WEB-INF/gui/more.xhtml"/>
                     </p:tab>
-                    <p:tab title="农户管理">
-                        <ui:include src="WEB-INF/gui/seed/more.xhtml"/>
+                    <p:tab title="农户管理" rendered="#{sessionData.isUserInRole(['user', 'keeper'])}">
+                        <ui:include src="WEB-INF/gui/more.xhtml"/>
+                    </p:tab>
+                    <p:tab title="生产商管理" rendered="#{sessionData.isUserInRole(['admin'])}">
+                        <ui:include src="WEB-INF/gui/manufacturers.xhtml"/>
+                    </p:tab>
+                    <p:tab title="用户管理" rendered="#{sessionData.isUserInRole(['admin'])}">
+                        <ui:include src="WEB-INF/gui/users.xhtml"/>
                     </p:tab>
                 </p:tabView>
             </h:panelGroup>

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
-import javax.annotation.security.RolesAllowed;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
@@ -17,7 +16,7 @@ import seedqr.mapper.QrCodeMapper;
 import seedqr.util.CodeUtil;
 import seedqr.util.MybatisUtil;
 
-@Named @ViewScoped @RolesAllowed("user")
+@Named @ViewScoped
 public class PackScanner implements Serializable {
     @Min(value = 20, message = "小包数量必须在 20 到 100 之间。")
     @Max(value = 100, message = "小包数量必须在 20 到 100 之间。")

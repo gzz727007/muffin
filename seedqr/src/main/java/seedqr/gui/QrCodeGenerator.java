@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.annotation.security.RolesAllowed;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -21,7 +20,7 @@ import seedqr.model.Seed;
 import seedqr.model.User;
 import seedqr.util.MybatisUtil;
 
-@Named @ViewScoped @RolesAllowed("user")
+@Named @ViewScoped
 public class QrCodeGenerator implements Serializable {
     @Inject
     private QrCodeRequestService qrCodeRequestService;

@@ -10,6 +10,9 @@ public interface CompanyMapper {
     @Select("select * from company where id=#{id}")
     Company getCompany(int id);
 
+    @Select("select * from company where type=1")
+    List<Company> getManufacturers();
+
     @Select("select * from company where type=2")
     List<Company> getWholesalers();
 

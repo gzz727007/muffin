@@ -1,0 +1,75 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition>
+        <h:form>
+            <p>
+                <p:commandButton value="添加生产商" type="button"
+                                 onclick="PF('addManufacturer').show();"/> 
+            </p>
+            <p:dataTable id="manufacturers" value="#{manufacturerManager.manufacturers}"
+                         var="manufacturer" paginator="true" rows="10" emptyMessage="没有生产商记录。">
+                <p:column headerText="公司名称">
+                    <h:outputText value="#{manufacturer.name}"/>
+                </p:column>
+                <p:column headerText="公司简称">
+                    <h:outputText value="#{manufacturer.abbr}"/>
+                </p:column>
+                <p:column headerText="联系人">
+                    <h:outputText value="#{manufacturer.contact}" />
+                </p:column>
+                <p:column headerText="联系电话">
+                    <h:outputText value="#{manufacturer.handphone}" />
+                </p:column>
+                <p:column headerText="联系邮箱">
+                    <h:outputText value="#{manufacturer.email}" />
+                </p:column>
+            </p:dataTable>
+            <p:dialog widgetVar="addManufacturer" header="添加生产商" modal="true">
+                <p:panelGrid columns="2" styleClass="transparent">
+                    <p:outputLabel for="companyName" value="公司名称："/>
+                    <p:inputText id="companyName" maxlength="50"
+                                 value="#{manufacturerManager.manufacturer.name}"/>
+                    <p:outputLabel for="abbr" value="公司简称："/>
+                    <p:inputText id="abbr" maxlength="10"
+                                 value="#{manufacturerManager.manufacturer.abbr}"/>
+                    <p:outputLabel for="contact" value="联系人："/>
+                    <p:inputText id="contact" maxlength="20"
+                                 value="#{manufacturerManager.manufacturer.contact}"/>
+                    <p:outputLabel for="handphone" value="联系电话："/>
+                    <p:inputText id="handphone" maxlength="20"
+                                 value="#{manufacturerManager.manufacturer.handphone}"/>
+                    <p:outputLabel for="province" value="地区："/>
+                    <p:selectOneMenu id="province" value="#{manufacturerManager.province}">
+                        <f:selectItems value="#{manufacturerManager.provinces}" var="province"
+                                       itemLabel="#{province.name}" itemValue="#{province.id}"/>
+                        <p:ajax process="@this" update="city dist"
+                                listener="#{manufacturerManager.updateCities}"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel for="city"/>
+                    <p:selectOneMenu id="city" value="#{manufacturerManager.city}">
+                        <f:selectItems value="#{manufacturerManager.cities}" var="city"
+                                       itemLabel="#{city.name}" itemValue="#{city.id}"/>
+                        <p:ajax process="@this" update="district"
+                                listener="#{manufacturerManager.updateDistricts}"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel for="district"/>
+                    <p:selectOneMenu id="district" value="#{manufacturerManager.manufacturer.regionId}">
+                        <f:selectItems value="#{manufacturerManager.districts}" var="district"
+                                       itemLabel="#{district.name}" itemValue="#{district.id}"/>
+                    </p:selectOneMenu>
+                    <f:facet name="footer">
+                        <h:panelGroup layout="block" style="width: 100%; text-align: center;">
+                            <p:commandButton value="保存" process="@form"
+                                             update="manufacturers validationFailed"
+                                             action="#{manufacturerManager.addManufacturer}"
+                                             oncomplete="hideDialog('addManufacturer');"/>
+                        </h:panelGroup>
+                    </f:facet>
+                </p:panelGrid>
+            </p:dialog>
+        </h:form>
+    </ui:composition>
+</html>
