@@ -9,6 +9,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.validation.Valid;
+import org.primefaces.event.RowEditEvent;
 import seedqr.mapper.CompanyMapper;
 import seedqr.mapper.RegionMapper;
 import seedqr.model.Company;
@@ -97,11 +98,17 @@ public class ManufacturerManager implements Serializable {
     }
 
     public void addManufacturer() {
-        MybatisUtil.run(CompanyMapper.class, companyMapper -> {
-            companyMapper.addCompany(manufacturer);
-        });
+        MybatisUtil.run(CompanyMapper.class,
+                companyMapper -> companyMapper.addCompany(manufacturer));
         manufacturers.add(0, manufacturer);
         resetManufacturer();
+    }
+
+    public void updateManufacturer(RowEditEvent rowEditEvent) {
+        MybatisUtil.run(CompanyMapper.class,
+                companyMapper -> companyMapper.updateManufacturer(
+                        (Company) rowEditEvent.getObject())
+        );
     }
 
     private void resetManufacturer() {

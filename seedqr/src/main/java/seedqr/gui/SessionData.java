@@ -48,7 +48,7 @@ public class SessionData implements Serializable {
     }
 
     public boolean isUserInRole(List<String> roles) {
-        return roles.contains(user.getUrole());
+        return roles.contains(user.getRole());
     }
 
     public int getUserId() {

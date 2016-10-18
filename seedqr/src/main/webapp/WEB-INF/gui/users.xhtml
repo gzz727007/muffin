@@ -1,56 +1,87 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition>
-        <ui:remove>
         <h:form>
-        <p:commandButton value="添加厂家用户信息" type="button" onclick="PF('dlg1').show();" /> 
-
-        <p:dataTable id="wholesalerList" var="user" value="#{userMgmt.users}" paginator="true" rows="10" emptyMessage="没有销售商记录。">
-            <p:column headerText="用户名">
-                <h:outputText value="#{user.userName}" />
-            </p:column>
-            <p:column headerText="公司简称">
-                <h:outputText value="#{user.name}" />
-            </p:column>
-
-            <p:column headerText="公司名">
-                <h:outputText value="#{user.companyName}" />
-            </p:column>
-
-            <p:column headerText="联系人名字">
-                <h:outputText value="#{user.contact}" />
-            </p:column>
-
-            <p:column headerText="联系人电话">
-                <h:outputText value="#{user.handphone}" />
-            </p:column>
-        </p:dataTable>
-
-        <p:dialog header="添加生产厂家" widgetVar="dlg1" modal="true" showEffect="explode" hideEffect="bounce" minHeight="600" width="800">
-            
-            <p:panelGrid columns="2" styleClass="transparent" style="margin: auto;">
-                <p:outputLabel for="userName" value="用户名："/>
-                <p:inputText id="userName" value="#{userMgmt.user.userName}" maxlength="20"/>
-                <p:outputLabel for="name" value="公司简称："/>
-                <p:inputText id="name" value="#{userMgmt.user.name}" maxlength="20"/>
-                <p:outputLabel for="companyName" value="公司名："/>
-                <p:inputText id="companyName" value="#{userMgmt.user.companyName}" maxlength="50"/>
-                <p:outputLabel for="contact" value="联系人："/>
-                <p:inputText id="contact" value="#{userMgmt.user.contact}" maxlength="20"/>
-                <p:outputLabel for="handphone" value="联系电话："/>
-                <p:inputText id="handphone" value="#{userMgmt.user.handphone}" maxlength="20"/>
-                <f:facet name="footer">
-                    <h:panelGroup layout="block" style="width: 100%; text-align: center;">
-                        <p:commandButton value="保存" ajax="true" process="@form"
-                                         action="#{userMgmt.addUser}" oncomplete="PF('dlg1').hide();" update="wholesalerList"/>
-                    </h:panelGroup>
-                </f:facet>
-            </p:panelGrid>
-        </p:dialog>
+            <p>
+                <p:commandButton type="button" value="添加用户"
+                                 onclick="PF('addUser').show();"/>
+            </p>
+            <p:dataTable id="users" value="#{userManager.users}" var="user"
+                         paginator="true" rows="10">
+                <p:column headerText="用户名">
+                    <h:outputText value="#{user.userName}"/>
+                </p:column>
+                <p:column headerText="生产商">
+                    <h:outputText value="#{userManager.manufacturers[user.companyId]}"/>
+                </p:column>
+                <p:column headerText="角色">
+                    <h:outputText value="#{userManager.roles[user.role]}"/>
+                </p:column>
+                <p:column headerText="操作">
+                    <p:commandButton value="修改" process="@this"
+                                     update="@widgetVar(updateUser)"
+                                     oncomplete="PF('updateUser').show();">
+                        <f:setPropertyActionListener value="#{user}" target="#{userManager.user}"/>
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+            <p:dialog widgetVar="addUser" header="添加用户" modal="true">
+                <p:panelGrid columns="2" styleClass="transparent">
+                    <p:outputLabel for="name" value="用户名："/>
+                    <p:inputText id="name" value="#{userManager.user.userName}" maxlength="20"/>
+                    <p:outputLabel for="password" value="密码："/>
+                    <p:password id="password" value="#{userManager.user.password}" maxlength="20"/>
+                    <p:outputLabel for="confirmPassword" value="确认密码："/>
+                    <p:password id="confirmPassword" value="#{userManager.confirmPassword}"/>
+                    <p:outputLabel for="manufacturer" value="生产商："/>
+                    <p:selectOneMenu id="manufacturer" value="#{userManager.user.companyId}">
+                        <f:selectItems value="#{userManager.manufacturers.entrySet()}"
+                                       var="manufacturer" itemLabel="#{manufacturer.value}"
+                                       itemValue="#{manufacturer.key}"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel for="role" value="角色："/>
+                    <p:selectOneMenu id="role" value="#{userManager.user.role}">
+                        <f:selectItems value="#{userManager.roles.entrySet()}" var="role"
+                                       itemLabel="#{role.value}" itemValue="#{role.key}"/>
+                    </p:selectOneMenu>
+                    <f:facet name="footer">
+                        <h:panelGroup layout="block" style="width: 100%; text-align: center;">
+                            <p:commandButton value="保存" process="@widgetVar(addUser)"
+                                             update="users validationFailed"
+                                             action="#{userManager.addUser}"
+                                             oncomplete="hideDialog('addUser');"/>
+                        </h:panelGroup>
+                    </f:facet>
+                </p:panelGrid>
+            </p:dialog>
+            <p:dialog widgetVar="updateUser" header="修改用户" modal="true">
+                <p:panelGrid columns="2" styleClass="transparent">
+                    <h:outputText value="用户名："/>
+                    <h:outputText value="#{userManager.user.userName}"/>
+                    <p:outputLabel for="newPassword" value="密码："/>
+                    <p:password id="newPassword" value="#{userManager.user.password}"
+                                maxlength="20" redisplay="true"/>
+                    <p:outputLabel for="newConfirmPassword" value="确认密码："/>
+                    <p:password id="newConfirmPassword" value="#{userManager.confirmPassword}"
+                                maxlength="20" redisplay="true"/>
+                    <p:outputLabel for="newRole" value="角色："/>
+                    <p:selectOneMenu id="newRole" value="#{userManager.user.role}">
+                        <f:selectItems value="#{userManager.roles.entrySet()}" var="role"
+                                       itemLabel="#{role.value}" itemValue="#{role.key}"/>
+                    </p:selectOneMenu>
+                    <f:facet name="footer">
+                        <h:panelGroup layout="block" style="width: 100%; text-align: center;">
+                            <p:commandButton value="保存" process="@widgetVar(updateUser)"
+                                             update="users validationFailed"
+                                             action="#{userManager.updateUser}"
+                                             oncomplete="hideDialog('updateUser');"/>
+                        </h:panelGroup>
+                    </f:facet>
+                </p:panelGrid>
+            </p:dialog>
         </h:form>
-            </ui:remove>
     </ui:composition>
 </html>

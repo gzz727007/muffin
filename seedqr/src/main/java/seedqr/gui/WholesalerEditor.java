@@ -55,9 +55,9 @@ public class WholesalerEditor implements Serializable {
 
     @PostConstruct
     private void init() {
-        userId = sessionData.getUser().getId();
+        userId = sessionData.getUserId();
         salers = MybatisUtil.call(CompanyMapper.class,
-                companyMapper -> companyMapper.getWholesalers());
+                companyMapper -> companyMapper.getWholesalers(userId));
         allRegion = MybatisUtil.call(RegionMapper.class,
                 regionMapper -> regionMapper.getAllRegion());
         //salers = MybatisUtil.getMapper(UserMapper.class).getUsersByParent(userId);
@@ -113,7 +113,7 @@ public class WholesalerEditor implements Serializable {
             }
         }
         salers = MybatisUtil.call(CompanyMapper.class,
-                companyMapper -> companyMapper.getWholesalers());
+                companyMapper -> companyMapper.getWholesalers(userId));
         //salers = MybatisUtil.getMapper(UserMapper.class).getUsersByParent(userId);
     }
     
@@ -127,7 +127,7 @@ public class WholesalerEditor implements Serializable {
     public void deleteWholesaler() {
         MybatisUtil.run(CompanyMapper.class, companyMapper -> {
             companyMapper.deleteCompany(selectedSaler.getId());
-            salers = companyMapper.getWholesalers();
+            salers = companyMapper.getWholesalers(userId);
         });
     }
 

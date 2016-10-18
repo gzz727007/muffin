@@ -6,25 +6,58 @@
     <ui:composition>
         <h:form>
             <p>
-                <p:commandButton value="添加生产商" type="button"
+                <p:commandButton type="button" value="添加生产商"
                                  onclick="PF('addManufacturer').show();"/> 
             </p>
-            <p:dataTable id="manufacturers" value="#{manufacturerManager.manufacturers}"
-                         var="manufacturer" paginator="true" rows="10" emptyMessage="没有生产商记录。">
+            <p:dataTable id="manufacturers" emptyMessage="没有生产商记录。"
+                         value="#{manufacturerManager.manufacturers}" var="manufacturer"
+                         paginator="true" rows="10" editable="true">
+                <p:ajax event="rowEdit" listener="#{manufacturerManager.updateManufacturer}"/>
                 <p:column headerText="公司名称">
                     <h:outputText value="#{manufacturer.name}"/>
                 </p:column>
                 <p:column headerText="公司简称">
-                    <h:outputText value="#{manufacturer.abbr}"/>
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{manufacturer.abbr}"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText value="#{manufacturer.abbr}"/>
+                        </f:facet>
+                    </p:cellEditor>
                 </p:column>
                 <p:column headerText="联系人">
-                    <h:outputText value="#{manufacturer.contact}" />
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{manufacturer.contact}"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText value="#{manufacturer.contact}"/>
+                        </f:facet>
+                    </p:cellEditor>
                 </p:column>
                 <p:column headerText="联系电话">
-                    <h:outputText value="#{manufacturer.handphone}" />
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{manufacturer.handphone}"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText value="#{manufacturer.handphone}"/>
+                        </f:facet>
+                    </p:cellEditor>
                 </p:column>
                 <p:column headerText="联系邮箱">
-                    <h:outputText value="#{manufacturer.email}" />
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{manufacturer.email}"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText value="#{manufacturer.email}"/>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="操作">
+                    <p:rowEditor editTitle="编辑" saveTitle="保存" cancelTitle="取消"/>
                 </p:column>
             </p:dataTable>
             <p:dialog widgetVar="addManufacturer" header="添加生产商" modal="true">

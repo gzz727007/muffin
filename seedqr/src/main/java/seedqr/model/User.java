@@ -1,24 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package seedqr.model;
 
 import java.sql.Date;
 import javax.validation.constraints.Size;
 
-/**
- *
- * @author muffin
- */
 public class User {
     private int id;
+    @Size(min = 1, max = 20, message = "用户名不能为空且不超过 20 个字符。")
     private String userName;
-    @Size(min = 1, max = 20, message = "用户昵称不能为空且不超过 20 个字符。")
-    private String name;
+    @Size(min = 5, max = 10, message = "密码不少于 5 个且不超过 20 个字符。")
     private String password;
-    private String urole;
+    private String role;
     private Date createTime;
     private Date lastLoginTime;
     private int companyId;
@@ -39,14 +30,6 @@ public class User {
         this.userName = userName;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -55,12 +38,12 @@ public class User {
         this.password = password;
     }
 
-    public String getUrole() {
-        return urole;
+    public String getRole() {
+        return role;
     }
 
-    public void setUrole(String urole) {
-        this.urole = urole;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public Date getCreateTime() {

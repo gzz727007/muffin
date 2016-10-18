@@ -4,22 +4,32 @@ import java.util.List;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.annotations.Update;
 import seedqr.model.Company;
 
 public interface CompanyMapper {
-    @Select("select * from company where id=#{id}")
-    Company getCompany(int id);
-
-    @Select("select * from company where type=1")
-    List<Company> getManufacturers();
-
-    @Select("select * from company where type=2")
-    List<Company> getWholesalers();
-
     @Insert("insert into company (code, `name`, abbr, email, contact, handphone, `type`, parentId, regionId) "
             + "values (#{code}, #{name}, #{abbr}, #{email}, #{contact}, #{handphone}, #{type}, #{parentId}, #{regionId})")
+    @SelectKey(statement = "select last_insert_id()", keyProperty = "id",
+            before = false, resultType = int.class)
     void addCompany(Company company);
 
-    @Delete("delete from company where id=#{companyId}")
+    @Select("select * from company where id = #{id}")
+    Company getCompany(int id);
+
+    @Select("select * from company where type = 1")
+    List<Company> getManufacturers();
+
+    @Select("select id, `name` from company where type = 1")
+    List<Company> getBriefManufacturers();
+
+    @Select("select * from company where type = 2 and parentId = #{userId}")
+    List<Company> getWholesalers(int userId);
+
+    @Update("update company set abbr = #{abbr}, contact = #{contact}, handphone = #{handphone}, email = #{email} where id = #{id}")
+    void updateManufacturer(Company manufacturer);
+
+    @Delete("delete from company where id = #{companyId}")
     void deleteCompany(int companyId);
 }
