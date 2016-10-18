@@ -4,10 +4,10 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
     <ui:composition>
-        <h:form id="gen">
+        <h:form id="genPack">
             <p style="text-align: right;">
                 <p:commandButton type="button" value="生成外袋码"
-                                 onclick="PF('generateDialog').show();"/>
+                                 onclick="PF('generateDialogPack').show();"/>
             </p>
             <p:dataTable id="qrCodeRequestTable" value="#{packageCodeGenerator.qrCodeRequests}"
                          var="qrCodeRequest" paginator="true" rows="10"
@@ -26,7 +26,7 @@
                     <h:outputText value="正在生成" rendered="#{qrCodeRequest.progress lt 100}"/>
                 </p:column>
             </p:dataTable>
-            <p:dialog widgetVar="generateDialog" modal="true" header="外袋码数量">
+            <p:dialog widgetVar="generateDialogPack" modal="true" header="外袋码数量">
                 <p:panelGrid styleClass="transparent" style="margin: auto;">
                     <p:row>
                         <p:column>
@@ -40,19 +40,19 @@
                     </p:row>
                     <p:row>
                         <p:column colspan="2" style="text-align: right;">
-                            <h:outputText id="validationFailed" style="display: none;"
+                            <h:outputText id="validationFailedPack" style="display: none;"
                                           value="#{facesContext.validationFailed}"/>
                             <script type="text/javascript">
                                 function hideGenerateDialog() {
-                                    if ($('#gen\\:validationFailed').text() === 'false') {
-                                        PF('generateDialog').hide();
+                                    if ($('#genPack\\:validationFailedPack').text() === 'false') {
+                                        PF('generateDialogPack').hide();
                                     }
                                 }
                             </script>
                             <p:commandButton value="生成外袋码"
                                              action="#{packageCodeGenerator.generateQrCodes}"
-                                             process="@widgetVar(generateDialog)"
-                                             update="gen:qrCodeRequestTable gen:validationFailed"
+                                             process="@widgetVar(generateDialogPack)"
+                                             update="genPack:qrCodeRequestTable genPack:validationFailedPack"
                                              oncomplete="hideGenerateDialog();"/>
                         </p:column>
                     </p:row>

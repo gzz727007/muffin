@@ -36,8 +36,7 @@ public class UserManager implements Serializable {
                     .collect(Collectors.toMap(Company::getId, Company::getName));
         });
         roles = new LinkedHashMap<>();
-        roles.put("admin", "系统管理");
-        roles.put("user", "普通用户");
+        roles.put("user", "管理人员");
         roles.put("keeper", "库管人员");
         roles.put("packer", "打包人员");
         user = new User();
