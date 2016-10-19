@@ -101,15 +101,15 @@ public class QrCodeRequestService {
                     }
                 }
 
-                out.putNextEntry(new ZipEntry("二维码数据.csv"));
+                out.putNextEntry(new ZipEntry("02二维码数据.csv"));
                 out.write(qrCodes.stream().map(qrCode -> formatQrCodeForCsv(qrCode, manufacturer))
                         .collect(Collectors.joining("\r\n")).getBytes());
 
-                out.putNextEntry(new ZipEntry("种子编码.txt"));
+                out.putNextEntry(new ZipEntry("03种子编码.txt"));
                 out.write(qrCodes.stream().map(QrCode::getUnitCode).map(String::valueOf)
                         .collect(Collectors.joining("\r\n")).getBytes());
 
-                out.putNextEntry(new ZipEntry("使用说明.txt"));
+                out.putNextEntry(new ZipEntry("01使用说明.txt"));
                 out.write(("二维码数据.csv\r\n种子二维码对应的数据，每行一条，可用 Excel 直接打开,也可以用记事本打开。"
                         + "\r\n\r\n种子编码.txt\r\n种子的唯一编号，每行一个。").getBytes());
             }
