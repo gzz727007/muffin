@@ -69,4 +69,10 @@ public class User {
     public void setCompanyId(int companyId) {
         this.companyId = companyId;
     }
+
+    @Override
+    public String toString() {
+        return "User{" + "id=" + id + ", userName=" + userName + ", password=" + password + ", role=" + role + ", createTime=" + createTime + ", lastLoginTime=" + lastLoginTime + ", companyId=" + companyId + '}';
+    }
+    
 }
