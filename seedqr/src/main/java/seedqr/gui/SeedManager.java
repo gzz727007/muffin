@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -121,8 +123,14 @@ public class SeedManager implements Serializable {
     public void saveSeedConfigs() {
         MybatisUtil.run(SeedMapper.class, seedMapper -> {
             seedMapper.deleteSeedConfigBySeedId(selectedSeed.getId());
-            seedMapper.insertSeedConfig(seedConfigs);
+            if (!seedConfigs.isEmpty()) {
+                seedMapper.insertSeedConfig(seedConfigs);
+            }
         });
+        
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+            facesContext.addMessage(null, new FacesMessage(
+                    FacesMessage.SEVERITY_INFO, "种子属性修改成功！", null));
     }
 
     private void resetNewSeed() {
