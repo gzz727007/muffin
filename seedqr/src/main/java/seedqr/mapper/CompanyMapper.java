@@ -30,8 +30,8 @@ public interface CompanyMapper {
     @Select("select id, `name` from company where type = 1")
     List<Company> getBriefManufacturers();
 
-    @Select("select * from company where type = 2 and userId = #{userId}")
-    List<Company> getWholesalers(int userId);
+    @Select("select * from company where type = 2 and parentId = #{companyId}")
+    List<Company> getWholesalers(int companyId);
 
     @Update("update company set abbr = #{abbr}, contact = #{contact}, handphone = #{handphone}, email = #{email} where id = #{id}")
     void updateManufacturer(Company manufacturer);

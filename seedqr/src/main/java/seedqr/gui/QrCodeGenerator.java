@@ -17,7 +17,6 @@ import seedqr.mapper.QrCodeMapper;
 import seedqr.mapper.SeedMapper;
 import seedqr.model.QrCodeRequest;
 import seedqr.model.Seed;
-import seedqr.model.User;
 import seedqr.util.MybatisUtil;
 
 @Named @ViewScoped
@@ -26,7 +25,8 @@ public class QrCodeGenerator implements Serializable {
     private QrCodeRequestService qrCodeRequestService;
     @Inject
     private SessionData sessionData;
-    private User user;
+    private int userId;
+    private int companyId;
     private List<Seed> seeds;
     private int seedId;
     @Valid
@@ -40,10 +40,11 @@ public class QrCodeGenerator implements Serializable {
 
     @PostConstruct
     private void init() {
-        user = sessionData.getUser();
+        userId = sessionData.getUserId();
+        companyId = sessionData.getCompanyId();
         MybatisUtil.run(SeedMapper.class, QrCodeMapper.class, (seedMapper, qrCodeMapper) -> {
-            seeds = new LinkedList<>(seedMapper.getAllSeeds(user.getId()));
-            qrCodeRequests = new LinkedList<>(qrCodeMapper.getAllRequest(user.getId()));
+            seeds = new LinkedList<>(seedMapper.getAllSeeds(companyId));
+            qrCodeRequests = new LinkedList<>(qrCodeMapper.getAllRequest(companyId));
         });
         if (!seeds.isEmpty()) {
             seedId = seeds.get(0).getId();
@@ -100,7 +101,8 @@ public class QrCodeGenerator implements Serializable {
         Seed seed = seeds.stream().filter(s -> s.getId() == seedId).findFirst().get();
 
         QrCodeRequest qrCodeRequest = new QrCodeRequest();
-        qrCodeRequest.setUserId(user.getId());
+        qrCodeRequest.setUserId(userId);
+        qrCodeRequest.setCompanyId(companyId);
         qrCodeRequest.setSeedId(seed.getId());
         qrCodeRequest.setSeedName(seed.getSeedName());
         qrCodeRequest.setAmount(amount);
@@ -125,6 +127,7 @@ public class QrCodeGenerator implements Serializable {
 
     private void resetNewSeed() {
         newSeed = new Seed();
-        newSeed.setUserId(user.getId());
+        newSeed.setUserId(userId);
+        newSeed.setCompanyId(companyId);
     }
 }

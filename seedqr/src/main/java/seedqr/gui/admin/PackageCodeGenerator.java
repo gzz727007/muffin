@@ -25,7 +25,8 @@ public class PackageCodeGenerator implements Serializable {
     private QrCodeRequestService qrCodeRequestService;
     @Inject
     private SessionData sessionData;
-    private User user;
+    private int userId;
+    private int companyId;
     @Min(value = 1, message = "数量必须在 1 到 50,000 之间。")
     @Max(value = 50000, message = "数量必须在 1 到 50,000 之间。")
     private int amount;
@@ -33,9 +34,10 @@ public class PackageCodeGenerator implements Serializable {
 
     @PostConstruct
     private void init() {
-        user = sessionData.getUser();
+        userId = sessionData.getUserId();
+        companyId = sessionData.getCompanyId();
         MybatisUtil.run(QrCodeMapper.class, qrCodeMapper -> {
-            qrCodeRequests = new LinkedList<>(qrCodeMapper.getAllRequest(user.getId()));
+            qrCodeRequests = new LinkedList<>(qrCodeMapper.getAllRequest(companyId));
         });
         amount = 1000;
     }
@@ -54,7 +56,8 @@ public class PackageCodeGenerator implements Serializable {
 
     public void generateQrCodes() throws Exception {
         QrCodeRequest qrCodeRequest = new QrCodeRequest();
-        qrCodeRequest.setUserId(user.getId());
+        qrCodeRequest.setUserId(userId);
+        qrCodeRequest.setCompanyId(companyId);
         qrCodeRequest.setSeedId(0);
         qrCodeRequest.setSeedName("");
         qrCodeRequest.setAmount(amount);

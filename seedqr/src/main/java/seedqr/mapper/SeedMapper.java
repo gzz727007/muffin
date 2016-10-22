@@ -23,8 +23,8 @@ import seedqr.model.SeedConfig;
  */
 public interface SeedMapper {
     
-    @Select("SELECT  id, user_id userId, seed_name seedName , seed_ui_display seedUiDisplay, company_id companyId FROM user_seed WHERE user_id = #{userId}")
-    List<Seed> getAllSeeds(@Param("userId")int userId);
+    @Select("SELECT  id, user_id userId, seed_name seedName , seed_ui_display seedUiDisplay, company_id companyId FROM user_seed WHERE company_id = #{companyId}")
+    List<Seed> getAllSeeds(@Param("companyId") int companyId);
     
     @Insert("INSERT INTO user_seed (user_id , seed_name, seed_ui_display, company_id) VALUES (#{userId}, #{seedName}, #{seedUiDisplay}, #{companyId})")
     @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="id", before=false, resultType=int.class) 

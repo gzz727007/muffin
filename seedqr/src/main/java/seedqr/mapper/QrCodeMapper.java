@@ -45,14 +45,14 @@ public interface QrCodeMapper {
     int addQrCodeMapping(@Param("src")String src, @Param("target")String target);
     
     @Insert("INSERT INTO `qrcode_request` (" +
-"  `user_id`, `seed_id`, `seed_name`, `company_name`, `amount`, `create_time`, `progress`, `file_name` " +
-") VALUES (" + "#{userId}, #{seedId}, #{seedName}, #{companyName}, #{amount}, now(), #{progress}, #{fileName} )")
+"  `user_id`, `company_id`, `seed_id`, `seed_name`, `company_name`, `amount`, `create_time`, `progress`, `file_name` " +
+") VALUES (" + "#{userId}, #{companyId}, #{seedId}, #{seedName}, #{companyName}, #{amount}, now(), #{progress}, #{fileName} )")
     @SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty="id", before=false, resultType=int.class) 
     int addQrCodeRequest(QrCodeRequest request);
     
     @Select("SELECT  `id`, `user_id` userId, `seed_id` seedId, `seed_name` seedName, `company_name` companyName, `amount`, `create_time` createTime, `progress`, `file_name` fileName "
-            + "FROM `qrcode_request`  WHERE user_id = #{userId} ORDER BY create_time DESC")
-    List<QrCodeRequest> getAllRequest(@Param("userId")int userId);
+            + "FROM `qrcode_request`  WHERE company_id = #{companyId} ORDER BY create_time DESC")
+    List<QrCodeRequest> getAllRequest(@Param("companyId") int companyId);
     
     @Update("UPDATE qrcode_request SET progress =#{progress} WHERE id = #{id}")
     int updateRequestProgress(@Param("id")int id, @Param("progress")int progress);

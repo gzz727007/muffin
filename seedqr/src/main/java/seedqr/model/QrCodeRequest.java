@@ -14,6 +14,7 @@ import java.util.Date;
 public class QrCodeRequest {
     private int id;
     private int userId;
+    private int companyId;
     private int seedId;
     private String seedName;
     private String companyName;
@@ -36,6 +37,14 @@ public class QrCodeRequest {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public int getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(int companyId) {
+        this.companyId = companyId;
     }
 
     public int getSeedId() {
