@@ -130,7 +130,7 @@ public class SeedManager implements Serializable {
         
         FacesContext facesContext = FacesContext.getCurrentInstance();
             facesContext.addMessage(null, new FacesMessage(
-                    FacesMessage.SEVERITY_ERROR, "种子属性修改成功！", null));
+                    FacesMessage.SEVERITY_INFO, "种子属性修改成功！", null));
     }
 
     private void resetNewSeed() {
