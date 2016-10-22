@@ -17,6 +17,7 @@ public class Company {
     private int status;
     private int parentId;
     private int regionId;
+    private int userId;
 
     public int getId() {
         return id;
@@ -104,5 +105,13 @@ public class Company {
 
     public void setRegionId(int regionId) {
         this.regionId = regionId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }

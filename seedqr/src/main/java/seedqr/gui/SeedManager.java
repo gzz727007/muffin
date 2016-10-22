@@ -41,6 +41,7 @@ public class SeedManager implements Serializable {
     @Inject
     private SessionData sessionData;
     private int userId;
+    private int companyId;
     @Valid
     private Seed newSeed;
     private List<Seed> seeds;
@@ -53,7 +54,8 @@ public class SeedManager implements Serializable {
 
     @PostConstruct
     private void init() {
-        userId = sessionData.getUser().getId();
+        userId = sessionData.getUserId();
+        companyId = sessionData.getCompanyId();
         seeds = new LinkedList<>(MybatisUtil.call(SeedMapper.class,
                 seedMapper -> seedMapper.getAllSeeds(userId)));
         resetNewSeed();
@@ -136,6 +138,7 @@ public class SeedManager implements Serializable {
     private void resetNewSeed() {
         newSeed = new Seed();
         newSeed.setUserId(userId);
+        newSeed.setCompanyId(companyId);
     }
 
     private void resetNewSeedConfig() {

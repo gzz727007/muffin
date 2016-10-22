@@ -54,4 +54,8 @@ public class SessionData implements Serializable {
     public int getUserId() {
         return user.getId();
     }
+
+    public int getCompanyId() {
+        return company.getId();
+    }
 }

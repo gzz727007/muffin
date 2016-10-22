@@ -114,6 +114,6 @@ public class ManufacturerManager implements Serializable {
     private void resetManufacturer() {
         manufacturer = new Company();
         manufacturer.setType(1);
-        manufacturer.setParentId(sessionData.getUserId());
+        manufacturer.setUserId(sessionData.getUserId());
     }
 }

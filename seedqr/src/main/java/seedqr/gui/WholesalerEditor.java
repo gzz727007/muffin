@@ -31,6 +31,7 @@ public class WholesalerEditor implements Serializable {
     @Inject
     private SessionData sessionData;
     private int userId;
+    private int companyId;
 
     private List<Company> salers;
 
@@ -56,6 +57,7 @@ public class WholesalerEditor implements Serializable {
     @PostConstruct
     private void init() {
         userId = sessionData.getUserId();
+        companyId = sessionData.getCompanyId();
         salers = MybatisUtil.call(CompanyMapper.class,
                 companyMapper -> companyMapper.getWholesalers(userId));
         allRegion = MybatisUtil.call(RegionMapper.class,
@@ -102,7 +104,8 @@ public class WholesalerEditor implements Serializable {
 //            saler.setUserName(System.currentTimeMillis()+"");
             System.out.println("selectDistId:" + selectDistId);
             if (selectDistId > 0 ){
-                saler.setParentId(userId);
+                saler.setParentId(companyId);
+                saler.setUserId(userId);
 //                saler.setRegionId(selectDistId);
                 saler.setType(2);
 //                saler.setUrole("saler");

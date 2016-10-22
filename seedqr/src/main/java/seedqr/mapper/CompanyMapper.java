@@ -9,14 +9,14 @@ import org.apache.ibatis.annotations.Update;
 import seedqr.model.Company;
 
 public interface CompanyMapper {
-    @Insert("insert into company (code, `name`, abbr, email, contact, handphone, `type`, parentId, regionId) "
-            + "values (#{code}, #{name}, #{abbr}, #{email}, #{contact}, #{handphone}, #{type}, #{parentId}, #{regionId})")
+    @Insert("insert into company (code, `name`, abbr, email, contact, handphone, `type`, parentId, regionId, userId) "
+            + "values (#{code}, #{name}, #{abbr}, #{email}, #{contact}, #{handphone}, #{type}, #{parentId}, #{regionId}, #{userId})")
     @SelectKey(statement = "select last_insert_id()", keyProperty = "id",
             before = false, resultType = int.class)
     void addCompany(Company company);
     
-    @Insert("insert into company (code, `name`, abbr, email, contact, handphone, `type`, parentId, regionId) "
-            + "values (nextval('company_code'), #{name}, #{abbr}, #{email}, #{contact}, #{handphone}, #{type}, #{parentId}, #{regionId})")
+    @Insert("insert into company (code, `name`, abbr, email, contact, handphone, `type`, userId, regionId) "
+            + "values (nextval('company_code'), #{name}, #{abbr}, #{email}, #{contact}, #{handphone}, #{type}, #{userId}, #{regionId})")
     @SelectKey(statement = "select last_insert_id()", keyProperty = "id",
             before = false, resultType = int.class)
     void addManufacturer(Company company);
@@ -30,7 +30,7 @@ public interface CompanyMapper {
     @Select("select id, `name` from company where type = 1")
     List<Company> getBriefManufacturers();
 
-    @Select("select * from company where type = 2 and parentId = #{userId}")
+    @Select("select * from company where type = 2 and userId = #{userId}")
     List<Company> getWholesalers(int userId);
 
     @Update("update company set abbr = #{abbr}, contact = #{contact}, handphone = #{handphone}, email = #{email} where id = #{id}")

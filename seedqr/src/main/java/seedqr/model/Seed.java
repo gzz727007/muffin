@@ -14,6 +14,7 @@ import javax.validation.constraints.Size;
 public class Seed {
     private int id;
     private int userId;
+    private int companyId;
     @Size(min = 1, max = 50, message = "种子名称不能为空且不超过 50 个字符。")
     private String seedName;
     @Size(min = 1, max = 50, message = "显示名称不能为空且不超过 50 个字符。")
@@ -34,6 +35,14 @@ public class Seed {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public int getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(int companyId) {
+        this.companyId = companyId;
     }
 
     public String getSeedName() {
