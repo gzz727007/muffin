@@ -10,6 +10,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.validation.Valid;
 import seedqr.mapper.CompanyMapper;
@@ -25,8 +26,13 @@ public class UserManager implements Serializable {
     private Map<String, String> roles;
     @Valid
     private User user;
+    
+    private String newPassword;
     private String confirmPassword;
 
+    @Inject
+    private SessionData sessionData;
+    
     @PostConstruct
     private void init() {
         MybatisUtil.run(UserMapper.class, CompanyMapper.class,
@@ -36,8 +42,7 @@ public class UserManager implements Serializable {
                     .collect(Collectors.toMap(Company::getId, Company::getName));
         });
         roles = new LinkedHashMap<>();
-        roles.put("admin", "系统管理");
-        roles.put("user", "普通用户");
+        roles.put("user", "管理人员");
         roles.put("keeper", "库管人员");
         roles.put("packer", "打包人员");
         user = new User();
@@ -64,6 +69,14 @@ public class UserManager implements Serializable {
         confirmPassword = user.getPassword();
     }
 
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
+    }
+
     public String getConfirmPassword() {
         return confirmPassword;
     }
@@ -80,9 +93,21 @@ public class UserManager implements Serializable {
     }
 
     public void updateUser() {
-        comparePasswords();
-        MybatisUtil.run(UserMapper.class, userMapper -> userMapper.updateUser(user));
-        resetUser();
+        if (comparePasswords()) {
+            MybatisUtil.run(UserMapper.class, userMapper -> userMapper.updateUser(user));
+            resetUser();
+        }
+    }
+    
+    public void updateUserPassword() {
+        user = sessionData.getUser();
+        if (checkPasswords()) {
+            user.setPassword(newPassword);
+            MybatisUtil.run(UserMapper.class, userMapper -> userMapper.updateUser(user));
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            facesContext.addMessage(null, new FacesMessage(
+                    FacesMessage.SEVERITY_INFO, "密码修改成功，下次登陆请使用新密码", null));
+        }
     }
 
     public void resetUser() {
@@ -90,12 +115,32 @@ public class UserManager implements Serializable {
         confirmPassword = null;
     }
 
-    private void comparePasswords() {
+    private boolean comparePasswords() {
         if (!user.getPassword().equals(confirmPassword)) {
             FacesContext facesContext = FacesContext.getCurrentInstance();
             facesContext.validationFailed();
             facesContext.addMessage(null, new FacesMessage(
                     FacesMessage.SEVERITY_ERROR, "两次输入的密码不一致。", null));
+            return false;
         }
+        return true;
+    }
+    
+    private boolean checkPasswords() {
+        if (newPassword == null || newPassword.equals("")) {
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            facesContext.validationFailed();
+            facesContext.addMessage(null, new FacesMessage(
+                    FacesMessage.SEVERITY_ERROR, "新密码不能为空", null));
+            return false;
+        }
+        if (!newPassword.equals(confirmPassword)) {
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            facesContext.validationFailed();
+            facesContext.addMessage(null, new FacesMessage(
+                    FacesMessage.SEVERITY_ERROR, "两次输入的密码不一致。", null));
+            return false;
+        }
+        return true;
     }
 }

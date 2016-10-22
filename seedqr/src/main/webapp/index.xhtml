@@ -46,9 +46,10 @@
             <h:panelGroup layout="block" style="width: 100%; flex: 0 1 auto;">
                 <h:panelGroup layout="block" style="width: 100%; text-align: right;">
                     <h:form id="logout">
-                        <p:commandLink value="退出（#{request.remoteUser}）"
-                                       action="#{authenticator.logout}"
-                                       rendered="#{request.remoteUser ne null}"/>
+                        <p:menuButton rendered="#{request.remoteUser ne null}" value="#{request.remoteUser}">
+                            <p:menuitem value="修改密码" oncomplete="PF('updatePassword').show();" />
+                            <p:menuitem value="退出登陆" actionListener="#{authenticator.logout}" />
+                        </p:menuButton>
                     </h:form>
                 </h:panelGroup>
                 <h1 style="text-align: center;">中国种子二维码追溯系统</h1>
@@ -64,7 +65,7 @@
                         <f:facet name="footer">
                             <h:panelGroup layout="block" styleClass="submit">
                                 <p:commandButton id="loginButton" value="登录"
-                                                 process="@form" update="logout content"
+                                                 process="@form" update="logout content @widgetVar(updatePassword)"
                                                  action="#{authenticator.login}"/>
                             </h:panelGroup>
                         </f:facet>
@@ -106,11 +107,35 @@
                     <p:tab title="用户管理" rendered="#{sessionData.isUserInRole(['admin'])}">
                         <ui:include src="WEB-INF/gui/users.xhtml"/>
                     </p:tab>
+                    <p:tab title="外袋码生成" rendered="#{sessionData.isUserInRole(['admin'])}">
+                        <ui:include src="WEB-INF/gui/packCodeGenerator.xhtml"/>
+                    </p:tab>
                 </p:tabView>
             </h:panelGroup>
             <h:panelGroup layout="block" style="width: 100%; flex: 0 1 auto; text-align: center;">
                 版权所有 © 2016 成都星楚物流有限公司
             </h:panelGroup>
+            <p:dialog widgetVar="updatePassword" header="修改密码" modal="true">
+                <h:form>
+                <p:panelGrid columns="2" styleClass="transparent">
+                    <h:outputText value="用户名："/>
+                    <h:outputText value="#{sessionData.user.userName}"/>
+                    <p:outputLabel for="newPassword1" value="新密码："/>
+                    <p:password id="newPassword1" value="#{userManager.newPassword}"
+                                maxlength="20" redisplay="true"/>
+                    <p:outputLabel for="newConfirmPassword1" value="确认密码："/>
+                    <p:password id="newConfirmPassword1" value="#{userManager.confirmPassword}"
+                                maxlength="20" redisplay="true"/>
+                    <f:facet name="footer">
+                        <h:panelGroup layout="block" style="width: 100%; text-align: center;">
+                            <p:commandButton value="修改" process="@form"
+                                             action="#{userManager.updateUserPassword}"
+                                             oncomplete="hideDialog('updatePassword');"/>
+                        </h:panelGroup>
+                    </f:facet>
+                </p:panelGrid>
+                    </h:form>
+            </p:dialog>
         </h:panelGroup>
     </h:body>
 </html>

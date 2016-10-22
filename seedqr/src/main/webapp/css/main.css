@@ -42,7 +42,7 @@ html, body {
 }
 
 .wy-mod-nav {
-  width: 960px;
+  width: 100%;
   height: 100px;
   overflow: hidden;
   margin: 0 auto;
@@ -51,7 +51,6 @@ html, body {
 }
 
 .wy-mod-nav h1 {
-  float: left;
   font-family: Arial;
 }
 
