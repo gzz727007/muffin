@@ -121,7 +121,9 @@ public class SeedManager implements Serializable {
     public void saveSeedConfigs() {
         MybatisUtil.run(SeedMapper.class, seedMapper -> {
             seedMapper.deleteSeedConfigBySeedId(selectedSeed.getId());
-            seedMapper.insertSeedConfig(seedConfigs);
+            if (!seedConfigs.isEmpty()) {
+                seedMapper.insertSeedConfig(seedConfigs);
+            }
         });
     }
 

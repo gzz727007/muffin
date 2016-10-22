@@ -99,7 +99,7 @@ public class ManufacturerManager implements Serializable {
 
     public void addManufacturer() {
         MybatisUtil.run(CompanyMapper.class,
-                companyMapper -> companyMapper.addCompany(manufacturer));
+                companyMapper -> companyMapper.addManufacturer(manufacturer));
         manufacturers.add(0, manufacturer);
         resetManufacturer();
     }
