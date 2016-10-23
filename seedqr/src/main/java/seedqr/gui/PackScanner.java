@@ -18,10 +18,10 @@ import seedqr.util.MybatisUtil;
 
 @Named @ViewScoped
 public class PackScanner implements Serializable {
-    @Min(value = 20, message = "小包数量必须在 20 到 100 之间。")
-    @Max(value = 100, message = "小包数量必须在 20 到 100 之间。")
+    @Min(value = 20, message = "小包数量必须在 20 到 200 之间。")
+    @Max(value = 200, message = "小包数量必须在 20 到 200 之间。")
     private int amount;
-    @Size(min = 1, max = 200, message = "条码不能为空且不超过 200 个字符。")
+    @Size(min = 1, max = 400, message = "条码不能为空且不超过 400 个字符。")
     private String packCode;
     private String bulkPackCode;
     private List<String> smallPackCodes;
@@ -83,6 +83,10 @@ public class PackScanner implements Serializable {
                 }
                 System.out.println(packCode);
                 packCode = CodeUtil.parseCode(packCode);
+                if (packCode.startsWith("1000") && packCode.length() == 19) {
+                    bulkPackCode = packCode;
+                    return;
+                }
                 if (packCode.equals("")) {
                     return;
                 }

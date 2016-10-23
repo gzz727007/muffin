@@ -23,12 +23,12 @@ import seedqr.util.MybatisUtil;
 public class SeedManager implements Serializable {
     private static final Map<String, String> BASIC_SEED_CONFIG_PARA_NAMES = new LinkedHashMap<>();
     static {
+        BASIC_SEED_CONFIG_PARA_NAMES.put("批次编码", "在此输入种子按批次的编码等。");
         BASIC_SEED_CONFIG_PARA_NAMES.put("种子亲本", "在此输入父本名称、母本名称等。");
         BASIC_SEED_CONFIG_PARA_NAMES.put("产地", "在此输入生产基地名称、基地负责人、代生产公司名称等。");
         BASIC_SEED_CONFIG_PARA_NAMES.put("生产时间", "在此输入年份、父母本播种时间、收种时间等。");
         BASIC_SEED_CONFIG_PARA_NAMES.put("检疫", "在此输入产地检疫证号、调运检疫证号等。");
         BASIC_SEED_CONFIG_PARA_NAMES.put("质量", "在此输入样品编号、代表数量、水份、净度、芽率、纯度、检验时间、检验员等。");
-        BASIC_SEED_CONFIG_PARA_NAMES.put("批次编码", "在此输入种子按批次的编码等。");
         BASIC_SEED_CONFIG_PARA_NAMES.put("是否渗混", "在此输入是或否。");
         BASIC_SEED_CONFIG_PARA_NAMES.put("包装加工", "在此输入包装仓库、加工班组等。");
         BASIC_SEED_CONFIG_PARA_NAMES.put("种衣剂", "在此输入种衣剂生产公司、种衣剂名称、种衣剂成分等。");
@@ -142,6 +142,6 @@ public class SeedManager implements Serializable {
     private void resetNewSeedConfig() {
         newSeedConfig = new SeedConfig();
         newSeedConfig.setType(1);
-        newSeedConfig.setParaName("种子亲本");
+        newSeedConfig.setParaName("批次编码");
     }
 }
