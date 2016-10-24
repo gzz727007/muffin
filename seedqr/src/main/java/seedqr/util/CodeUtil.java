@@ -27,8 +27,11 @@ public class CodeUtil {
         if(code.length() > 21 && code.contains("id")) {
             retCode = code.substring(code.indexOf("id")+ 3, code.length());
         }
-        if(code.length() < 19) {
+        if(retCode.length() < 19) {
             retCode= "";
+        }
+        if(retCode.length() > 19) {
+            retCode = retCode.substring(0, 19);
         }
         return retCode;
     }

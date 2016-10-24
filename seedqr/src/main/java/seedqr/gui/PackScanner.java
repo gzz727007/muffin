@@ -70,27 +70,39 @@ public class PackScanner implements Serializable {
     
     
     public void addPackCode() {
+        String parsePackCode = packCode;
+        packCode = "";
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        if (packCode.startsWith("1000") && packCode.length() == 19) {
-            bulkPackCode = packCode;
+        if (parsePackCode.startsWith("1000") && parsePackCode.length() == 19) {
+            bulkPackCode = parsePackCode;
         } else {
             if(amount == smallPackCodes.size()) {
                 facesContext.addMessage(null, new FacesMessage(
                     FacesMessage.SEVERITY_ERROR, "小包已经扫满。", null));
             } else {
-                if (!CodeUtil.isXingchuCode(packCode)) {
+                if (!CodeUtil.isXingchuCode(parsePackCode)) {
                     isOurSystem = false;
                 }
-                System.out.println(packCode);
-                packCode = CodeUtil.parseCode(packCode);
-                if (packCode.startsWith("1000") && packCode.length() == 19) {
-                    bulkPackCode = packCode;
+                System.out.println(parsePackCode);
+                parsePackCode = CodeUtil.parseCode(parsePackCode);
+                if (parsePackCode.startsWith("1000") && parsePackCode.length() == 19) {
+                    if(bulkPackCode!=null && bulkPackCode.length() ==19) {
+                        facesContext.addMessage(null, new FacesMessage(
+                        FacesMessage.SEVERITY_ERROR, "已经扫描大码。", null));
+                    }else {
+                        bulkPackCode = parsePackCode;
+                    }
                     return;
                 }
-                if (packCode.equals("")) {
+                if (parsePackCode.equals("")) {
                     return;
                 }
-                smallPackCodes.add(packCode);
+                if(smallPackCodes.contains(parsePackCode)) {
+                    facesContext.addMessage(null, new FacesMessage(
+                    FacesMessage.SEVERITY_ERROR, "重复扫码。", null));
+                } else {
+                    smallPackCodes.add(parsePackCode);
+                }
             }
         }
         packCode = null;

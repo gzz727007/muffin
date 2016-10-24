@@ -4,7 +4,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition>
-        <h:form prependId="false">
+        <h:form prependId="false"  onsubmit="return false;" onkeydown="return disableEnter();">
             <p:panelGrid id="packagePanel" styleClass="transparent" style="margin: auto;">
                 <p:row>
                     <p:column>
@@ -22,7 +22,7 @@
                         <p:outputLabel for="packCodeInputForPackage" value="条码输入："/>
                     </p:column>
                     <p:column>
-                        <p:inputText id="packCodeInputForPackage"
+                        <p:inputText id="packCodeInputForPackage" onkeyup="return codeInputKeyup('packCodeInputForPackage','packCodeInputForPackageAddButton');"
                                      value="#{packScanner.packCode}"/>
                         <p:focus for="packCodeInputForPackage"/>
                     </p:column>

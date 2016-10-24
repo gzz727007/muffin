@@ -9,25 +9,29 @@
         <h:outputStylesheet library="css" name="seedqr.css"/>
         <script type="text/javascript">
             function tabShown(index) {
-                PrimeFaces.focus('packCodeInputForPackage');
+                if (index === 3) {
+                    PrimeFaces.focus('packCodeInputForPackage');
+                }
+                if (index === 4) {
+                    PrimeFaces.focus('packCodeForOut');
+                }
             }
             function disableEnter() {
-                if(event.keyCode === 13) {
+                if(event.keyCode == 13) {
                     return false;
                 }
                 return true;
             }
             
-            function codeInputKeyup() {
-                if (event.keyCode === 13) {
-                    var inputValue = document.getElementById("packCodeInputForPackage").value;
-                    console.log(inputValue);
-                    if (inputValue.indexOf("id") > 0) {
-                        document.getElementById("packCodeInputForPackageAddButton").click();
+            function codeInputKeyup(inputId, buttonId) {
+                var inputValue = document.getElementById(inputId).value;
+                var startIndex = inputValue.indexOf("id");
+                if(startIndex > 0) {
+                    var iddd = inputValue.substring(startIndex+3);
+                    if ((iddd.length === 19) &amp;&amp; (event.keyCode != 13)) {
+                       document.getElementById(buttonId).click();
                     }
-                    return false;
                 }
-                return true;
             }
 
             function hideDialog(widgetVar) {

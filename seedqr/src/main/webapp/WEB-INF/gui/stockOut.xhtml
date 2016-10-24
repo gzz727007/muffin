@@ -4,24 +4,25 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <ui:composition>
-        <h:form>
+        <h:form prependId="false" onsubmit="return false;" onkeydown="return disableEnter();">
             <p:dialog widgetVar="dlg2" modal="true" minHeight="100" width="200" closable="false">
-                <p:outputLabel for="packCode" value="数据更新中..."/>
+                <p:outputLabel for="packCodeForOut" value="数据更新中..."/>
             </p:dialog>
             <p:panelGrid styleClass="transparent" style="margin: auto;">
                 <p:row>
                     <p:column>
-                        <p:outputLabel for="packCode" value="条码输入："/>
+                        <p:outputLabel for="packCodeForOut" value="条码输入："/>
                     </p:column>
                     <p:column>
-                        <p:inputText id="packCode" maxlength="20"
+                        <p:inputText id="packCodeForOut" onkeyup="return codeInputKeyup('packCodeForOut','packCodeForOutAddButton');"
                                      value="#{stockOut.packCode}"/>
+                        <p:focus for="packCodeForOut"/>
                     </p:column>
                     <p:column>
-                        <p:commandButton value="添加" action="#{stockOut.addPackCode}"
-                                         process="packCode @this"
-                                         update="packCode packCodes"
-                                         oncomplete="PrimeFaces.focus('packCode');"/>
+                        <p:commandButton id ="packCodeForOutAddButton" value="添加" action="#{stockOut.addPackCode}"
+                                         process="packCodeForOut @this"
+                                         update="packCodeForOut packCodes"
+                                         oncomplete="PrimeFaces.focus('packCodeForOut');"/>
                     </p:column>
                 </p:row>
                 <p:row>
@@ -56,7 +57,7 @@
                         <h:panelGroup layout="block" styleClass="submit">
                             <p:commandButton value="出库" action="#{stockOut.doOut}"
                                              process="salerInfo @this"
-                                             update="packCode packCodes"
+                                             update="packCodeForOut packCodes"
                                              onstart="PF('dlg2').show();"
                                              oncomplete="PF('dlg2').hide();"/>
                         </h:panelGroup>
