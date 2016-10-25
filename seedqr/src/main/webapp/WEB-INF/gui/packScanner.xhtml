@@ -27,10 +27,26 @@
                         <p:focus for="packCodeInputForPackage"/>
                     </p:column>
                     <p:column>
-                        <p:commandButton id="packCodeInputForPackageAddButton" value="添加" action="#{packScanner.addPackCode}"
-                                         process="packCodeInputForPackage @this"
-                                         update="packCodeInputForPackage bulkPackCode smallPackCodes"
-                                         oncomplete="PrimeFaces.focus('packCodeInputForPackage');"/>
+                        <script type="text/javascript">
+                            function addPackCode() {
+                                var packCode = $('#packCodeInputForPackage').val();
+                                if (packCode.indexOf('1000') === 0) {
+                                    $('#bulkPackCode').val(packCode);
+                                } else {
+                                    $('#smallPackCodes').append('<li>' + packCode + '</li>');
+                                    var smallPackCodesCsv = $('#smallPackCodesCsv').val();
+                                    alert('before: ' + smallPackCodesCsv);
+                                    if (!smallPackCodesCsv) {
+                                        smallPackCodesCsv = packCode;
+                                    } else {
+                                        smallPackCodesCsv = smallPackCodesCsv + ',' + packCode;
+                                    }
+                                    alert('after: ' + smallPackCodesCsv);
+                                    $('#smallPackCodesCsv').val(smallPackCodesCsv);
+                                }
+                            }
+                        </script>
+                        <p:commandButton type="button" value="添加" onclick="addPackCode();"/>
                     </p:column>
                 </p:row>
                 
@@ -52,7 +68,7 @@
                         <p:outputLabel for="bulkPackCode" value="大包条码："/>
                     </p:column>
                     <p:column>
-                        <p:inputText id="bulkPackCode" disabled="true"
+                        <p:inputText id="bulkPackCode" readonly="true"
                                      value="#{packScanner.bulkPackCode}"/>
                     </p:column>
                 </p:row>
@@ -61,12 +77,9 @@
                         <h:outputText value="小包条码："/>
                     </p:column>
                     <p:column colspan="2">
+                        <h:inputHidden id="smallPackCodesCsv" value="#{packScanner.smallPackCodesCsv}"/>
                         <p:scrollPanel mode="native" style="height: 200px;">
-                            <p:dataList id="smallPackCodes" type="ordered"
-                                        value="#{packScanner.smallPackCodes}"
-                                        var="smallPackCode" emptyMessage="尚未添加小包条码。">
-                                <h:outputText value="#{smallPackCode}"/>
-                            </p:dataList>
+                            <ol id="smallPackCodes"/>
                         </p:scrollPanel>
                     </p:column>
                 </p:row>
@@ -74,9 +87,9 @@
                     <p:column colspan="3">
                         <h:panelGroup layout="block" styleClass="submit">
                             <p:commandButton id="bindPackageCodes" value="绑定" action="#{packScanner.bindCodes}"
-                                             process="amount selectSeedId bulkPackCode @this"
-                                             update="packCodeInputForPackage bulkPackCode smallPackCodes"
-                                             oncomplete="PrimeFaces.focus('packCodeInputForPackage');"/>
+                                             process="amount selectSeedId bulkPackCode smallPackCodesCsv @this"
+                                             update="packCodeInputForPackage bulkPackCode"
+                                             oncomplete="PrimeFaces.focus('packCodeInputForPackage'); $('#smallPackCodes').html('');"/>
                         </h:panelGroup>
                     </p:column>
                 </p:row>
