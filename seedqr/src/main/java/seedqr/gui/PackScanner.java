@@ -24,6 +24,7 @@ public class PackScanner implements Serializable {
     @Size(min = 1, max = 400, message = "条码不能为空且不超过 400 个字符。")
     private String packCode;
     private String bulkPackCode;
+    private String smallPackCodesCsv;
     private List<String> smallPackCodes;
     private int seedId;
     
@@ -53,6 +54,14 @@ public class PackScanner implements Serializable {
 
     public String getBulkPackCode() {
         return bulkPackCode;
+    }
+
+    public String getSmallPackCodesCsv() {
+        return smallPackCodesCsv;
+    }
+
+    public void setSmallPackCodesCsv(String smallPackCodesCsv) {
+        this.smallPackCodesCsv = smallPackCodesCsv;
     }
 
     public List<String> getSmallPackCodes() {
