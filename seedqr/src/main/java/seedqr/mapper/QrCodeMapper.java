@@ -63,6 +63,9 @@ public interface QrCodeMapper {
     @UpdateProvider(type = QrCodeMapperProvider.class, method = "updateQrCodeSeedId")
     int updateQrCodeSeedId(@Param("qrcodes")String qrcodes, @Param("seedId")Integer seedId);
     
+    @SelectProvider(type = QrCodeMapperProvider.class, method = "validateQrCodes")
+    List<Long> validateQrCodes(@Param("qrcodes")String qrcodes, @Param("seedId")Integer seedId );
+    
     public static class QrCodeMapperProvider {
 
 		public String inserAll(Map<String, List<QrCode>> map) {
@@ -100,6 +103,19 @@ public interface QrCodeMapper {
                     stringBuilder.append("UPDATE `qr_code` SET seed_id = ");
                     stringBuilder.append(seedId);
                     stringBuilder.append(",bind_time =now() ,status = 1  WHERE unit_code IN ( ");
+                    stringBuilder.append(qrcodes);
+                    stringBuilder.append(")");
+                    return stringBuilder.toString();
+                }
+                
+                public String validateQrCodes(Map<String, Object> map) {
+                    String qrcodes = map.get("qrcodes").toString();
+                    Integer seedId = (Integer) map.get("seedId");
+                    
+                    StringBuilder stringBuilder = new StringBuilder();
+                    stringBuilder.append("SELECT a.`unit_code` FROM `qr_code` a, `user_seed` b WHERE a.`seed_name` = b.`seed_name`  AND b.`id` = ");
+                    stringBuilder.append(seedId);
+                    stringBuilder.append("AND a.`unit_code` IN ( ");
                     stringBuilder.append(qrcodes);
                     stringBuilder.append(")");
                     return stringBuilder.toString();

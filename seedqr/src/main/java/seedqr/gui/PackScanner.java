@@ -2,6 +2,7 @@ package seedqr.gui;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
@@ -119,7 +120,9 @@ public class PackScanner implements Serializable {
 
     public void bindCodes() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
+        smallPackCodes = Arrays.asList(smallPackCodesCsv.split(","));
 
+        
         if (bulkPackCode == null || bulkPackCode.isEmpty() || bulkPackCode.length() > 20) {
             facesContext.addMessage(null, new FacesMessage(
                     FacesMessage.SEVERITY_ERROR, "没有扫描大包条码。", null));
@@ -133,11 +136,36 @@ public class PackScanner implements Serializable {
             return;
         }
         
+        for (String smallQrCode : smallPackCodes) {
+            if(smallQrCode.length() != 19) {
+                facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "编码【"+ smallQrCode +"】不是正规编码！", null));
+                return;
+            }
+            try {
+                Long.parseLong(smallQrCode);
+            }catch(Exception e) {
+                facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "编码【"+ smallQrCode +"】不是正规编码！", null));
+                return;
+            }
+        }
+        
         if (seedId ==0) {
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
                     "请选择种子批次！", null));
             return;
         }
+        List<Long> result = MybatisUtil.call(QrCodeMapper.class,
+                qrCodeMapper -> 
+                    qrCodeMapper.validateQrCodes(smallPackCodes.stream().collect(Collectors.joining(",")), seedId)
+                );
+        if(result.size() != smallPackCodes.size()) {
+            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                    "你输入的种子二位码不是这个品种的！", null));
+            return;
+        }
+        
         // 检查大小和小包是否已经被绑定
         MybatisUtil.run(QrCodeMapper.class,
                 qrCodeMapper -> {qrCodeMapper.addQrCodeMapping(bulkPackCode,
@@ -150,4 +178,5 @@ public class PackScanner implements Serializable {
         packCode = null;
         smallPackCodes.clear();
     }
+    
 }

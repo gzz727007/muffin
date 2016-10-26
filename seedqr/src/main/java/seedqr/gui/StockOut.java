@@ -51,7 +51,7 @@ public class StockOut implements Serializable {
             if (parsePackCode.startsWith("1000") && parsePackCode.length() == 19) {
                 if (packCodes.contains(parsePackCode)) {
                     facesContext.addMessage(null, new FacesMessage(
-                        FacesMessage.SEVERITY_ERROR, "你扫描的外袋码已經掃描！", null));
+                        FacesMessage.SEVERITY_ERROR, "你扫描的外袋码已经扫描！", null));
                 } else {
                     packCodes.add(parsePackCode);
                 }

@@ -22,7 +22,7 @@
                         <p:outputLabel for="packCodeInputForPackage" value="条码输入："/>
                     </p:column>
                     <p:column>
-                        <p:inputText id="packCodeInputForPackage" onkeyup="return codeInputKeyup('packCodeInputForPackage','packCodeInputForPackageAddButton');"
+                        <p:inputText id="packCodeInputForPackage" onkeyup="return addPackCode();"
                                      value="#{packScanner.packCode}"/>
                         <p:focus for="packCodeInputForPackage"/>
                     </p:column>
@@ -30,20 +30,26 @@
                         <script type="text/javascript">
                             function addPackCode() {
                                 var packCode = $('#packCodeInputForPackage').val();
-                                if (packCode.indexOf('1000') === 0) {
-                                    $('#bulkPackCode').val(packCode);
-                                } else {
-                                    $('#smallPackCodes').append('<li>' + packCode + '</li>');
-                                    var smallPackCodesCsv = $('#smallPackCodesCsv').val();
-                                    alert('before: ' + smallPackCodesCsv);
-                                    if (!smallPackCodesCsv) {
-                                        smallPackCodesCsv = packCode;
-                                    } else {
-                                        smallPackCodesCsv = smallPackCodesCsv + ',' + packCode;
+                                var startIndex = packCode.indexOf("id");
+                                if (startIndex > 0 ) {
+                                    var id = packCode.substring(startIndex+3);
+                                    if ((id.length === 19) &amp;&amp; (event.keyCode != 13)) {
+                                        if (packCode.indexOf('1000') === 0) {
+                                            $('#bulkPackCode').val(id);
+                                        } else {
+                                            $('#smallPackCodes').append('<li>' + id + '</li>');
+                                            var smallPackCodesCsv = $('#smallPackCodesCsv').val();
+                                            if (!smallPackCodesCsv) {
+                                                smallPackCodesCsv = id;
+                                            } else {
+                                                smallPackCodesCsv = smallPackCodesCsv + ',' + id;
+                                            }
+                                            $('#smallPackCodesCsv').val(smallPackCodesCsv);
+                                        }
+                                        $('#packCodeInputForPackage').val("");
                                     }
-                                    alert('after: ' + smallPackCodesCsv);
-                                    $('#smallPackCodesCsv').val(smallPackCodesCsv);
                                 }
+
                             }
                         </script>
                         <p:commandButton type="button" value="添加" onclick="addPackCode();"/>
@@ -79,7 +85,7 @@
                     <p:column colspan="2">
                         <h:inputHidden id="smallPackCodesCsv" value="#{packScanner.smallPackCodesCsv}"/>
                         <p:scrollPanel mode="native" style="height: 200px;">
-                            <ol id="smallPackCodes"/>
+                            <ol id="smallPackCodes" reversed="reversed"/>
                         </p:scrollPanel>
                     </p:column>
                 </p:row>
