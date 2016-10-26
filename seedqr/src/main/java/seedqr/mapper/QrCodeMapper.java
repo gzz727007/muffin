@@ -115,7 +115,7 @@ public interface QrCodeMapper {
                     StringBuilder stringBuilder = new StringBuilder();
                     stringBuilder.append("SELECT a.`unit_code` FROM `qr_code` a, `user_seed` b WHERE a.`seed_name` = b.`seed_name`  AND b.`id` = ");
                     stringBuilder.append(seedId);
-                    stringBuilder.append("AND a.`unit_code` IN ( ");
+                    stringBuilder.append(" AND a.`unit_code` IN ( ");
                     stringBuilder.append(qrcodes);
                     stringBuilder.append(")");
                     return stringBuilder.toString();

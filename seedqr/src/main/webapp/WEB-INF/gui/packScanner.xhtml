@@ -34,19 +34,33 @@
                                 if (startIndex > 0 ) {
                                     var id = packCode.substring(startIndex+3);
                                     if ((id.length === 19) &amp;&amp; (event.keyCode != 13)) {
-                                        if (packCode.indexOf('1000') === 0) {
+                                        if (id.indexOf('1000') === 0) {
                                             $('#bulkPackCode').val(id);
+                                            $('#packCodeInputForPackage').val("");
                                         } else {
-                                            $('#smallPackCodes').append('<li>' + id + '</li>');
+                                            
                                             var smallPackCodesCsv = $('#smallPackCodesCsv').val();
+                                            if (smallPackCodesCsv.indexOf(id) > -1) {
+                                                PrimeFaces.cw('Growl','growlWidget',{id:'messages',sticky:false,life:6000,escape:true,msgs:[{severity: 'error', summary: '错误信息', detail: '重复扫描！.'}]});
+                                                $('#packCodeInputForPackage').val("");
+                                                return;
+                                            }
+                                            var index = $('#smallPackCodes li').length;
+                                            var amount = $('#amount_input').val();
+                                            if ((index-amount) >= 0 ) {
+                                                PrimeFaces.cw('Growl','growlWidget',{id:'messages',sticky:false,life:6000,escape:true,msgs:[{severity: 'error', summary: '错误信息', detail: '小码已扫满！.'}]});
+                                                $('#packCodeInputForPackage').val("");
+                                                return;
+                                            }
+                                                $('#smallPackCodes').prepend('<li value="'+(index +1) + '">' + id + '</li>');
                                             if (!smallPackCodesCsv) {
                                                 smallPackCodesCsv = id;
                                             } else {
                                                 smallPackCodesCsv = smallPackCodesCsv + ',' + id;
                                             }
                                             $('#smallPackCodesCsv').val(smallPackCodesCsv);
+                                            $('#packCodeInputForPackage').val("");
                                         }
-                                        $('#packCodeInputForPackage').val("");
                                     }
                                 }
 
@@ -74,7 +88,7 @@
                         <p:outputLabel for="bulkPackCode" value="大包条码："/>
                     </p:column>
                     <p:column>
-                        <p:inputText id="bulkPackCode" readonly="true"
+                        <p:inputText id="bulkPackCode" disabled="disabled"
                                      value="#{packScanner.bulkPackCode}"/>
                     </p:column>
                 </p:row>
@@ -85,7 +99,7 @@
                     <p:column colspan="2">
                         <h:inputHidden id="smallPackCodesCsv" value="#{packScanner.smallPackCodesCsv}"/>
                         <p:scrollPanel mode="native" style="height: 200px;">
-                            <ol id="smallPackCodes" reversed="reversed"/>
+                            <ol id="smallPackCodes"/>
                         </p:scrollPanel>
                     </p:column>
                 </p:row>
@@ -101,7 +115,7 @@
                 </p:row>
             </p:panelGrid>
             
-            <p:blockUI block="packagePanel" trigger="bindPackageCodes" > 数据保存中...</p:blockUI>
+            <p:blockUI block="indexPanel" trigger="bindPackageCodes" > 数据保存中...</p:blockUI>
         </h:form>
     </ui:composition>
 </html>

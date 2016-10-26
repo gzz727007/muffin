@@ -42,7 +42,7 @@
         </script>
     </h:head>
     <h:body>
-        <p:growl autoUpdate="true"/>
+        <p:growl id="messages"  widgetVar="growlWidget" autoUpdate="true"/>
         <h:outputText id="validationFailed" style="display: none;"
                       value="#{facesContext.validationFailed}"/>
         <h:panelGroup id="indexPanel" layout="block"

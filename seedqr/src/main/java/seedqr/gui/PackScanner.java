@@ -57,6 +57,10 @@ public class PackScanner implements Serializable {
         return bulkPackCode;
     }
 
+    public void setBulkPackCode(String bulkPackCode) {
+        this.bulkPackCode = bulkPackCode;
+    }
+    
     public String getSmallPackCodesCsv() {
         return smallPackCodesCsv;
     }
@@ -121,7 +125,6 @@ public class PackScanner implements Serializable {
     public void bindCodes() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         smallPackCodes = Arrays.asList(smallPackCodesCsv.split(","));
-
         
         if (bulkPackCode == null || bulkPackCode.isEmpty() || bulkPackCode.length() > 20) {
             facesContext.addMessage(null, new FacesMessage(
@@ -163,6 +166,7 @@ public class PackScanner implements Serializable {
         if(result.size() != smallPackCodes.size()) {
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
                     "你输入的种子二位码不是这个品种的！", null));
+            smallPackCodesCsv = "";
             return;
         }
         
@@ -176,7 +180,6 @@ public class PackScanner implements Serializable {
                 FacesMessage.SEVERITY_INFO, "绑定成功。", null));
         bulkPackCode = null;
         packCode = null;
-        smallPackCodes.clear();
     }
     
 }
