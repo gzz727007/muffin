@@ -109,7 +109,7 @@
                             <p:commandButton id="bindPackageCodes" value="绑定" action="#{packScanner.bindCodes}"
                                              process="amount selectSeedId bulkPackCode smallPackCodesCsv @this"
                                              update="packCodeInputForPackage bulkPackCode"
-                                             oncomplete="PrimeFaces.focus('packCodeInputForPackage'); $('#smallPackCodes').html('');"/>
+                                             oncomplete="PrimeFaces.focus('packCodeInputForPackage');$('#smallPackCodes li').remove();$('#smallPackCodesCsv').val('');"/>
                         </h:panelGroup>
                     </p:column>
                 </p:row>
