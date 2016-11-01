@@ -1,6 +1,5 @@
 package seedqr.gui;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Asynchronous;
@@ -15,21 +14,26 @@ import seedqr.model.SaleInfo;
 import seedqr.model.User;
 import seedqr.util.MybatisUtil;
 
-@Stateless @TransactionManagement(TransactionManagementType.BEAN)
+@Stateless
+@TransactionManagement(TransactionManagementType.BEAN)
 public class StockOutService {
 
     @Asynchronous
-    public void doOut(User user,List<Long> longCodes,int salerId) {
+    public void doOut(User user, List<Long> longCodes, int salerId) {
         String region = MybatisUtil.call(RegionMapper.class, regionMapper -> regionMapper.getSalerRegion(salerId));
-        for(Long packCode : longCodes) {
+        for (Long packCode : longCodes) {
             String target = MybatisUtil.call(QrCodeMapper.class, codeMapper -> codeMapper.getTargetsBySrc(packCode.toString()));
-            List<QrCode> unitCodes = MybatisUtil.call(QrCodeMapper.class, codeMapper -> codeMapper.getQrCodeByUnitIds(target));
-            List<SaleInfo> sales = new ArrayList<>();
-            for(QrCode code:unitCodes) {
-                SaleInfo sale = new SaleInfo(code.getId(),salerId,"生产商发货至" + region,1);
-                sales.add(sale);
+            if (target != null && !target.equals("")) {
+                List<QrCode> unitCodes = MybatisUtil.call(QrCodeMapper.class, codeMapper -> codeMapper.getQrCodeByUnitIds(target));
+                List<SaleInfo> sales = new ArrayList<>();
+                for (QrCode code : unitCodes) {
+                    SaleInfo sale = new SaleInfo(code.getId(), salerId, "生产商发货至" + region, 1);
+                    sales.add(sale);
+                }
+                if (!sales.isEmpty()) {
+                    MybatisUtil.run(SaleMapper.class, saleMapper -> saleMapper.addSaleInfos(sales));
+                }
             }
-            MybatisUtil.run(SaleMapper.class, saleMapper -> saleMapper.addSaleInfos(sales));
         }
     }
 }

@@ -74,25 +74,6 @@
                     <p:outputLabel for="handphone" value="联系电话："/>
                     <p:inputText id="handphone" maxlength="20"
                                  value="#{manufacturerManager.manufacturer.handphone}"/>
-                    <p:outputLabel for="province" value="地区："/>
-                    <p:selectOneMenu id="province" value="#{manufacturerManager.province}">
-                        <f:selectItems value="#{manufacturerManager.provinces}" var="province"
-                                       itemLabel="#{province.name}" itemValue="#{province.id}"/>
-                        <p:ajax process="@this" update="city dist"
-                                listener="#{manufacturerManager.updateCities}"/>
-                    </p:selectOneMenu>
-                    <p:outputLabel for="city"/>
-                    <p:selectOneMenu id="city" value="#{manufacturerManager.city}">
-                        <f:selectItems value="#{manufacturerManager.cities}" var="city"
-                                       itemLabel="#{city.name}" itemValue="#{city.id}"/>
-                        <p:ajax process="@this" update="district"
-                                listener="#{manufacturerManager.updateDistricts}"/>
-                    </p:selectOneMenu>
-                    <p:outputLabel for="district"/>
-                    <p:selectOneMenu id="district" value="#{manufacturerManager.manufacturer.regionId}">
-                        <f:selectItems value="#{manufacturerManager.districts}" var="district"
-                                       itemLabel="#{district.name}" itemValue="#{district.id}"/>
-                    </p:selectOneMenu>
                     <f:facet name="footer">
                         <h:panelGroup layout="block" style="width: 100%; text-align: center;">
                             <p:commandButton value="保存" process="@form"

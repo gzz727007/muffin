@@ -78,7 +78,7 @@
                         <p:selectOneMenu id="selectSeedId" value="#{packScanner.seedId}" 
                                              style="font-size: 90%;">
                             <f:selectItems value="#{seedManager.seeds}"
-                                           var="seed" itemLabel="#{seed.seedUiDisplay}" itemValue="#{seed.id}"/>
+                                           var="seed" itemLabel="#{seed.seedName}-#{seed.seedUiDisplay}" itemValue="#{seed.id}"/>
                         </p:selectOneMenu>
                     </p:column>
                 </p:row>

@@ -68,7 +68,7 @@ public class QueryQrCode implements Serializable {
                 }
             } else {
                 //codeList = MybatisUtil.getMapper(QrCodeMapper.class).getQrCodeByUnitId(id);
-                MybatisUtil.call(QrCodeMapper.class, codeMapper -> codeMapper.getQrCodeByUnitId(id));
+                codeList = MybatisUtil.call(QrCodeMapper.class, codeMapper -> codeMapper.getQrCodeByUnitId(id));
                 if (codeList!= null && codeList.size() > 0) {
                     isExisting = true;
                     isUnit = true;
