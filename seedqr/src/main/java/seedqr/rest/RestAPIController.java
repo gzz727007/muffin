@@ -6,7 +6,9 @@
 package seedqr.rest;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -149,5 +151,16 @@ public class RestAPIController {
         }
         return result;
     }
-
+    
+    
+    @GET
+    @Path("/version")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Map<String, Object> getUpdateVersion() {
+        Map<String, Object> result = new HashMap<>();
+        result.put("versionCode", 10);
+        result.put("versionName", "1.1.0");
+        result.put("downloadUrl", "http://www.zgzxcc.com/app/seedapp.1.1.0.apk");
+        return result;
+    }
 }
