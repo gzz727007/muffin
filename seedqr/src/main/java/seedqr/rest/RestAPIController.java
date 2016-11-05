@@ -160,7 +160,7 @@ public class RestAPIController {
         Map<String, Object> result = new HashMap<>();
         result.put("versionCode", 10);
         result.put("versionName", "1.1.0");
-        result.put("downloadUrl", "http://www.zgzxcc.com/app/seedapp.1.1.0.apk");
+        result.put("downloadUrl", "http://www.zgzzcx.com/app/seedapp.1.1.0.apk");
         return result;
     }
 }
