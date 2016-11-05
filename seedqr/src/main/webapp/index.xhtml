@@ -76,6 +76,10 @@
                     </p:panelGrid>
                     <p:blockUI block="indexPanel" trigger="loginButton" >登陆中...</p:blockUI>
                 </h:form>
+                <h:form rendered="#{request.remoteUser ne null}">
+                    <p:poll interval="30" listener="#{sessionData.updateUserStatus}" />
+                </h:form>
+                
                 <p:tabView prependId="false" style="height: 98%;"
                            activeIndex="#{sessionData.tab}"
                            rendered="#{request.remoteUser ne null}"

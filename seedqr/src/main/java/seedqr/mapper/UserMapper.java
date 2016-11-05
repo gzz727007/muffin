@@ -22,4 +22,7 @@ public interface UserMapper {
 
     @Update("update `user` set password = #{password}, urole = #{role} where id = #{id}")
     void updateUser(User user);
+    
+    @Update("update `user` set `last_login_time` = now() where id = #{id}")
+    void updateUserOnlineStatus(User user);
 }

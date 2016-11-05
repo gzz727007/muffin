@@ -8,6 +8,7 @@ import javax.inject.Named;
 import org.primefaces.component.tabview.TabView;
 import org.primefaces.event.TabChangeEvent;
 import seedqr.mapper.CompanyMapper;
+import seedqr.mapper.UserMapper;
 import seedqr.model.Company;
 import seedqr.model.User;
 import seedqr.util.MybatisUtil;
@@ -57,5 +58,9 @@ public class SessionData implements Serializable {
 
     public int getCompanyId() {
         return company.getId();
+    }
+    
+    public void updateUserStatus() {
+        MybatisUtil.run(UserMapper.class, userMapper -> userMapper.updateUserOnlineStatus(user));
     }
 }
