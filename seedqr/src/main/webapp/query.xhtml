@@ -68,7 +68,9 @@
                     <p:tab title="销售信息" rendered="#{queryQrCode.isUnit()}" >
                         <p:dataTable var="sale" value="#{queryQrCode.saleInfoList}">
                             <p:column headerText="销售时间">
-                                <h:outputText value="#{sale.saleTime}" />
+                                <h:outputText value="#{sale.saleTime}" >
+                                    <f:convertDateTime type="both" pattern="yyyy-MM-dd HH:mm:ss" timeZone="GMT+8" locale="cn"/>
+                                </h:outputText>
                             </p:column>
 
                             <p:column headerText="销售信息">

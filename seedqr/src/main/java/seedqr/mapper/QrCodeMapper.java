@@ -37,6 +37,9 @@ public interface QrCodeMapper {
     @Select("SELECT `target_codes` FROM `code_mapping` WHERE `source_code` = #{src}")
     String getTargetsBySrc(@Param("src")String src);
     
+    @Select("select count(1) from `code_mapping` where `source_code` = #{src}")
+    int validatePackageCode(@Param("src")String src);
+    
     
     @SelectProvider(type = QrCodeMapperProvider.class, method = "getQrCodeByUnitIds")
     List<QrCode> getQrCodeByUnitIds(@Param("ids")String ids);

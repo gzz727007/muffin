@@ -9,6 +9,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -49,6 +51,7 @@ public class WholesalerEditor implements Serializable {
 
     private int selectDistId;
     
+    @Valid
     private Company selectedSaler;
     
     @Valid
@@ -121,11 +124,21 @@ public class WholesalerEditor implements Serializable {
     }
     
     public void modifyWholesaler() {
-//        MybatisUtil.run(UserMapper.class, userMapper -> {
-//            userMapper.updateUser(selectedSaler);
-//            salers = userMapper.getUsersByParent(userId);
-//        });
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        try {
+            MybatisUtil.run(CompanyMapper.class, companyMapper -> {
+            companyMapper.updateManufacturer(selectedSaler);
+            salers = companyMapper.getWholesalers(companyId);
+            facesContext.addMessage(null, new FacesMessage(
+                            FacesMessage.SEVERITY_INFO, "修改成功。", null));
+        });
+        }catch (Exception e) {
+            facesContext.addMessage(null, new FacesMessage(
+                            FacesMessage.SEVERITY_ERROR, "系统错误，请联系管理员。", null));
+        }
+        
     }
+    
     
     public void deleteWholesaler() {
         MybatisUtil.run(CompanyMapper.class, companyMapper -> {

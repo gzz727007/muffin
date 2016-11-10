@@ -9,7 +9,7 @@ public class Company {
     private String name;
     private String abbr;
     private String email;
-    @Size(min = 1, max = 20, message = "联系人不能为空且不超过 50 个字符。")
+    //@Size(min = 1, max = 20, message = "联系人不能为空且不超过 50 个字符。")
     private String contact;
     @Size(min = 1, max = 20, message = "联系电话不能为空且不超过 50 个字符。")
     private String handphone;

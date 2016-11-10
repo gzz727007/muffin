@@ -39,9 +39,25 @@
                     PF(widgetVar).hide();
                 }
             }
+            
+            function playInfo(elementId) {
+                try {
+                    var audio = document.getElementById(elementId);
+                    audio.currentTime = 0;
+                    audio.play();
+                }catch (e) {}
+            }
+            
         </script>
     </h:head>
     <h:body>
+        <audio id="attention" preload="auto" src="audio/attention.mp3"/>
+        <audio id="rest3" preload="auto" src="audio/rest3.mp3"/>
+        <audio id="rest2" preload="auto" src="audio/rest2.mp3"/>
+        <audio id="rest1" preload="auto" src="audio/rest1.mp3"/>
+        <audio id="scan1000" preload="auto" src="audio/scan1000.mp3"/>
+        <audio id="error1" preload="auto" src="audio/error1.mp3"/>
+        
         <p:growl id="messages"  widgetVar="growlWidget" autoUpdate="true"/>
         <h:outputText id="validationFailed" style="display: none;"
                       value="#{facesContext.validationFailed}"/>

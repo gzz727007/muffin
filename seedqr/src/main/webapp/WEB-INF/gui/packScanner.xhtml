@@ -41,13 +41,31 @@
                                             
                                             var smallPackCodesCsv = $('#smallPackCodesCsv').val();
                                             if (smallPackCodesCsv.indexOf(id) > -1) {
+                                                playInfo("error1");
                                                 PrimeFaces.cw('Growl','growlWidget',{id:'messages',sticky:false,life:6000,escape:true,msgs:[{severity: 'error', summary: '错误信息', detail: '重复扫描！.'}]});
                                                 $('#packCodeInputForPackage').val("");
                                                 return;
                                             }
                                             var index = $('#smallPackCodes li').length;
                                             var amount = $('#amount_input').val();
+                                            if((amount-index) === 6) {
+                                                playInfo("attention");
+                                            }
+                                            if((amount-index) === 4) {
+                                                playInfo("rest3");
+                                            }
+                                            if((amount-index) === 3) {
+                                                playInfo("rest2");
+                                            }
+                                            if((amount-index) === 2) {
+                                                playInfo("rest1");
+                                            }
+                                            if((amount-index) === 1) {
+                                                playInfo("scan1000");
+                                            }
+                                            
                                             if ((index-amount) >= 0 ) {
+                                                playInfo("error1");
                                                 PrimeFaces.cw('Growl','growlWidget',{id:'messages',sticky:false,life:6000,escape:true,msgs:[{severity: 'error', summary: '错误信息', detail: '小码已扫满！.'}]});
                                                 $('#packCodeInputForPackage').val("");
                                                 return;

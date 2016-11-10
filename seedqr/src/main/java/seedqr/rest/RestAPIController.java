@@ -158,9 +158,9 @@ public class RestAPIController {
     @Produces(MediaType.APPLICATION_JSON)
     public Map<String, Object> getUpdateVersion() {
         Map<String, Object> result = new HashMap<>();
-        result.put("versionCode", 10);
-        result.put("versionName", "1.1.0");
-        result.put("downloadUrl", "http://www.zgzzcx.com/app/seedapp.1.1.0.apk");
+        result.put("versionCode", 11);
+        result.put("versionName", "1.1.1");
+        result.put("downloadUrl", "http://www.zgzzcx.com/app/seedapp.1.1.1.apk");
         return result;
     }
 }
